@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends Device {
     }
 
     protected static long getCPtr(EyewearDevice obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.EyewearDevice_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends Device {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_EyewearDevice(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.EyewearDevice_getClassType(), true);
     }
 
     @Override
@@ -44,6 +32,18 @@ extends Device {
             equal = ((EyewearDevice)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_EyewearDevice(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     public boolean isSeeThru() {

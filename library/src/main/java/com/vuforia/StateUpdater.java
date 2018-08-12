@@ -1,13 +1,13 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class StateUpdater {
+    private long swigCPtr;
     private static final Object sStateMutex = new Object();
     private static State sState = null;
     protected boolean swigCMemOwn;
-    private long swigCPtr;
 
     protected StateUpdater(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -15,7 +15,7 @@ public class StateUpdater {
     }
 
     protected static long getCPtr(StateUpdater obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected void finalize() {
@@ -23,12 +23,12 @@ public class StateUpdater {
     }
 
     protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
+        if (this.swigCPtr != 0L) {
             if (this.swigCMemOwn) {
                 this.swigCMemOwn = false;
                 VuforiaJNI.delete_StateUpdater(this.swigCPtr);
             }
-            this.swigCPtr = 0;
+            this.swigCPtr = 0L;
         }
     }
 

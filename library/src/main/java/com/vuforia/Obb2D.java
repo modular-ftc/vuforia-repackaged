@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class Obb2D {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected Obb2D(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -16,38 +16,38 @@ public class Obb2D {
         this(VuforiaJNI.new_Obb2D__SWIG_0(), true);
     }
 
+    protected static long getCPtr(Obb2D obj) {
+        return obj == null ? 0L : obj.swigCPtr;
+    }
+
     public Obb2D(Obb2D other) {
         this(VuforiaJNI.new_Obb2D__SWIG_1(Obb2D.getCPtr(other), other), true);
-    }
-
-    public Obb2D(Vec2F nCenter, Vec2F nHalfExtents, float nRotation) {
-        this(VuforiaJNI.new_Obb2D__SWIG_2(Vec2F.getCPtr(nCenter), nCenter, Vec2F.getCPtr(nHalfExtents), nHalfExtents, nRotation), true);
-    }
-
-    protected static long getCPtr(Obb2D obj) {
-        return obj == null ? 0 : obj.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_Obb2D(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    public Obb2D(Vec2F nCenter, Vec2F nHalfExtents, float nRotation) {
+        this(VuforiaJNI.new_Obb2D__SWIG_2(Vec2F.getCPtr(nCenter), nCenter, Vec2F.getCPtr(nHalfExtents), nHalfExtents, nRotation), true);
     }
 
     public boolean equals(Object obj) {
         boolean equal = false;
         if (obj instanceof Obb2D) {
-            equal = ((Obb2D)obj).swigCPtr == this.swigCPtr;
+            equal = ((Obb2D) obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_Obb2D(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     public Vec2F getCenter() {

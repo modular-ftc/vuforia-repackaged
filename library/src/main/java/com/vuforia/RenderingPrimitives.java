@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class RenderingPrimitives {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected RenderingPrimitives(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -16,22 +16,12 @@ public class RenderingPrimitives {
         this(VuforiaJNI.new_RenderingPrimitives(RenderingPrimitives.getCPtr(other), other), true);
     }
 
-    protected static long getCPtr(RenderingPrimitives obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_RenderingPrimitives(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    protected static long getCPtr(RenderingPrimitives obj) {
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     public boolean equals(Object obj) {
@@ -40,6 +30,16 @@ public class RenderingPrimitives {
             equal = ((RenderingPrimitives)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_RenderingPrimitives(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     public ViewList getRenderingViews() {

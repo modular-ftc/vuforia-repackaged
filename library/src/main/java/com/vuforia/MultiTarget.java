@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends ObjectTarget {
     }
 
     protected static long getCPtr(MultiTarget obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.MultiTarget_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends ObjectTarget {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_MultiTarget(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.MultiTarget_getClassType(), true);
     }
 
     @Override
@@ -46,13 +34,25 @@ extends ObjectTarget {
         return equal;
     }
 
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_MultiTarget(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
+    }
+
     public int getNumParts() {
         return VuforiaJNI.MultiTarget_getNumParts(this.swigCPtr, this);
     }
 
     public Trackable getPart(int idx) {
         long cPtr = VuforiaJNI.MultiTarget_getPart__SWIG_0(this.swigCPtr, this, idx);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         Trackable tmp = new Trackable(cPtr, false);
@@ -94,7 +94,7 @@ extends ObjectTarget {
 
     public Trackable getPart(String name) {
         long cPtr = VuforiaJNI.MultiTarget_getPart__SWIG_1(this.swigCPtr, this, name);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         Trackable tmp = new Trackable(cPtr, false);

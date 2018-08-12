@@ -1,12 +1,12 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class Frame
 implements Cloneable {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected Frame(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -17,26 +17,12 @@ implements Cloneable {
         this(VuforiaJNI.new_Frame__SWIG_0(), true);
     }
 
-    public Frame(Frame other) {
-        this(VuforiaJNI.new_Frame__SWIG_1(Frame.getCPtr(other), other), true);
-    }
-
-    protected static long getCPtr(Frame obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_Frame(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    public Frame(Frame other) {
+        this(VuforiaJNI.new_Frame__SWIG_1(Frame.getCPtr(other), other), true);
     }
 
     public Frame clone() {
@@ -49,6 +35,20 @@ implements Cloneable {
             equal = ((Frame)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected static long getCPtr(Frame obj) {
+        return obj == null ? 0L : obj.swigCPtr;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_Frame(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     public double getTimeStamp() {
@@ -65,7 +65,7 @@ implements Cloneable {
 
     public Image getImage(int idx) {
         long cPtr = VuforiaJNI.Frame_getImage(this.swigCPtr, this, idx);
-        return cPtr == 0 ? null : new Image(cPtr, false);
+        return cPtr == 0L ? null : new Image(cPtr, false);
     }
 }
 

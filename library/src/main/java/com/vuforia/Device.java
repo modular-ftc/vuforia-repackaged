@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class Device {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected Device(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -13,7 +13,11 @@ public class Device {
     }
 
     protected static long getCPtr(Device obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
+    }
+
+    protected void finalize() {
+        this.delete();
     }
 
     public static Device getInstance() {
@@ -27,30 +31,26 @@ public class Device {
         return new Device(instancePtr, false);
     }
 
+    public boolean equals(Object obj) {
+        boolean equal = false;
+        if (obj instanceof Device) {
+            equal = ((Device) obj).swigCPtr == this.swigCPtr;
+        }
+        return equal;
+    }
+
     public static Type getClassType() {
         return new Type(VuforiaJNI.Device_getClassType(), true);
     }
 
-    protected void finalize() {
-        this.delete();
-    }
-
     protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
+        if (this.swigCPtr != 0L) {
             if (this.swigCMemOwn) {
                 this.swigCMemOwn = false;
                 VuforiaJNI.delete_Device(this.swigCPtr);
             }
-            this.swigCPtr = 0;
+            this.swigCPtr = 0L;
         }
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Device) {
-            equal = ((Device)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     public Type getType() {
@@ -69,12 +69,12 @@ public class Device {
         return VuforiaJNI.Device_getMode(this.swigCPtr, this);
     }
 
-    public boolean isViewerActive() {
-        return VuforiaJNI.Device_isViewerActive(this.swigCPtr, this);
-    }
-
     public void setViewerActive(boolean active) {
         VuforiaJNI.Device_setViewerActive(this.swigCPtr, this, active);
+    }
+
+    public boolean isViewerActive() {
+        return VuforiaJNI.Device_isViewerActive(this.swigCPtr, this);
     }
 
     public ViewerParametersList getViewerList() {

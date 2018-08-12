@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -144,7 +144,7 @@ public class FileTools {
         AssetFileInfo assetFileInfo = new AssetFileInfo();
         assetFileInfo.fileStream = null;
         assetFileInfo.relativePath = relativePath;
-        assetFileInfo.filePos = 0;
+        assetFileInfo.filePos = 0L;
         try {
             AssetManager am = SystemTools.getActivityFromNative().getAssets();
             assetFileInfo.fileStream = new BufferedInputStream(am.open(relativePath, 3), 8192);
@@ -199,7 +199,7 @@ public class FileTools {
 
     public static boolean asset_setPosition(Object fileObj, long offset, int origin) {
         AssetFileInfo assetFileInfo = (AssetFileInfo)fileObj;
-        if (offset < 0) {
+        if (offset < 0L) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
@@ -215,7 +215,7 @@ public class FileTools {
                 try {
                     AssetManager am = SystemTools.getActivityFromNative().getAssets();
                     assetFileInfo.fileStream = new BufferedInputStream(am.open(assetFileInfo.relativePath, 3), 8192);
-                    assetFileInfo.filePos = 0;
+                    assetFileInfo.filePos = 0L;
                     break;
                 }
                 catch (Exception e) {
@@ -246,8 +246,8 @@ public class FileTools {
                 return false;
             }
         }
-        if (offset != 0) {
-            long skippedTotal = 0;
+        if (offset != 0L) {
+            long skippedTotal = 0L;
             try {
                 long skipped;
                 do {

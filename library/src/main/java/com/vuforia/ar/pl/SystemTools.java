@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -100,7 +100,7 @@ public class SystemTools {
                         }
                     }
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(1000L);
                     }
                     catch (InterruptedException e) {
                         // empty catch block

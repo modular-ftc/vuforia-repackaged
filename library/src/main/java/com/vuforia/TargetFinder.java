@@ -1,9 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class TargetFinder {
+    protected boolean swigCMemOwn;
+    private long swigCPtr;
     public static final int INIT_DEFAULT = 0;
     public static final int INIT_RUNNING = 1;
     public static final int INIT_SUCCESS = 2;
@@ -22,8 +24,6 @@ public class TargetFinder {
     public static final int UPDATE_ERROR_REQUEST_TIMEOUT = -8;
     public static final int FILTER_NONE = 0;
     public static final int FILTER_CURRENTLY_TRACKED = 1;
-    protected boolean swigCMemOwn;
-    private long swigCPtr;
 
     protected TargetFinder(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -31,7 +31,7 @@ public class TargetFinder {
     }
 
     protected static long getCPtr(TargetFinder obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected void finalize() {
@@ -39,12 +39,12 @@ public class TargetFinder {
     }
 
     protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
+        if (this.swigCPtr != 0L) {
             if (this.swigCMemOwn) {
                 this.swigCMemOwn = false;
                 VuforiaJNI.delete_TargetFinder(this.swigCPtr);
             }
-            this.swigCPtr = 0;
+            this.swigCPtr = 0L;
         }
     }
 
@@ -98,12 +98,12 @@ public class TargetFinder {
 
     public TargetSearchResult getResult(int idx) {
         long cPtr = VuforiaJNI.TargetFinder_getResult(this.swigCPtr, this, idx);
-        return cPtr == 0 ? null : new TargetSearchResult(cPtr, false);
+        return cPtr == 0L ? null : new TargetSearchResult(cPtr, false);
     }
 
     public ImageTarget enableTracking(TargetSearchResult result) {
         long cPtr = VuforiaJNI.TargetFinder_enableTracking(this.swigCPtr, this, TargetSearchResult.getCPtr(result), result);
-        return cPtr == 0 ? null : new ImageTarget(cPtr, false);
+        return cPtr == 0L ? null : new ImageTarget(cPtr, false);
     }
 
     public void clearTrackables() {
@@ -116,7 +116,7 @@ public class TargetFinder {
 
     public ImageTarget getImageTarget(int idx) {
         long cPtr = VuforiaJNI.TargetFinder_getImageTarget(this.swigCPtr, this, idx);
-        return cPtr == 0 ? null : new ImageTarget(cPtr, false);
+        return cPtr == 0L ? null : new ImageTarget(cPtr, false);
     }
 }
 

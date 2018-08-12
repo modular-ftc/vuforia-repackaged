@@ -1,12 +1,12 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class State
 implements Cloneable {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
     private Frame mFrame = null;
     private Object mFrameMutex = new Object();
 
@@ -19,23 +19,35 @@ implements Cloneable {
         this(VuforiaJNI.new_State__SWIG_0(), true);
     }
 
-    public State(State other) {
-        this(VuforiaJNI.new_State__SWIG_1(State.getCPtr(other), other), true);
+    protected static long getCPtr(State obj) {
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
-    protected static long getCPtr(State obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+    public State(State other) {
+        this(VuforiaJNI.new_State__SWIG_1(State.getCPtr(other), other), true);
     }
 
     protected void finalize() {
         this.delete();
     }
 
+    public State clone() {
+        return new State(this);
+    }
+
+    public boolean equals(Object obj) {
+        boolean equal = false;
+        if (obj instanceof State) {
+            equal = ((State) obj).swigCPtr == this.swigCPtr;
+        }
+        return equal;
+    }
+
     /*
      * WARNING - Removed try catching itself - possible behaviour change.
      */
     protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
+        if (this.swigCPtr != 0L) {
             if (this.swigCMemOwn) {
                 this.swigCMemOwn = false;
                 VuforiaJNI.delete_State(this.swigCPtr);
@@ -47,20 +59,8 @@ implements Cloneable {
                     this.mFrame = null;
                 }
             }
-            this.swigCPtr = 0;
+            this.swigCPtr = 0L;
         }
-    }
-
-    public State clone() {
-        return new State(this);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof State) {
-            equal = ((State)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     /*
@@ -82,7 +82,7 @@ implements Cloneable {
 
     public Trackable getTrackable(int idx) {
         long cPtr = VuforiaJNI.State_getTrackable(this.swigCPtr, this, idx);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         Trackable tmp = new Trackable(cPtr, false);
@@ -128,7 +128,7 @@ implements Cloneable {
 
     public TrackableResult getTrackableResult(int idx) {
         long cPtr = VuforiaJNI.State_getTrackableResult(this.swigCPtr, this, idx);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         TrackableResult tmp = new TrackableResult(cPtr, false);

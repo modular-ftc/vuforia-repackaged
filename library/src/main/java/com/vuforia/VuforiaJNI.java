@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -7,10 +7,6 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 class VuforiaJNI {
-    static {
-        VuforiaJNI.swig_module_init();
-    }
-
     VuforiaJNI() {
     }
 
@@ -1403,5 +1399,9 @@ class VuforiaJNI {
     }
 
     private static final native void swig_module_init();
+
+    static {
+        VuforiaJNI.swig_module_init();
+    }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends Trackable {
     }
 
     protected static long getCPtr(ObjectTarget obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.ObjectTarget_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends Trackable {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_ObjectTarget(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.ObjectTarget_getClassType(), true);
     }
 
     @Override
@@ -44,6 +32,18 @@ extends Trackable {
             equal = ((ObjectTarget)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_ObjectTarget(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     public String getUniqueTargetId() {

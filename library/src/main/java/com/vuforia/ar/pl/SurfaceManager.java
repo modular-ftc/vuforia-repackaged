@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -27,7 +27,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SurfaceManager {
-    private static final String MODULENAME = "SurfaceManager";
     boolean renderWhenDirtyEnabled = false;
     GLSurfaceView glSurfaceView = null;
     int glSurfaceViewChildPosition = 0;
@@ -35,6 +34,7 @@ public class SurfaceManager {
     Camera1_Preview.CameraCacheInfo cciForSurface;
     Lock viewLock = new ReentrantLock();
     Lock addSurfaceLock = new ReentrantLock();
+    private static final String MODULENAME = "SurfaceManager";
 
     private GLSurfaceView searchForGLSurfaceView(View rootView) {
         GLSurfaceView result;
@@ -130,6 +130,7 @@ public class SurfaceManager {
                  */
                 @Override
                 public void run() {
+                    block5:
                     {
                         SurfaceManager.this.addSurfaceLock.lock();
                         SurfaceManager.this.retrieveGLSurfaceView();
@@ -138,7 +139,9 @@ public class SurfaceManager {
                             ViewGroup vg = (ViewGroup) SurfaceManager.this.cameraSurfaceParentView;
                             vg.addView((View) SurfaceManager.this.cciForSurface.surface, SurfaceManager.this.glSurfaceViewChildPosition + 1, (ViewGroup.LayoutParams) new FrameLayout.LayoutParams(-1, -1));
                             SurfaceManager.this.cciForSurface.surface.setVisibility(0);
-                        } catch (Exception ignored) {
+                            break block5;
+                        } catch (Exception vg) {
+                            break block5;
                         } finally {
                             SurfaceManager.this.addSurfaceLock.unlock();
                         }

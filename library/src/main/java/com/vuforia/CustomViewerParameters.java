@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -16,29 +16,13 @@ extends ViewerParameters {
         this(VuforiaJNI.new_CustomViewerParameters__SWIG_0(version, name, manufacturer), true);
     }
 
-    public CustomViewerParameters(CustomViewerParameters arg0) {
-        this(VuforiaJNI.new_CustomViewerParameters__SWIG_1(CustomViewerParameters.getCPtr(arg0), arg0), true);
-    }
-
-    protected static long getCPtr(CustomViewerParameters obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
     @Override
     protected void finalize() {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_CustomViewerParameters(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public CustomViewerParameters(CustomViewerParameters arg0) {
+        this(VuforiaJNI.new_CustomViewerParameters__SWIG_1(CustomViewerParameters.getCPtr(arg0), arg0), true);
     }
 
     @Override
@@ -48,6 +32,22 @@ extends ViewerParameters {
             equal = ((CustomViewerParameters)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected static long getCPtr(CustomViewerParameters obj) {
+        return obj == null ? 0L : obj.swigCPtr;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_CustomViewerParameters(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     public void setButtonType(int val) {

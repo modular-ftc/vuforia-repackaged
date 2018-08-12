@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class EyewearCalibrationReading {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected EyewearCalibrationReading(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -17,7 +17,11 @@ public class EyewearCalibrationReading {
     }
 
     protected static long getCPtr(EyewearCalibrationReading obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
+    }
+
+    protected void finalize() {
+        this.delete();
     }
 
     protected static long[] cArrayUnwrap(EyewearCalibrationReading[] arrayWrapper) {
@@ -36,23 +40,19 @@ public class EyewearCalibrationReading {
         return arrayWrapper;
     }
 
-    protected void finalize() {
-        this.delete();
-    }
-
     protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
+        if (this.swigCPtr != 0L) {
             if (this.swigCMemOwn) {
                 this.swigCMemOwn = false;
                 VuforiaJNI.delete_EyewearCalibrationReading(this.swigCPtr);
             }
-            this.swigCPtr = 0;
+            this.swigCPtr = 0L;
         }
     }
 
     public Matrix34F getPose() {
         long cPtr = VuforiaJNI.EyewearCalibrationReading_Pose_get(this.swigCPtr, this);
-        return cPtr == 0 ? null : new Matrix34F(cPtr, false);
+        return cPtr == 0L ? null : new Matrix34F(cPtr, false);
     }
 
     public void setPose(Matrix34F value) {
@@ -71,16 +71,16 @@ public class EyewearCalibrationReading {
         return VuforiaJNI.EyewearCalibrationReading_CenterX_get(this.swigCPtr, this);
     }
 
+    public void setCenterY(float value) {
+        VuforiaJNI.EyewearCalibrationReading_CenterY_set(this.swigCPtr, this, value);
+    }
+
     public void setCenterX(float value) {
         VuforiaJNI.EyewearCalibrationReading_CenterX_set(this.swigCPtr, this, value);
     }
 
     public float getCenterY() {
         return VuforiaJNI.EyewearCalibrationReading_CenterY_get(this.swigCPtr, this);
-    }
-
-    public void setCenterY(float value) {
-        VuforiaJNI.EyewearCalibrationReading_CenterY_set(this.swigCPtr, this, value);
     }
 }
 

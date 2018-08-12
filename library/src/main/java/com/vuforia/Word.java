@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends Trackable {
     }
 
     protected static long getCPtr(Word obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.Word_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends Trackable {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_Word(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.Word_getClassType(), true);
     }
 
     @Override
@@ -44,6 +32,18 @@ extends Trackable {
             equal = ((Word)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_Word(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     public String getStringU() {
@@ -72,12 +72,12 @@ extends Trackable {
 
     public Image getMask() {
         long cPtr = VuforiaJNI.Word_getMask(this.swigCPtr, this);
-        return cPtr == 0 ? null : new Image(cPtr, false);
+        return cPtr == 0L ? null : new Image(cPtr, false);
     }
 
     public Rectangle getLetterBoundingBox(int idx) {
         long cPtr = VuforiaJNI.Word_getLetterBoundingBox(this.swigCPtr, this, idx);
-        return cPtr == 0 ? null : new Rectangle(cPtr, false);
+        return cPtr == 0L ? null : new Rectangle(cPtr, false);
     }
 }
 

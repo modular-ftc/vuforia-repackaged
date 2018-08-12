@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class TrackableResult {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected TrackableResult(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -13,25 +13,15 @@ public class TrackableResult {
     }
 
     protected static long getCPtr(TrackableResult obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.TrackableResult_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_TrackableResult(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.TrackableResult_getClassType(), true);
     }
 
     public boolean equals(Object obj) {
@@ -40,6 +30,16 @@ public class TrackableResult {
             equal = ((TrackableResult)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_TrackableResult(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     public Type getType() {
@@ -60,7 +60,7 @@ public class TrackableResult {
 
     public Trackable getTrackable() {
         long cPtr = VuforiaJNI.TrackableResult_getTrackable(this.swigCPtr, this);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         Trackable tmp = new Trackable(cPtr, false);

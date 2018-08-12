@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -14,10 +14,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Vuforia
 extends VuforiaBase
 implements VuforiaConstants {
-    protected static Map<Integer, Object> sUserDataMap;
     private static boolean initializedJava = false;
     private static UpdateCallback sUpdateCallback;
     private static UpdateCallbackInterface sUpdateCallbackInterface;
+    protected static Map<Integer, Object> sUserDataMap;
+
+    protected static boolean wasInitializedJava() {
+        return initializedJava;
+    }
 
     static {
         if (!Vuforia.loadLibrary("Vuforia")) {
@@ -26,14 +30,6 @@ implements VuforiaConstants {
         sUpdateCallback = null;
         sUpdateCallbackInterface = null;
         sUserDataMap = new ConcurrentHashMap<Integer, Object>(16, 0.75f, 4);
-    }
-
-    protected static boolean wasInitializedJava() {
-        return initializedJava;
-    }
-
-    protected static void setHint() {
-        Vuforia.setHint(-858996736, 2796202);
     }
 
     public static void setInitParameters(Activity activity, int flags, String licenseKey) {
@@ -165,6 +161,10 @@ implements VuforiaConstants {
 
     public static String getLibraryVersion() {
         return VuforiaJNI.getLibraryVersion();
+    }
+
+    protected static void setHint() {
+        Vuforia.setHint(-858996736L, 2796202);
     }
 
     public static interface UpdateCallbackInterface {

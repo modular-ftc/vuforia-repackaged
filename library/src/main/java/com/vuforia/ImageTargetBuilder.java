@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class ImageTargetBuilder {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected ImageTargetBuilder(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -13,16 +13,16 @@ public class ImageTargetBuilder {
     }
 
     protected static long getCPtr(ImageTargetBuilder obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
+        if (this.swigCPtr != 0L) {
             if (this.swigCMemOwn) {
                 this.swigCMemOwn = false;
                 throw new UnsupportedOperationException("C++ destructor does not have public access");
             }
-            this.swigCPtr = 0;
+            this.swigCPtr = 0L;
         }
     }
 
@@ -52,7 +52,7 @@ public class ImageTargetBuilder {
 
     public TrackableSource getTrackableSource() {
         long cPtr = VuforiaJNI.ImageTargetBuilder_getTrackableSource(this.swigCPtr, this);
-        return cPtr == 0 ? null : new TrackableSource(cPtr, false);
+        return cPtr == 0L ? null : new TrackableSource(cPtr, false);
     }
 
     public static final class FRAME_QUALITY {

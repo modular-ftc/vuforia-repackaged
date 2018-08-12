@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends DeviceTracker {
     }
 
     protected static long getCPtr(RotationalDeviceTracker obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.RotationalDeviceTracker_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends DeviceTracker {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_RotationalDeviceTracker(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.RotationalDeviceTracker_getClassType(), true);
     }
 
     @Override
@@ -44,6 +32,18 @@ extends DeviceTracker {
             equal = ((RotationalDeviceTracker)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_RotationalDeviceTracker(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     public boolean recenter() {
@@ -64,7 +64,7 @@ extends DeviceTracker {
 
     public TransformModel getModelCorrection() {
         long cPtr = VuforiaJNI.RotationalDeviceTracker_getModelCorrection(this.swigCPtr, this);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         TransformModel tmp = new TransformModel(cPtr, false);
@@ -81,12 +81,12 @@ extends DeviceTracker {
 
     public HeadTransformModel getDefaultHeadModel() {
         long cPtr = VuforiaJNI.RotationalDeviceTracker_getDefaultHeadModel(this.swigCPtr, this);
-        return cPtr == 0 ? null : new HeadTransformModel(cPtr, false);
+        return cPtr == 0L ? null : new HeadTransformModel(cPtr, false);
     }
 
     public HandheldTransformModel getDefaultHandheldModel() {
         long cPtr = VuforiaJNI.RotationalDeviceTracker_getDefaultHandheldModel(this.swigCPtr, this);
-        return cPtr == 0 ? null : new HandheldTransformModel(cPtr, false);
+        return cPtr == 0L ? null : new HandheldTransformModel(cPtr, false);
     }
 }
 

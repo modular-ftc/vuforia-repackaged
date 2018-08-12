@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class EyewearUserCalibrator {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected EyewearUserCalibrator(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -13,7 +13,7 @@ public class EyewearUserCalibrator {
     }
 
     protected static long getCPtr(EyewearUserCalibrator obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected void finalize() {
@@ -21,12 +21,12 @@ public class EyewearUserCalibrator {
     }
 
     protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
+        if (this.swigCPtr != 0L) {
             if (this.swigCMemOwn) {
                 this.swigCMemOwn = false;
                 VuforiaJNI.delete_EyewearUserCalibrator(this.swigCPtr);
             }
-            this.swigCPtr = 0;
+            this.swigCPtr = 0L;
         }
     }
 

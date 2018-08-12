@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia.ar.pl;
 
@@ -13,12 +13,12 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 public class ARHttpResponse {
+    private static final String MODULENAME = "ARHttpResponse";
     public static final int ERROR_NONE = 0;
     public static final int ERROR_CANCELED = 1;
     public static final int ERROR_OPERATION_FAILED = 2;
     public static final int ERROR_TIMEOUT = 3;
     public static final int MAXIMUM_ERROR = 3;
-    private static final String MODULENAME = "ARHttpResponse";
     public int statusCode;
     public int networkStatus;
     public String contentType;

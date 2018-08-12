@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia.ar.pl;
 
@@ -17,9 +17,9 @@ import java.util.concurrent.TimeoutException;
 
 public class ARHttpClient {
     private static final String MODULENAME = "ARHttpClient";
-    ExecutorService executor;
     private Future<ARHttpResponse> requestTask = null;
     private Future<?> postDSNTimeoutTask = null;
+    ExecutorService executor;
 
     public boolean execute(ARHttpRequest arRequest, ARHttpParams arParams) {
         if (arRequest == null) {

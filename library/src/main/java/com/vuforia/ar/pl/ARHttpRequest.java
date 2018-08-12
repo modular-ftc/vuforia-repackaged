@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia.ar.pl;
 
@@ -19,12 +19,12 @@ public class ARHttpRequest {
     public String url;
     public String method;
     public String[] headers;
+    boolean isQuery;
     public String contentType = null;
     public String contentEncoding = null;
     public String contentPath = null;
     public byte[] content = null;
     public long nativeRequestPtr;
-    boolean isQuery;
 
     public static HttpURLConnection createHttpRequest(ARHttpRequest arRequest) throws IOException {
         URL url = new URL(arRequest.url);

@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -14,7 +14,6 @@
 package com.vuforia.ar.pl;
 
 import android.app.Activity;
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -29,6 +28,10 @@ import java.util.Vector;
 public class SensorController
         extends HandlerThread
         implements SensorEventListener {
+    private static boolean CONVERT_FORMAT_TO_PL = true;
+    private static boolean CONVERT_FORMAT_TO_ANDROID = false;
+    private static int AR_SENSOR_INDEX_DONTCARE = -1;
+    private SensorManager sensorManager;
     private static final int AR_SENSOR_TYPE_UNKNOWN = 1342177280;
     private static final int AR_SENSOR_TYPE_GYROSCOPE = 1342177281;
     private static final int AR_SENSOR_TYPE_ACCELEROMETER = 1342177282;
@@ -38,10 +41,13 @@ public class SensorController
     private static final int AR_SENSOR_TYPE_STEP_DETECTOR = 1342177287;
     private static final int AR_SENSOR_TYPE_DEVICE_ROTATION = 1342177288;
     private static final int[] SENSOR_TYPE_CONVERSIONTABLE = new int[]{4, 1342177281, 1, 1342177282, 2, 1342177283, 8, 1342177285, 5, 1342177286, 18, 1342177287, 11, 1342177288};
+    private Vector<SensorCacheInfo> sensorCacheInfo = null;
+    private HashMap<Sensor, Integer> sensorIndexMap = null;
     private static final int SENSORINFO_VALUE_PLSENSORTYPE = 0;
     private static final int SENSORINFO_VALUE_ANDROIDSENSORTYPE = 1;
     private static final int SENSORINFO_VALUE_ISDEFAULT = 2;
     private static final int _NUM_SENSORINFO_VALUE_ = 3;
+    private Handler sensorEventHandler;
     private static final int AR_SENSOR_STATUS_UNKNOWN = 1342242816;
     private static final int AR_SENSOR_STATUS_UNINITIALIZED = 1342242817;
     private static final int AR_SENSOR_STATUS_IDLE = 1342242818;
@@ -67,16 +73,9 @@ public class SensorController
     private static final int AR_SENSOR_UPDATEINTERVAL_HIGHRATE = 3;
     private static final int AR_SENSOR_UPDATEINTERVAL_HIGHESTRATE = 4;
     private static final String MODULENAME = "SensorController";
-    private static boolean CONVERT_FORMAT_TO_PL = true;
-    private static boolean CONVERT_FORMAT_TO_ANDROID = false;
-    private static int AR_SENSOR_INDEX_DONTCARE = -1;
-    private SensorManager sensorManager;
-    private Vector<SensorCacheInfo> sensorCacheInfo = null;
-    private HashMap<Sensor, Integer> sensorIndexMap = null;
-    private Handler sensorEventHandler;
 
     public SensorController() {
-        super("SensorController");
+        super(MODULENAME);
     }
 
     private SensorCacheInfo getSensorCacheInfo(int sensorCacheInfoIndex) {
@@ -123,7 +122,7 @@ public class SensorController
     }
 
     public void onSensorChanged(SensorEvent event) {
-        Integer intObj = this.sensorIndexMap.get(event.sensor);
+        Integer intObj = this.sensorIndexMap.get((Object) event.sensor);
         if (intObj == null) {
             return;
         }
@@ -169,7 +168,7 @@ public class SensorController
             SystemTools.logSystemError("No valid activity set in native!");
             return -1;
         }
-        this.sensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
+        this.sensorManager = (SensorManager) activity.getSystemService("sensor");
         if (this.sensorManager == null) {
             SystemTools.setSystemErrorCode(6);
             SystemTools.logSystemError("Failed to retrieve Context's Sensor Service");
@@ -182,7 +181,7 @@ public class SensorController
         boolean supportedSensorIndex = false;
         for (Sensor sensor : supportedSensors) {
             int sensorType = sensor.getType();
-            boolean isDefaultSensor = sensor.equals(this.sensorManager.getDefaultSensor(sensorType));
+            boolean isDefaultSensor = sensor.equals((Object) this.sensorManager.getDefaultSensor(sensorType));
             int plSensorType = this.translateSensorType(sensorType, CONVERT_FORMAT_TO_PL);
             if (plSensorType == 1342177280) continue;
             SensorCacheInfo sci = new SensorCacheInfo();
@@ -237,7 +236,7 @@ public class SensorController
         }
         boolean result = false;
         try {
-            this.sensorManager.unregisterListener(this, sci.sensor);
+            this.sensorManager.unregisterListener((SensorEventListener) this, sci.sensor);
             result = true;
         } catch (Exception e) {
             SystemTools.setSystemErrorCode(6);
@@ -268,91 +267,91 @@ public class SensorController
     }
 
     Object getTypedSensorParameter(int sensorCacheInfoIndex, int type) {
-        block11:
-        {
-            SensorCacheInfo sci = this.getSensorCacheInfo(sensorCacheInfoIndex);
-            if (sci == null) {
-                SystemTools.setSystemErrorCode(4);
-                SystemTools.logSystemError("Sensor handle is invalid");
-                return null;
-            }
-            try {
-                switch (type) {
-                    case 1879048193:
-                    case 1879048200:
-                    case 1879048208:
-                    case 1879048224: {
-                        SystemTools.setSystemErrorCode(3);
-                        SystemTools.logSystemError("Querying sensor parameter " + type + " is not supported for sensor type " + sci.plSensorType + (type == 1879048224 ? " when using the Java-based sensor API" : ""));
-                        break block11;
-                    }
-                    case 1879048194: {
-                        return Float.valueOf(sci.sensor.getMaximumRange());
-                    }
-                    case 1879048196: {
-                        return Float.valueOf(sci.sensor.getResolution());
-                    }
-                    case 1879048320: {
-                        if (SystemTools.checkMinimumApiLevel(9)) {
-                            return sci.sensor.getMinDelay();
-                        }
-                        SystemTools.setSystemErrorCode(3);
-                        SystemTools.logSystemError("Unknown sensor parameter");
-                        break block11;
-                    }
-                    case 1879048256: {
-                        return sci.requestedAbstractUpdateRate;
-                    }
+        SensorCacheInfo sci = this.getSensorCacheInfo(sensorCacheInfoIndex);
+        if (sci == null) {
+            SystemTools.setSystemErrorCode(4);
+            SystemTools.logSystemError("Sensor handle is invalid");
+            return null;
+        }
+        try {
+            switch (type) {
+                case 1879048193:
+                case 1879048200:
+                case 1879048208:
+                case 1879048224: {
+                    SystemTools.setSystemErrorCode(3);
+                    SystemTools.logSystemError("Querying sensor parameter " + type + " is not supported for sensor type " + sci.plSensorType + (type == 1879048224 ? " when using the Java-based sensor API" : ""));
+                    break;
                 }
-                SystemTools.setSystemErrorCode(3);
-                SystemTools.logSystemError("Unknown sensor parameter");
-            } catch (Exception e) {
-                SystemTools.setSystemErrorCode(6);
-                SystemTools.logSystemError("Failed to get sensor parameter: " + e.toString());
+                case 1879048194: {
+                    return Float.valueOf(sci.sensor.getMaximumRange());
+                }
+                case 1879048196: {
+                    return Float.valueOf(sci.sensor.getResolution());
+                }
+                case 1879048320: {
+                    if (SystemTools.checkMinimumApiLevel(9)) {
+                        return sci.sensor.getMinDelay();
+                    }
+                    SystemTools.setSystemErrorCode(3);
+                    SystemTools.logSystemError("Unknown sensor parameter");
+                    break;
+                }
+                case 1879048256: {
+                    return sci.requestedAbstractUpdateRate;
+                }
+                default: {
+                    SystemTools.setSystemErrorCode(3);
+                    SystemTools.logSystemError("Unknown sensor parameter");
+                    break;
+                }
             }
+        } catch (Exception e) {
+            SystemTools.setSystemErrorCode(6);
+            SystemTools.logSystemError("Failed to get sensor parameter: " + e.toString());
         }
         return null;
     }
 
     boolean setTypedSensorParameter(int sensorCacheInfoIndex, int type, Object value) {
-        block8:
-        {
-            SensorCacheInfo sci = this.getSensorCacheInfo(sensorCacheInfoIndex);
-            if (sci == null) {
-                SystemTools.setSystemErrorCode(4);
-                SystemTools.logSystemError("Sensor handle is invalid");
-                return false;
-            }
-            try {
-                switch (type) {
-                    case 1879048193:
-                    case 1879048194:
-                    case 1879048196:
-                    case 1879048200:
-                    case 1879048208:
-                    case 1879048224:
-                    case 1879048320: {
-                        SystemTools.setSystemErrorCode(3);
-                        SystemTools.logSystemError("Sensor parameter " + type + " cannot be set for sensor type " + sci.plSensorType + (type == 1879048224 ? " when using the Java-based sensor API" : ""));
-                        break block8;
-                    }
-                    case 1879048256: {
-                        int updateIntervalValue = ((Number) value).intValue();
-                        if (updateIntervalValue < 1 || updateIntervalValue > 4) {
-                            SystemTools.setSystemErrorCode(2);
-                            SystemTools.logSystemError("Invalid abstract sensor update interval (" + updateIntervalValue + ")");
-                            return false;
-                        }
-                        sci.requestedAbstractUpdateRate = updateIntervalValue;
-                        return true;
-                    }
+        SensorCacheInfo sci = this.getSensorCacheInfo(sensorCacheInfoIndex);
+        if (sci == null) {
+            SystemTools.setSystemErrorCode(4);
+            SystemTools.logSystemError("Sensor handle is invalid");
+            return false;
+        }
+        try {
+            switch (type) {
+                case 1879048193:
+                case 1879048194:
+                case 1879048196:
+                case 1879048200:
+                case 1879048208:
+                case 1879048224:
+                case 1879048320: {
+                    SystemTools.setSystemErrorCode(3);
+                    SystemTools.logSystemError("Sensor parameter " + type + " cannot be set for sensor type " + sci.plSensorType + (type == 1879048224 ? " when using the Java-based sensor API" : ""));
+                    break;
                 }
-                SystemTools.setSystemErrorCode(3);
-                SystemTools.logSystemError("Unknown sensor parameter");
-            } catch (Exception e) {
-                SystemTools.setSystemErrorCode(6);
-                SystemTools.logSystemError("Failed to get sensor parameter: " + e.toString());
+                case 1879048256: {
+                    int updateIntervalValue = ((Number) value).intValue();
+                    if (updateIntervalValue < 1 || updateIntervalValue > 4) {
+                        SystemTools.setSystemErrorCode(2);
+                        SystemTools.logSystemError("Invalid abstract sensor update interval (" + updateIntervalValue + ")");
+                        return false;
+                    }
+                    sci.requestedAbstractUpdateRate = updateIntervalValue;
+                    return true;
+                }
+                default: {
+                    SystemTools.setSystemErrorCode(3);
+                    SystemTools.logSystemError("Unknown sensor parameter");
+                    break;
+                }
             }
+        } catch (Exception e) {
+            SystemTools.setSystemErrorCode(6);
+            SystemTools.logSystemError("Failed to get sensor parameter: " + e.toString());
         }
         return false;
     }
@@ -368,7 +367,7 @@ public class SensorController
         int requestedUpdateRateAndroid = updateRateAndroid < 0 ? 1 : updateRateAndroid;
         boolean result = false;
         try {
-            result = this.sensorManager.registerListener(this, sci.sensor, requestedUpdateRateAndroid, this.sensorEventHandler);
+            result = this.sensorManager.registerListener((SensorEventListener) this, sci.sensor, requestedUpdateRateAndroid, this.sensorEventHandler);
         } catch (Exception exception) {
             // empty catch block
         }
@@ -388,7 +387,7 @@ public class SensorController
         }
         boolean result = false;
         try {
-            this.sensorManager.unregisterListener(this, sci.sensor);
+            this.sensorManager.unregisterListener((SensorEventListener) this, sci.sensor);
             result = true;
         } catch (Exception e) {
             SystemTools.setSystemErrorCode(6);

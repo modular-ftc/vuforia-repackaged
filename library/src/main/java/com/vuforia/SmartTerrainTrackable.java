@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends Trackable {
     }
 
     protected static long getCPtr(SmartTerrainTrackable obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.SmartTerrainTrackable_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends Trackable {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_SmartTerrainTrackable(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.SmartTerrainTrackable_getClassType(), true);
     }
 
     @Override
@@ -46,9 +34,21 @@ extends Trackable {
         return equal;
     }
 
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_SmartTerrainTrackable(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
+    }
+
     public Mesh getMesh() {
         long cPtr = VuforiaJNI.SmartTerrainTrackable_getMesh(this.swigCPtr, this);
-        return cPtr == 0 ? null : new Mesh(cPtr, false);
+        return cPtr == 0L ? null : new Mesh(cPtr, false);
     }
 
     public int getRevision() {
@@ -61,7 +61,7 @@ extends Trackable {
 
     public SmartTerrainTrackable getParent() {
         long cPtr = VuforiaJNI.SmartTerrainTrackable_getParent(this.swigCPtr, this);
-        return cPtr == 0 ? null : new SmartTerrainTrackable(cPtr, false);
+        return cPtr == 0L ? null : new SmartTerrainTrackable(cPtr, false);
     }
 
     public long getChildrenCount() {
@@ -70,7 +70,7 @@ extends Trackable {
 
     public SmartTerrainTrackable getChild(long idx) {
         long cPtr = VuforiaJNI.SmartTerrainTrackable_getChild(this.swigCPtr, this, idx);
-        return cPtr == 0 ? null : new SmartTerrainTrackable(cPtr, false);
+        return cPtr == 0L ? null : new SmartTerrainTrackable(cPtr, false);
     }
 }
 

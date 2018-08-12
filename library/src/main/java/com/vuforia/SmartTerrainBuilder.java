@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class SmartTerrainBuilder {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected SmartTerrainBuilder(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -13,25 +13,15 @@ public class SmartTerrainBuilder {
     }
 
     protected static long getCPtr(SmartTerrainBuilder obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.SmartTerrainBuilder_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_SmartTerrainBuilder(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.SmartTerrainBuilder_getClassType(), true);
     }
 
     public boolean equals(Object obj) {
@@ -40,6 +30,16 @@ public class SmartTerrainBuilder {
             equal = ((SmartTerrainBuilder)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_SmartTerrainBuilder(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     public Type getType() {
@@ -52,7 +52,7 @@ public class SmartTerrainBuilder {
 
     public Reconstruction createReconstruction(Type type) {
         long cPtr = VuforiaJNI.SmartTerrainBuilder_createReconstruction(this.swigCPtr, this, Type.getCPtr(type), type);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         return new ReconstructionFromTarget(cPtr, false);
@@ -76,7 +76,7 @@ public class SmartTerrainBuilder {
 
     public Reconstruction getReconstruction(long index) {
         long cPtr = VuforiaJNI.SmartTerrainBuilder_getReconstruction(this.swigCPtr, this, index);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         return new ReconstructionFromTarget(cPtr, false);

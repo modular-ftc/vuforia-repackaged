@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -38,6 +38,9 @@ import java.util.Vector;
 
 public class Camera1_Preview
 implements Camera.PreviewCallback {
+    private static boolean CONVERT_FORMAT_TO_PL = true;
+    private static boolean CONVERT_FORMAT_TO_ANDROID = false;
+    private SurfaceManager surfaceManager = null;
     private static final int CAMERA_CAPTUREINFO_VALUE_WIDTH = 0;
     private static final int CAMERA_CAPTUREINFO_VALUE_HEIGHT = 1;
     private static final int CAMERA_CAPTUREINFO_VALUE_FORMAT = 2;
@@ -123,6 +126,8 @@ implements Camera.PreviewCallback {
     private static final int AR_CAMERA_IMAGE_FORMAT_BGR888 = 268439822;
     private static final int AR_CAMERA_IMAGE_FORMAT_BGR24 = 268439822;
     private static final int[] CAMERA_IMAGE_FORMAT_CONVERSIONTABLE = new int[]{16, 268439816, 17, 268439817, 4, 268439810, 842094169, 268439818};
+    private Vector<CameraCacheInfo> cameraCacheInfo = null;
+    private HashMap<Camera, Integer> cameraCacheInfoIndexCache = null;
     private static final int NUM_CAPTURE_BUFFERS = 2;
     private static final int NUM_CAPTURE_BUFFERS_TO_ADD = 2;
     private static final int NUM_MAX_CAMERAOPEN_RETRY = 10;
@@ -132,11 +137,6 @@ implements Camera.PreviewCallback {
     private static final String SAMSUNG_PARAM_VRMODE_SUPPORTED = "vrmode-supported";
     private static final String SAMSUNG_PARAM_VRMODE = "vrmode";
     private static final String SAMSUNG_PARAM_FAST_FPS_MODE = "fast-fps-mode";
-    private static boolean CONVERT_FORMAT_TO_PL = true;
-    private static boolean CONVERT_FORMAT_TO_ANDROID = false;
-    private SurfaceManager surfaceManager = null;
-    private Vector<CameraCacheInfo> cameraCacheInfo = null;
-    private HashMap<Camera, Integer> cameraCacheInfoIndexCache = null;
 
     private boolean checkPermission() {
         try {
@@ -183,7 +183,7 @@ implements Camera.PreviewCallback {
             for (int i = 0; i < num; ++i) {
                 Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
                 try {
-                    Camera.getCameraInfo((int)i, (Camera.CameraInfo)cameraInfo);
+                    Camera.getCameraInfo(i, cameraInfo);
                 }
                 catch (Exception e) {
                     continue;
@@ -246,7 +246,7 @@ implements Camera.PreviewCallback {
                 continue;
             }
             if (value.getClass() == Integer.class) {
-                cameraParams.set(key, ((Integer)value).intValue());
+                cameraParams.set(key, (Integer) value);
                 continue;
             }
             return false;
@@ -259,25 +259,25 @@ implements Camera.PreviewCallback {
         int min_fps = fps * 1000;
         int best_range = Integer.MAX_VALUE;
         int[] selected_range = null;
-        if ((fps == 60 || fps == 120) && "true".equalsIgnoreCase(params.get("vrmode-supported"))) {
+        if ((fps == 60 || fps == 120) && "true".equalsIgnoreCase(params.get(SAMSUNG_PARAM_VRMODE_SUPPORTED))) {
             selected_range = new int[2];
-            params.set("vrmode", 1);
+            params.set(SAMSUNG_PARAM_VRMODE, 1);
             params.setRecordingHint(true);
             params.set("focus-mode", "continuous-video");
             if (fps == 60) {
-                params.set("fast-fps-mode", 1);
+                params.set(SAMSUNG_PARAM_FAST_FPS_MODE, 1);
                 selected_range[0] = 60000;
                 selected_range[1] = 60000;
             }
             if (fps == 120) {
-                params.set("fast-fps-mode", 2);
+                params.set(SAMSUNG_PARAM_FAST_FPS_MODE, 2);
                 selected_range[0] = 120000;
                 selected_range[1] = 120000;
             }
         } else {
-            if ("true".equalsIgnoreCase(params.get("vrmode-supported")) && params.get("fast-fps-mode") != null && params.getInt("fast-fps-mode") != 0) {
-                params.set("vrmode", 0);
-                params.set("fast-fps-mode", 0);
+            if ("true".equalsIgnoreCase(params.get(SAMSUNG_PARAM_VRMODE_SUPPORTED)) && params.get(SAMSUNG_PARAM_FAST_FPS_MODE) != null && params.getInt(SAMSUNG_PARAM_FAST_FPS_MODE) != 0) {
+                params.set(SAMSUNG_PARAM_VRMODE, 0);
+                params.set(SAMSUNG_PARAM_FAST_FPS_MODE, 0);
             }
             for (int[] range : supportedFpsRanges) {
                 int delta;
@@ -358,9 +358,9 @@ implements Camera.PreviewCallback {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
-        if ("true".equalsIgnoreCase(cameraParams.get("vrmode-supported")) && cci.requestWidth > 0 && cci.requestHeight > 0 && cameraParams.get("fast-fps-mode") != null && cameraParams.getInt("fast-fps-mode") != 0 && (cci.requestWidth != cameraParams.getPreviewSize().width || cci.requestHeight != cameraParams.getPreviewSize().height)) {
-            DebugLog.LOGW("Camera1_Preview", "Detected Samsung high fps camera driver bug.");
-            DebugLog.LOGW("Camera1_Preview", "Preview size doesn't match request; width " + cci.requestWidth + "!=" + cameraParams.getPreviewSize().width + " or height " + cci.requestHeight + "!=" + cameraParams.getPreviewSize().height);
+        if ("true".equalsIgnoreCase(cameraParams.get(SAMSUNG_PARAM_VRMODE_SUPPORTED)) && cci.requestWidth > 0 && cci.requestHeight > 0 && cameraParams.get(SAMSUNG_PARAM_FAST_FPS_MODE) != null && cameraParams.getInt(SAMSUNG_PARAM_FAST_FPS_MODE) != 0 && (cci.requestWidth != cameraParams.getPreviewSize().width || cci.requestHeight != cameraParams.getPreviewSize().height)) {
+            DebugLog.LOGW(MODULENAME, "Detected Samsung high fps camera driver bug.");
+            DebugLog.LOGW(MODULENAME, "Preview size doesn't match request; width " + cci.requestWidth + "!=" + cameraParams.getPreviewSize().width + " or height " + cci.requestHeight + "!=" + cameraParams.getPreviewSize().height);
             this.setCameraPreviewFps(30, cameraParams);
             cameraParams.setPreviewSize(cci.requestWidth, cci.requestHeight);
             try {
@@ -372,8 +372,8 @@ implements Camera.PreviewCallback {
             }
             cameraParams = this.getCameraParameters(cci.camera);
             if (cci.requestWidth != cameraParams.getPreviewSize().width || cci.requestHeight != cameraParams.getPreviewSize().height) {
-                DebugLog.LOGE("Camera1_Preview", "Unable to workaround Samsung high fps camera driver bug.");
-                DebugLog.LOGE("Camera1_Preview", "Preview size doesn't match request; width " + cci.requestWidth + "!=" + cameraParams.getPreviewSize().width + " or height " + cci.requestHeight + "!=" + cameraParams.getPreviewSize().height);
+                DebugLog.LOGE(MODULENAME, "Unable to workaround Samsung high fps camera driver bug.");
+                DebugLog.LOGE(MODULENAME, "Preview size doesn't match request; width " + cci.requestWidth + "!=" + cameraParams.getPreviewSize().width + " or height " + cci.requestHeight + "!=" + cameraParams.getPreviewSize().height);
                 return false;
             }
         }
@@ -400,7 +400,7 @@ implements Camera.PreviewCallback {
             bitsPerPixel = 0;
             try {
                 PixelFormat pixelFormatInfo = new PixelFormat();
-                PixelFormat.getPixelFormatInfo((int)bufferFormatAndroid, (PixelFormat)pixelFormatInfo);
+                PixelFormat.getPixelFormatInfo(bufferFormatAndroid, pixelFormatInfo);
                 bitsPerPixel = pixelFormatInfo.bitsPerPixel;
             }
             catch (Exception e) {
@@ -411,7 +411,7 @@ implements Camera.PreviewCallback {
         }
         int bufferSize = cci.bufferWidth * cci.bufferHeight * bitsPerPixel / 8 + 4096;
         if (bufferSize <= cci.bufferSize) {
-            cci.camera.setPreviewCallbackWithBuffer((Camera.PreviewCallback)this);
+            cci.camera.setPreviewCallbackWithBuffer(this);
             return true;
         }
         cci.buffer = new byte[2][];
@@ -421,7 +421,7 @@ implements Camera.PreviewCallback {
             cci.camera.addCallbackBuffer(cci.buffer[i]);
         }
         cci.bufferSize = bufferSize;
-        cci.camera.setPreviewCallbackWithBuffer((Camera.PreviewCallback)this);
+        cci.camera.setPreviewCallbackWithBuffer(this);
         System.gc();
         return true;
     }
@@ -488,7 +488,7 @@ implements Camera.PreviewCallback {
         if (SystemTools.checkMinimumApiLevel(18)) {
             // empty if block
         }
-        if ((intObj = this.cameraCacheInfoIndexCache.get((Object)camera)) == null) {
+        if ((intObj = this.cameraCacheInfoIndexCache.get(camera)) == null) {
             if (SystemTools.checkMinimumApiLevel(18)) {
                 // empty if block
             }
@@ -556,7 +556,7 @@ implements Camera.PreviewCallback {
         if (SystemTools.checkMinimumApiLevel(9)) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             try {
-                Camera.getCameraInfo((int)cameraID, (Camera.CameraInfo)cameraInfo);
+                Camera.getCameraInfo(cameraID, cameraInfo);
             }
             catch (Exception e) {
                 SystemTools.setSystemErrorCode(6);
@@ -576,7 +576,7 @@ implements Camera.PreviewCallback {
         if (SystemTools.checkMinimumApiLevel(9)) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             try {
-                Camera.getCameraInfo((int)cameraID, (Camera.CameraInfo)cameraInfo);
+                Camera.getCameraInfo(cameraID, cameraInfo);
             }
             catch (Exception e) {
                 SystemTools.setSystemErrorCode(6);
@@ -653,7 +653,7 @@ implements Camera.PreviewCallback {
         do {
             try {
                 if (SystemTools.checkMinimumApiLevel(9)) {
-                    cci.camera = Camera.open((int)cci.deviceID);
+                    cci.camera = Camera.open(cci.deviceID);
                 } else if (cci.deviceID == 0) {
                     cci.camera = Camera.open();
                 }
@@ -667,7 +667,7 @@ implements Camera.PreviewCallback {
                 if (cameraOpenRetryCount <= 0) continue;
                 Camera1_Preview camera1_Preview = this;
                 synchronized (camera1_Preview) {
-                    this.wait(250);
+                    this.wait(250L);
                 }
             }
             catch (Exception exception) {
@@ -779,7 +779,7 @@ implements Camera.PreviewCallback {
             DebugLog.LOGW("Camera1_Preview", "We shouldn't be here for HAL driven camera!");
             return true;
         }
-        this.cameraCacheInfoIndexCache.remove((Object)cci.camera);
+        this.cameraCacheInfoIndexCache.remove(cci.camera);
         boolean result = false;
         try {
             cci.camera.release();
@@ -868,7 +868,8 @@ implements Camera.PreviewCallback {
         if (numSupportedFrameRates > 0) {
             ListIterator<Integer> iterFramerates = supportedFrameRates.listIterator();
             while (iterFramerates.hasNext()) {
-                cci.caps[indexOffset] = iterFramerates.next();
+                int framerate;
+                cci.caps[indexOffset] = framerate = iterFramerates.next();
                 ++indexOffset;
             }
         }
@@ -1210,9 +1211,11 @@ implements Camera.PreviewCallback {
                                 }
                                 break block75;
                             }
+                            default: {
+                                SystemTools.setSystemErrorCode(3);
+                                return false;
+                            }
                         }
-                        SystemTools.setSystemErrorCode(3);
-                        return false;
                     }
                     case 536870976: {
                         SystemTools.setSystemErrorCode(6);
@@ -1337,8 +1340,8 @@ implements Camera.PreviewCallback {
                             public void onAutoFocus(boolean success, Camera camera) {
                                 CameraCacheInfo cci;
                                 int cameraCacheInfoIndex;
-                                Object intObj = Camera1_Preview.this.cameraCacheInfoIndexCache.get((Object)camera);
-                                if (intObj != null && (cci = Camera1_Preview.this.getCameraCacheInfo(cameraCacheInfoIndex = ((Integer)intObj).intValue())) != null) {
+                                Object intObj = Camera1_Preview.this.cameraCacheInfoIndexCache.get(camera);
+                                if (intObj != null && (cci = Camera1_Preview.this.getCameraCacheInfo(cameraCacheInfoIndex = (Integer) intObj)) != null) {
                                     cci.isAutoFocusing = false;
                                 }
                             }

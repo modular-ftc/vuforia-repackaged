@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 class UpdateCallback {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected UpdateCallback(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -17,22 +17,12 @@ class UpdateCallback {
         VuforiaJNI.UpdateCallback_director_connect(this, this.swigCPtr, this.swigCMemOwn, true);
     }
 
-    protected static long getCPtr(UpdateCallback obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_UpdateCallback(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    protected static long getCPtr(UpdateCallback obj) {
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected void swigDirectorDisconnect() {
@@ -60,6 +50,16 @@ class UpdateCallback {
 
     public void Vuforia_onUpdate(State state) {
         VuforiaJNI.UpdateCallback_Vuforia_onUpdate(this.swigCPtr, this, State.getCPtr(state), state);
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_UpdateCallback(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 }
 

@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class ViewerParameters {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected ViewerParameters(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -16,22 +16,12 @@ public class ViewerParameters {
         this(VuforiaJNI.new_ViewerParameters(ViewerParameters.getCPtr(arg0), arg0), true);
     }
 
-    protected static long getCPtr(ViewerParameters obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_ViewerParameters(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    protected static long getCPtr(ViewerParameters obj) {
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     public boolean equals(Object obj) {
@@ -40,6 +30,16 @@ public class ViewerParameters {
             equal = ((ViewerParameters)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_ViewerParameters(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     public float getVersion() {

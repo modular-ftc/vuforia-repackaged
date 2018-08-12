@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends Tracker {
     }
 
     protected static long getCPtr(MarkerTracker obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.MarkerTracker_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends Tracker {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_MarkerTracker(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.MarkerTracker_getClassType(), true);
     }
 
     @Override
@@ -46,9 +34,21 @@ extends Tracker {
         return equal;
     }
 
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_MarkerTracker(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
+    }
+
     public Marker createFrameMarker(int markerId, String name, Vec2F size) {
         long cPtr = VuforiaJNI.MarkerTracker_createFrameMarker(this.swigCPtr, this, markerId, name, Vec2F.getCPtr(size), size);
-        return cPtr == 0 ? null : new Marker(cPtr, false);
+        return cPtr == 0L ? null : new Marker(cPtr, false);
     }
 
     public boolean destroyMarker(Marker marker) {
@@ -61,7 +61,7 @@ extends Tracker {
 
     public Marker getMarker(int idx) {
         long cPtr = VuforiaJNI.MarkerTracker_getMarker(this.swigCPtr, this, idx);
-        return cPtr == 0 ? null : new Marker(cPtr, false);
+        return cPtr == 0L ? null : new Marker(cPtr, false);
     }
 }
 

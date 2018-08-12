@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -16,16 +16,12 @@ extends Area {
         this(VuforiaJNI.new_Rectangle__SWIG_0(), true);
     }
 
+    protected static long getCPtr(Rectangle obj) {
+        return obj == null ? 0L : obj.swigCPtr;
+    }
+
     public Rectangle(Rectangle other) {
         this(VuforiaJNI.new_Rectangle__SWIG_1(Rectangle.getCPtr(other), other), true);
-    }
-
-    public Rectangle(float leftTopX, float leftTopY, float rightBottomX, float rightBottomY) {
-        this(VuforiaJNI.new_Rectangle__SWIG_2(leftTopX, leftTopY, rightBottomX, rightBottomY), true);
-    }
-
-    protected static long getCPtr(Rectangle obj) {
-        return obj == null ? 0 : obj.swigCPtr;
     }
 
     @Override
@@ -33,25 +29,29 @@ extends Area {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_Rectangle(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public Rectangle(float leftTopX, float leftTopY, float rightBottomX, float rightBottomY) {
+        this(VuforiaJNI.new_Rectangle__SWIG_2(leftTopX, leftTopY, rightBottomX, rightBottomY), true);
     }
 
     @Override
     public boolean equals(Object obj) {
         boolean equal = false;
         if (obj instanceof Rectangle) {
-            equal = ((Rectangle)obj).swigCPtr == this.swigCPtr;
+            equal = ((Rectangle) obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_Rectangle(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     public float getLeftTopX() {

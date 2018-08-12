@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.util.Log
@@ -15,28 +15,28 @@ public class DebugLog {
         if (subtag.length() > 0) {
             nMessage = subtag + ": " + nMessage;
         }
-        Log.e((String)"AR", (String)nMessage);
+        Log.e((String) LOGTAG, (String) nMessage);
     }
 
     public static final void LOGW(String subtag, String nMessage) {
         if (subtag.length() > 0) {
             nMessage = subtag + ": " + nMessage;
         }
-        Log.w((String)"AR", (String)nMessage);
+        Log.w((String) LOGTAG, (String) nMessage);
     }
 
     public static final void LOGD(String subtag, String nMessage) {
         if (subtag.length() > 0) {
             nMessage = subtag + ": " + nMessage;
         }
-        Log.d((String)"AR", (String)nMessage);
+        Log.d((String) LOGTAG, (String) nMessage);
     }
 
     public static final void LOGI(String subtag, String nMessage) {
         if (subtag.length() > 0) {
             nMessage = subtag + ": " + nMessage;
         }
-        Log.i((String)"AR", (String)nMessage);
+        Log.i((String) LOGTAG, (String) nMessage);
     }
 }
 

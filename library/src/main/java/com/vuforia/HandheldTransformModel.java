@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -16,33 +16,13 @@ extends TransformModel {
         this(VuforiaJNI.new_HandheldTransformModel__SWIG_0(), true);
     }
 
-    public HandheldTransformModel(HandheldTransformModel other) {
-        this(VuforiaJNI.new_HandheldTransformModel__SWIG_1(HandheldTransformModel.getCPtr(other), other), true);
-    }
-
-    public HandheldTransformModel(Vec3F pivotPos) {
-        this(VuforiaJNI.new_HandheldTransformModel__SWIG_2(Vec3F.getCPtr(pivotPos), pivotPos), true);
-    }
-
-    protected static long getCPtr(HandheldTransformModel obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
     @Override
     protected void finalize() {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_HandheldTransformModel(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public HandheldTransformModel(HandheldTransformModel other) {
+        this(VuforiaJNI.new_HandheldTransformModel__SWIG_1(HandheldTransformModel.getCPtr(other), other), true);
     }
 
     @Override
@@ -57,6 +37,26 @@ extends TransformModel {
     @Override
     public int getType() {
         return VuforiaJNI.HandheldTransformModel_getType(this.swigCPtr, this);
+    }
+
+    public HandheldTransformModel(Vec3F pivotPos) {
+        this(VuforiaJNI.new_HandheldTransformModel__SWIG_2(Vec3F.getCPtr(pivotPos), pivotPos), true);
+    }
+
+    protected static long getCPtr(HandheldTransformModel obj) {
+        return obj == null ? 0L : obj.swigCPtr;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_HandheldTransformModel(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     public boolean setPivotPoint(Vec3F pivot) {

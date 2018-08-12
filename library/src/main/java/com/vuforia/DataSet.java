@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class DataSet {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected DataSet(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -13,25 +13,15 @@ public class DataSet {
     }
 
     protected static long getCPtr(DataSet obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static boolean exists(String path, int storageType) {
-        return VuforiaJNI.DataSet_exists(path, storageType);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_DataSet(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    public static boolean exists(String path, int storageType) {
+        return VuforiaJNI.DataSet_exists(path, storageType);
     }
 
     public boolean equals(Object obj) {
@@ -40,6 +30,16 @@ public class DataSet {
             equal = ((DataSet)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_DataSet(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     public boolean load(String path, int storageType) {
@@ -52,7 +52,7 @@ public class DataSet {
 
     public Trackable getTrackable(int idx) {
         long cPtr = VuforiaJNI.DataSet_getTrackable(this.swigCPtr, this, idx);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         Trackable tmp = new Trackable(cPtr, false);
@@ -94,7 +94,7 @@ public class DataSet {
 
     public Trackable createTrackable(TrackableSource source) {
         long cPtr = VuforiaJNI.DataSet_createTrackable(this.swigCPtr, this, TrackableSource.getCPtr(source), source);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         Trackable tmp = new Trackable(cPtr, false);
@@ -136,7 +136,7 @@ public class DataSet {
 
     public MultiTarget createMultiTarget(String name) {
         long cPtr = VuforiaJNI.DataSet_createMultiTarget(this.swigCPtr, this, name);
-        return cPtr == 0 ? null : new MultiTarget(cPtr, false);
+        return cPtr == 0L ? null : new MultiTarget(cPtr, false);
     }
 
     public boolean destroy(Trackable trackable) {

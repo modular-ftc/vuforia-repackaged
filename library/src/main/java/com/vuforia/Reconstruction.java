@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class Reconstruction {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected Reconstruction(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -13,21 +13,11 @@ public class Reconstruction {
     }
 
     protected static long getCPtr(Reconstruction obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     public static Type getClassType() {
         return new Type(VuforiaJNI.Reconstruction_getClassType(), true);
-    }
-
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                throw new UnsupportedOperationException("C++ destructor does not have public access");
-            }
-            this.swigCPtr = 0;
-        }
     }
 
     public boolean equals(Object obj) {
@@ -36,6 +26,16 @@ public class Reconstruction {
             equal = ((Reconstruction)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                throw new UnsupportedOperationException("C++ destructor does not have public access");
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     public Type getType() {

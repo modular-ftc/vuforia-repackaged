@@ -1,11 +1,11 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class VideoMode {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
 
     protected VideoMode(long cPtr, boolean cMemoryOwn) {
         this.swigCMemOwn = cMemoryOwn;
@@ -16,26 +16,12 @@ public class VideoMode {
         this(VuforiaJNI.new_VideoMode__SWIG_0(), true);
     }
 
-    public VideoMode(VideoMode other) {
-        this(VuforiaJNI.new_VideoMode__SWIG_1(VideoMode.getCPtr(other), other), true);
-    }
-
-    protected static long getCPtr(VideoMode obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
     protected void finalize() {
         this.delete();
     }
 
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_VideoMode(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
+    public VideoMode(VideoMode other) {
+        this(VuforiaJNI.new_VideoMode__SWIG_1(VideoMode.getCPtr(other), other), true);
     }
 
     public boolean equals(Object obj) {
@@ -44,6 +30,10 @@ public class VideoMode {
             equal = ((VideoMode)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected static long getCPtr(VideoMode obj) {
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     public int getWidth() {
@@ -56,6 +46,16 @@ public class VideoMode {
 
     public float getFramerate() {
         return VuforiaJNI.VideoMode_Framerate_get(this.swigCPtr, this);
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_VideoMode(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 }
 

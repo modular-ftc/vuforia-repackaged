@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -15,11 +15,7 @@ extends SmartTerrainTrackable {
     }
 
     protected static long getCPtr(Surface obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.Surface_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -27,16 +23,8 @@ extends SmartTerrainTrackable {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_Surface(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.Surface_getClassType(), true);
     }
 
     @Override
@@ -48,9 +36,21 @@ extends SmartTerrainTrackable {
         return equal;
     }
 
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_Surface(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
+    }
+
     public Mesh getNavMesh() {
         long cPtr = VuforiaJNI.Surface_getNavMesh(this.swigCPtr, this);
-        return cPtr == 0 ? null : new Mesh(cPtr, false);
+        return cPtr == 0L ? null : new Mesh(cPtr, false);
     }
 
     public Rectangle getBoundingBox() {

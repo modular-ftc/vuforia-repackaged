@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -22,7 +22,6 @@ public class RenderManager {
     private static final int AR_RENDERING_MODE_DISABLED = 1;
     private static final int AR_RENDERING_MODE_CONTINUOUS = 2;
     private static final int AR_RENDERING_MODE_WHENDIRTY = 3;
-    private static final String MODULENAME = "RenderManager";
     private static int viewId = 0;
     SurfaceManager surfaceManager;
     int renderMode;
@@ -32,9 +31,10 @@ public class RenderManager {
     ScheduledFuture<?> renderRequestWatcherTask;
     AtomicBoolean renderRequestServiced;
     AtomicBoolean renderRequested;
-    long delayMS = 0;
-    long minMS = 0;
-    long maxMS = 0;
+    private static final String MODULENAME = "RenderManager";
+    long delayMS = 0L;
+    long minMS = 0L;
+    long maxMS = 0L;
 
     public RenderManager(SurfaceManager sm) {
         this.surfaceManager = sm;
@@ -57,8 +57,8 @@ public class RenderManager {
         }
         this.fixedFrameRateRunnerTask = null;
         this.renderRequestWatcherTask = null;
-        long timerDelay = this.delayMS < 4 ? 1 : this.delayMS / 4;
-        this.renderRequestWatcherTask = this.timer.scheduleWithFixedDelay(new RenderRequestWatcher(), 0, timerDelay, TimeUnit.MILLISECONDS);
+        long timerDelay = this.delayMS < 4L ? 1L : this.delayMS / 4L;
+        this.renderRequestWatcherTask = this.timer.scheduleWithFixedDelay(new RenderRequestWatcher(), 0L, timerDelay, TimeUnit.MILLISECONDS);
     }
 
     void shutdownTimer() {
@@ -70,7 +70,7 @@ public class RenderManager {
     public boolean canSetRenderMode() {
         boolean result = this.surfaceManager.retrieveGLSurfaceView();
         if (!result) {
-            DebugLog.LOGD("RenderManager", "Could not retrieve a valid GLSurfaceView in view hierarchy, therefore cannot set any render mode");
+            DebugLog.LOGD(MODULENAME, "Could not retrieve a valid GLSurfaceView in view hierarchy, therefore cannot set any render mode");
         }
         return result;
     }
@@ -104,7 +104,7 @@ public class RenderManager {
                 }
                 if (mode == this.renderMode && !this.timer.isShutdown()) break;
                 long l = delayMSTemp = this.synchronousMode ? this.minMS : this.maxMS;
-                if (delayMSTemp == 0) break;
+                if (delayMSTemp == 0L) break;
                 this.delayMS = delayMSTemp;
                 this.startTimer();
                 break;
@@ -128,8 +128,8 @@ public class RenderManager {
             SystemTools.setSystemErrorCode(2);
             return false;
         }
-        this.minMS = minFps > 1000 ? 1 : 1000 / (long)minFps;
-        long l = this.maxMS = maxFps > 1000 ? 1 : 1000 / (long)maxFps;
+        this.minMS = minFps > 1000 ? 1L : 1000L / (long) minFps;
+        long l = this.maxMS = maxFps > 1000 ? 1L : 1000L / (long) maxFps;
         if (this.renderMode == 3) {
             long delayMSTemp;
             long l2 = delayMSTemp = this.synchronousMode ? this.minMS : this.maxMS;
@@ -149,7 +149,7 @@ public class RenderManager {
     public View addOverlay(byte[] byteArray, int left, int top, float[] scale, int[] size) {
         final Activity activity = SystemTools.getActivityFromNative();
         if (activity == null) {
-            DebugLog.LOGE("RenderManager", "drawOverlay could not get access to an activity");
+            DebugLog.LOGE(MODULENAME, "drawOverlay could not get access to an activity");
             return null;
         }
         final DrawOverlayView wm = new DrawOverlayView((Context)activity, byteArray, left, top, scale, size);
@@ -209,7 +209,7 @@ public class RenderManager {
                 RenderManager.this.surfaceManager.requestRender();
                 RenderManager.this.renderRequestServiced.set(true);
                 if (RenderManager.this.fixedFrameRateRunnerTask == null) {
-                    RenderManager.this.fixedFrameRateRunnerTask = RenderManager.this.timer.scheduleAtFixedRate(new FixedFrameRateRunner(), 0, RenderManager.this.delayMS, TimeUnit.MILLISECONDS);
+                    RenderManager.this.fixedFrameRateRunnerTask = RenderManager.this.timer.scheduleAtFixedRate(new FixedFrameRateRunner(), 0L, RenderManager.this.delayMS, TimeUnit.MILLISECONDS);
                 }
             }
         }

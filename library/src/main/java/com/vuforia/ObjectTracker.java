@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends Tracker {
     }
 
     protected static long getCPtr(ObjectTracker obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.ObjectTracker_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends Tracker {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_ObjectTracker(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.ObjectTracker_getClassType(), true);
     }
 
     @Override
@@ -46,9 +34,21 @@ extends Tracker {
         return equal;
     }
 
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_ObjectTracker(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
+    }
+
     public DataSet createDataSet() {
         long cPtr = VuforiaJNI.ObjectTracker_createDataSet(this.swigCPtr, this);
-        return cPtr == 0 ? null : new DataSet(cPtr, false);
+        return cPtr == 0L ? null : new DataSet(cPtr, false);
     }
 
     public boolean destroyDataSet(DataSet dataset) {
@@ -65,12 +65,12 @@ extends Tracker {
 
     public DataSet getActiveDataSet(int idx) {
         long cPtr = VuforiaJNI.ObjectTracker_getActiveDataSet__SWIG_0(this.swigCPtr, this, idx);
-        return cPtr == 0 ? null : new DataSet(cPtr, false);
+        return cPtr == 0L ? null : new DataSet(cPtr, false);
     }
 
     public DataSet getActiveDataSet() {
         long cPtr = VuforiaJNI.ObjectTracker_getActiveDataSet__SWIG_1(this.swigCPtr, this);
-        return cPtr == 0 ? null : new DataSet(cPtr, false);
+        return cPtr == 0L ? null : new DataSet(cPtr, false);
     }
 
     public int getActiveDataSetCount() {
@@ -79,12 +79,12 @@ extends Tracker {
 
     public ImageTargetBuilder getImageTargetBuilder() {
         long cPtr = VuforiaJNI.ObjectTracker_getImageTargetBuilder(this.swigCPtr, this);
-        return cPtr == 0 ? null : new ImageTargetBuilder(cPtr, false);
+        return cPtr == 0L ? null : new ImageTargetBuilder(cPtr, false);
     }
 
     public TargetFinder getTargetFinder() {
         long cPtr = VuforiaJNI.ObjectTracker_getTargetFinder(this.swigCPtr, this);
-        return cPtr == 0 ? null : new TargetFinder(cPtr, false);
+        return cPtr == 0L ? null : new TargetFinder(cPtr, false);
     }
 
     public boolean persistExtendedTracking(boolean on) {

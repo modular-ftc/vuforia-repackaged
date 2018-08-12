@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,11 +13,7 @@ extends ObjectTargetResult {
     }
 
     protected static long getCPtr(ImageTargetResult obj) {
-        return obj == null ? 0 : obj.swigCPtr;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.ImageTargetResult_getClassType(), true);
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -25,16 +21,8 @@ extends ObjectTargetResult {
         this.delete();
     }
 
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_ImageTargetResult(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.ImageTargetResult_getClassType(), true);
     }
 
     @Override
@@ -44,6 +32,18 @@ extends ObjectTargetResult {
             equal = ((ImageTargetResult)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_ImageTargetResult(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     @Override
@@ -57,12 +57,12 @@ extends ObjectTargetResult {
 
     public VirtualButtonResult getVirtualButtonResult(int idx) {
         long cPtr = VuforiaJNI.ImageTargetResult_getVirtualButtonResult__SWIG_0(this.swigCPtr, this, idx);
-        return cPtr == 0 ? null : new VirtualButtonResult(cPtr, false);
+        return cPtr == 0L ? null : new VirtualButtonResult(cPtr, false);
     }
 
     public VirtualButtonResult getVirtualButtonResult(String name) {
         long cPtr = VuforiaJNI.ImageTargetResult_getVirtualButtonResult__SWIG_1(this.swigCPtr, this, name);
-        return cPtr == 0 ? null : new VirtualButtonResult(cPtr, false);
+        return cPtr == 0L ? null : new VirtualButtonResult(cPtr, false);
     }
 }
 

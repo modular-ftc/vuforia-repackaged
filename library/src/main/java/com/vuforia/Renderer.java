@@ -1,13 +1,13 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
 public class Renderer {
     public static final int TARGET_FPS_CONTINUOUS = -1;
+    protected boolean swigCMemOwn;
     private static final Object sStateMutex = new Object();
     private static State sState = null;
-    protected boolean swigCMemOwn;
     private long swigCPtr;
 
     protected Renderer(long cPtr, boolean cMemoryOwn) {
@@ -16,7 +16,11 @@ public class Renderer {
     }
 
     protected static long getCPtr(Renderer obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
+    }
+
+    protected void finalize() {
+        this.delete();
     }
 
     public static Renderer getInstance() {
@@ -26,26 +30,22 @@ public class Renderer {
         return new Renderer(VuforiaJNI.Renderer_getInstance(), false);
     }
 
-    protected void finalize() {
-        this.delete();
-    }
-
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                VuforiaJNI.delete_Renderer(this.swigCPtr);
-            }
-            this.swigCPtr = 0;
-        }
-    }
-
     public boolean equals(Object obj) {
         boolean equal = false;
         if (obj instanceof Renderer) {
             equal = ((Renderer)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                VuforiaJNI.delete_Renderer(this.swigCPtr);
+            }
+            this.swigCPtr = 0L;
+        }
     }
 
     /*
@@ -92,12 +92,12 @@ public class Renderer {
         return VuforiaJNI.Renderer_updateVideoBackgroundTexture__SWIG_1(this.swigCPtr, this);
     }
 
-    public VideoBackgroundConfig getVideoBackgroundConfig() {
-        return new VideoBackgroundConfig(VuforiaJNI.Renderer_getVideoBackgroundConfig(this.swigCPtr, this), false);
-    }
-
     public void setVideoBackgroundConfig(VideoBackgroundConfig cfg) {
         VuforiaJNI.Renderer_setVideoBackgroundConfig(this.swigCPtr, this, VideoBackgroundConfig.getCPtr(cfg), cfg);
+    }
+
+    public VideoBackgroundConfig getVideoBackgroundConfig() {
+        return new VideoBackgroundConfig(VuforiaJNI.Renderer_getVideoBackgroundConfig(this.swigCPtr, this), false);
     }
 
     public VideoBackgroundTextureInfo getVideoBackgroundTextureInfo() {

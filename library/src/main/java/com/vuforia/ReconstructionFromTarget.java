@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  */
 package com.vuforia;
 
@@ -13,23 +13,11 @@ extends Reconstruction {
     }
 
     protected static long getCPtr(ReconstructionFromTarget obj) {
-        return obj == null ? 0 : obj.swigCPtr;
+        return obj == null ? 0L : obj.swigCPtr;
     }
 
     public static Type getClassType() {
         return new Type(VuforiaJNI.ReconstructionFromTarget_getClassType(), true);
-    }
-
-    @Override
-    protected synchronized void delete() {
-        if (this.swigCPtr != 0) {
-            if (this.swigCMemOwn) {
-                this.swigCMemOwn = false;
-                throw new UnsupportedOperationException("C++ destructor does not have public access");
-            }
-            this.swigCPtr = 0;
-        }
-        super.delete();
     }
 
     @Override
@@ -39,6 +27,18 @@ extends Reconstruction {
             equal = ((ReconstructionFromTarget)obj).swigCPtr == this.swigCPtr;
         }
         return equal;
+    }
+
+    @Override
+    protected synchronized void delete() {
+        if (this.swigCPtr != 0L) {
+            if (this.swigCMemOwn) {
+                this.swigCMemOwn = false;
+                throw new UnsupportedOperationException("C++ destructor does not have public access");
+            }
+            this.swigCPtr = 0L;
+        }
+        super.delete();
     }
 
     public boolean setInitializationTarget(Trackable trackable, Box3D occluderVolume) {
@@ -51,7 +51,7 @@ extends Reconstruction {
 
     public Trackable getInitializationTarget() {
         long cPtr = VuforiaJNI.ReconstructionFromTarget_getInitializationTarget(this.swigCPtr, this);
-        if (cPtr == 0) {
+        if (cPtr == 0L) {
             return null;
         }
         Trackable tmp = new Trackable(cPtr, false);

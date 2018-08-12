@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.annotation.TargetApi
@@ -41,7 +41,6 @@
  */
 package com.vuforia.ar.pl;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -81,6 +80,12 @@ import java.util.concurrent.Semaphore;
 
 @TargetApi(value = 21)
 public class Camera2_Preview {
+    private static final Range<Integer> EMPTY_RANGE = new Range((Comparable) Integer.valueOf(0), (Comparable) Integer.valueOf(0));
+    private static final String FOCUS_MODE_NORMAL = "normal";
+    private static boolean CONVERT_FORMAT_TO_PL = true;
+    private static boolean CONVERT_FORMAT_TO_ANDROID = false;
+    private Vector<CameraCacheInfo> mCameraCacheInfos = null;
+    private Vector<CameraCacheInfo> mCameraCacheInfosInProgress = null;
     private static final int CAMERA_CAPTUREINFO_VALUE_WIDTH = 0;
     private static final int CAMERA_CAPTUREINFO_VALUE_HEIGHT = 1;
     private static final int CAMERA_CAPTUREINFO_VALUE_FORMAT = 2;
@@ -167,33 +172,27 @@ public class Camera2_Preview {
     private static final int AR_CAMERA_IMAGE_FORMAT_BGR24 = 268439822;
     private static final int AR_CAMERA_IMAGE_FORMAT_YUV420P = 268439828;
     private static final int[] CAMERA_IMAGE_FORMAT_CONVERSIONTABLE = new int[]{35, 268439817};
+    private HashMap<ImageReader, Integer> mCameraCacheInfoIndexCache = null;
+    private Context mContext;
     private static final int NUM_CAPTURE_BUFFERS = 2;
     private static final int NUM_MAX_CAMERAOPEN_RETRY = 10;
     private static final int TIME_CAMERAOPEN_RETRY_DELAY_MS = 250;
     private static final String MODULENAME = "Camera2_Preview";
     private static final int MAX_LOWEST_FPS_ALLOWED = 150;
     private static final int MAX_HIGHEST_FPS_ALLOWED = 300;
-    private static final Range<Integer> EMPTY_RANGE = new Range<>(0, 0);
-    private static final String FOCUS_MODE_NORMAL = "normal";
-    private static boolean CONVERT_FORMAT_TO_PL = true;
-    private static boolean CONVERT_FORMAT_TO_ANDROID = false;
-    private Vector<CameraCacheInfo> mCameraCacheInfos = null;
-    private Vector<CameraCacheInfo> mCameraCacheInfosInProgress = null;
-    private HashMap<ImageReader, Integer> mCameraCacheInfoIndexCache = null;
-    private Context mContext;
-    private CameraManager mCameraManager;
     private Semaphore mOpenCloseSemaphore = new Semaphore(1);
-    private int mIsPermissionGranted;
+    private CameraManager mCameraManager;
+    private int mIsPermissionGranted = -1;
 
     private boolean checkPermission() {
-        if (this.mIsPermissionGranted == PackageManager.PERMISSION_GRANTED) {
+        if (this.mIsPermissionGranted == 0) {
             return true;
         }
         try {
             Activity activity = SystemTools.getActivityFromNative();
             PackageManager pm = activity.getPackageManager();
-            this.mIsPermissionGranted = pm.checkPermission(Manifest.permission.CAMERA, activity.getPackageName());
-            if (this.mIsPermissionGranted == PackageManager.PERMISSION_GRANTED) {
+            this.mIsPermissionGranted = pm.checkPermission("android.permission.CAMERA", activity.getPackageName());
+            if (this.mIsPermissionGranted == 0) {
                 return true;
             }
         } catch (Exception activity) {
@@ -265,7 +264,7 @@ public class Camera2_Preview {
             } catch (JSONException e) {
                 return false;
             }
-            Class clazz = value.getClass();
+            Class<?> clazz = value.getClass();
             if (clazz == String.class || clazz == Integer.class) {
                 if (this.mapStringToKey(key, cci.characteristics, value) != null) {
                     cci.builder.set(this.mapStringToKey(key, cci.characteristics, value), value);
@@ -298,7 +297,7 @@ public class Camera2_Preview {
             return true;
         }
         if (cci == null || cci.builder == null || cci.characteristics == null) {
-            DebugLog.LOGE("Camera2_Preview", "CamCacheInfo not properly initialized in setCaptureParams");
+            DebugLog.LOGE(MODULENAME, "CamCacheInfo not properly initialized in setCaptureParams");
             return false;
         }
         cci.requestWidth = captureInfo[0];
@@ -308,7 +307,7 @@ public class Camera2_Preview {
         StreamConfigurationMap scm = cci.characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
         Size[] sizes = scm.getOutputSizes(cci.requestFormatAndroid);
         if (sizes == null) {
-            DebugLog.LOGD("Camera2_Preview", String.format("setCameraCaptureParams: format not supported. : %d", captureInfo[2]));
+            DebugLog.LOGD(MODULENAME, String.format("setCameraCaptureParams: format not supported. : %d", captureInfo[2]));
             return false;
         }
         boolean foundSize = false;
@@ -317,26 +316,26 @@ public class Camera2_Preview {
         for (int i$ = 0; i$ < len$ && !(foundSize = (s = arr$[i$]).equals(new Size(cci.requestWidth, cci.requestHeight))); ++i$) {
         }
         if (!foundSize) {
-            DebugLog.LOGD("Camera2_Preview", String.format("setCameraCaptureParams: size not supported. : %d, %d", cci.requestWidth, cci.requestHeight));
+            DebugLog.LOGD(MODULENAME, String.format("setCameraCaptureParams: size not supported. : %d, %d", cci.requestWidth, cci.requestHeight));
             return false;
         }
-        Range<Integer>[] fpsRanges = cci.characteristics.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
-        Range<Integer> bestRange = null;
+        Range[] fpsRanges = cci.characteristics.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
+        Range bestRange = null;
         int bestRangeSize = Integer.MAX_VALUE;
-        for (Range<Integer> range : fpsRanges) {
+        for (Range range : fpsRanges) {
             int size;
-            if (range.getLower() >= 150 || range.getUpper() >= 300) {
-                DebugLog.LOGW("Camera2_Preview", String.format("Detected odd fps values from Camera2 API: low=%d, high=%d.  Using first fps range as default instead of searching for perfect fit.", range.getLower(), range.getUpper()));
+            if ((Integer) range.getLower() >= 150 || (Integer) range.getUpper() >= 300) {
+                DebugLog.LOGW(MODULENAME, String.format("Detected odd fps values from Camera2 API: low=%d, high=%d.  Using first fps range as default instead of searching for perfect fit.", range.getLower(), range.getUpper()));
                 bestRange = fpsRanges[0];
                 break;
             }
-            if (!range.contains(cci.requestFramerate) || (size = range.getUpper() - range.getLower()) >= bestRangeSize)
+            if (!range.contains(Integer.valueOf(cci.requestFramerate)) || (size = (Integer) range.getUpper() - (Integer) range.getLower()) >= bestRangeSize)
                 continue;
             bestRange = range;
             bestRangeSize = size;
         }
         if (bestRange == null) {
-            DebugLog.LOGD("Camera2_Preview", "setCameraCaptureParams: fps range not supported.");
+            DebugLog.LOGD(MODULENAME, String.format("setCameraCaptureParams: fps range not supported.", new Object[0]));
             return false;
         }
         cci.builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, bestRange);
@@ -367,7 +366,7 @@ public class Camera2_Preview {
                 baseValue = 805306368;
                 break;
             }
-            case 0:
+            case 0: 
             case 1: {
                 baseValue = 536870912;
                 break;
@@ -426,13 +425,13 @@ public class Camera2_Preview {
         }
         LinkedList<Integer> supportedFrameRates = new LinkedList<Integer>();
         if (lowest < 0 || lowest >= 150 || highest < 0 || highest >= 300) {
-            DebugLog.LOGW("Camera2_Preview", String.format("Detected odd fps values from Camera2 API: low=%d, high=%d.  Using saner defaults instead.", lowest, highest));
+            DebugLog.LOGW(MODULENAME, String.format("Detected odd fps values from Camera2 API: low=%d, high=%d.  Using saner defaults instead.", lowest, highest));
             supportedFrameRates.add(30);
         } else {
             block1:
             for (int i = lowest; i <= highest; ++i) {
                 for (Range r : frameRateRanges) {
-                    if (!r.contains(i)) continue;
+                    if (!r.contains(Integer.valueOf(i))) continue;
                     supportedFrameRates.add(i);
                     continue block1;
                 }
@@ -449,7 +448,7 @@ public class Camera2_Preview {
         if (context == null) {
             return false;
         }
-        this.mCameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+        this.mCameraManager = (CameraManager) context.getSystemService("camera");
         if (this.mCameraManager == null) {
             return false;
         }
@@ -665,7 +664,7 @@ public class Camera2_Preview {
                 if (cameraOpenRetryCount <= 0) continue;
                 Camera2_Preview camera2_Preview = this;
                 synchronized (camera2_Preview) {
-                    this.wait(250);
+                    this.wait(250L);
                 }
             } catch (Exception exception) {
                 // empty catch block
@@ -730,8 +729,8 @@ public class Camera2_Preview {
     public int[] getCameraCapabilities(int cameraCacheInfoIndex) {
         StreamConfigurationMap scm;
         Boolean isFlashTorchSupported;
-        boolean isZoomSupported;
         Integer numSupportedFocusRegions;
+        boolean isZoomSupported;
         if (!this.checkCameraManager()) {
             SystemTools.setSystemErrorCode(6);
             return null;
@@ -983,10 +982,10 @@ public class Camera2_Preview {
                 return false;
             }
             if (result instanceof Byte && value instanceof Long) {
-                value = ((Long) value).byteValue();
+                value = new Byte(((Long) value).byteValue());
             }
             if (result instanceof Integer && value instanceof Long) {
-                value = ((Long) value).intValue();
+                value = new Integer(((Long) value).intValue());
             }
             if (!result.getClass().equals(value.getClass())) {
                 return false;
@@ -1035,10 +1034,10 @@ public class Camera2_Preview {
             return result;
         }
         if (result instanceof Integer) {
-            return ((Integer) result).longValue();
+            return new Long(((Integer) result).longValue());
         }
         if (result instanceof Byte) {
-            return ((Byte) result).longValue();
+            return new Long(((Byte) result).longValue());
         }
         if (result instanceof Range) {
             Comparable lower = ((Range) result).getLower();
@@ -1217,7 +1216,7 @@ public class Camera2_Preview {
                         Arrays.sort(supportedFocusModes);
                         int focusMode = ((Number) value).intValue();
                         switch (focusMode) {
-                            case 805306384:
+                            case 805306384: 
                             case 805306400: {
                                 if (Arrays.binarySearch(supportedFocusModes, 1) == -1) {
                                     SystemTools.setSystemErrorCode(6);
@@ -1254,7 +1253,7 @@ public class Camera2_Preview {
                                     return false;
                                 }
                                 cci.builder.set(CaptureRequest.CONTROL_AF_MODE, 0);
-                                cci.builder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0.0f);
+                                cci.builder.set(CaptureRequest.LENS_FOCUS_DISTANCE, Float.valueOf(0.0f));
                                 break block3;
                             }
                             case 805306880: {
@@ -1274,7 +1273,7 @@ public class Camera2_Preview {
                             SystemTools.setSystemErrorCode(6);
                             return false;
                         }
-                        Float focusDist = ((Number) value).floatValue();
+                        Float focusDist = Float.valueOf(((Number) value).floatValue());
                         cci.builder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focusDist);
                         break;
                     }
@@ -1329,7 +1328,7 @@ public class Camera2_Preview {
                                 cci.builder.set(CaptureRequest.CONTROL_AE_MODE, 0);
                                 break block3;
                             }
-                            case 805314560:
+                            case 805314560: 
                             case 805322752: {
                                 int mode;
                                 boolean foundOn = false;
@@ -1348,7 +1347,7 @@ public class Camera2_Preview {
                         SystemTools.setSystemErrorCode(3);
                         return false;
                     }
-                    case 536870976:
+                    case 536870976: 
                     case 537919488: {
                         Range range = cci.characteristics.get(CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE);
                         if (range == null || CaptureRequest.SENSOR_SENSITIVITY == null) {
@@ -1356,7 +1355,7 @@ public class Camera2_Preview {
                             return false;
                         }
                         int _value = ((Number) value).intValue();
-                        if (range.contains(_value)) {
+                        if (range.contains(Integer.valueOf(_value))) {
                             cci.builder.set(CaptureRequest.SENSOR_SENSITIVITY, _value);
                         }
                         break;
@@ -1372,7 +1371,7 @@ public class Camera2_Preview {
                             SystemTools.setSystemErrorCode(6);
                             return false;
                         }
-                        if (expCompRange.contains(expCompValue)) {
+                        if (expCompRange.contains(Integer.valueOf(expCompValue))) {
                             cci.builder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, expCompValue);
                         }
                         break;
@@ -1392,7 +1391,7 @@ public class Camera2_Preview {
                                 cci.builder.set(CaptureRequest.CONTROL_AWB_LOCK, true);
                                 break block3;
                             }
-                            case 805437440:
+                            case 805437440: 
                             case 805568512: {
                                 if (CaptureRequest.CONTROL_AWB_LOCK != null && cci.builder.get(CaptureRequest.CONTROL_AWB_LOCK).booleanValue()) {
                                     cci.builder.set(CaptureRequest.CONTROL_AWB_LOCK, false);
@@ -1428,7 +1427,7 @@ public class Camera2_Preview {
                         for (float possibleZoomValue : zoomValues) {
                             if (Math.abs(possibleZoomValue - (float) zoomValue) >= 0.01f) continue;
                             setIt = true;
-                            cci.builder.set(CaptureRequest.LENS_FOCAL_LENGTH, possibleZoomValue);
+                            cci.builder.set(CaptureRequest.LENS_FOCAL_LENGTH, Float.valueOf(possibleZoomValue));
                             break;
                         }
                         if (!setIt) {
@@ -1562,7 +1561,7 @@ public class Camera2_Preview {
                     }
                     if (focusMode.equals(0)) {
                         Float focusDist = captureResult.get(CaptureResult.LENS_FOCUS_DISTANCE);
-                        if (focusDist == null || CaptureResult.LENS_FOCUS_DISTANCE == null || !focusDist.equals(0.0f)) {
+                        if (focusDist == null || CaptureResult.LENS_FOCUS_DISTANCE == null || !focusDist.equals(Float.valueOf(0.0f))) {
                             return 805306880;
                         }
                         return 805306624;
@@ -1774,36 +1773,28 @@ public class Camera2_Preview {
 
     private class OnCameraDataAvailable
             implements ImageReader.OnImageAvailableListener {
-        private int actualCaptureFormat;
-        private int[] actualBufferSize;
-        private int DEBUG_FORMAT;
-        private ByteBuffer[] testYUVBuffers;
-        private int currentTestBufferIndex;
-
-        public OnCameraDataAvailable() {
-            this.actualCaptureFormat = 268439808;
-            this.actualBufferSize = null;
-            this.DEBUG_FORMAT = 0;
-            this.testYUVBuffers = new ByteBuffer[2];
-            this.currentTestBufferIndex = 0;
-        }
+        private int actualCaptureFormat = 268439808;
+        private int[] actualBufferSize = null;
+        private int DEBUG_FORMAT = 0;
+        private ByteBuffer[] testYUVBuffers = new ByteBuffer[2];
+        private int currentTestBufferIndex = 0;
 
         public void onImageAvailable(ImageReader reader) {
             Trace.beginSection("onImageAvailable (java)");
             Integer index = Camera2_Preview.this.mCameraCacheInfoIndexCache.get(reader);
             if (index == null) {
-                DebugLog.LOGE("Camera2_Preview", "Unable to find reader in the index cache!");
+                DebugLog.LOGE(Camera2_Preview.MODULENAME, "Unable to find reader in the index cache!");
                 Trace.endSection();
                 return;
             }
             CameraCacheInfo _cci = Camera2_Preview.this.mCameraCacheInfos.get(index);
             if (_cci == null) {
-                DebugLog.LOGE("Camera2_Preview", "Unable to find CCI in list!");
+                DebugLog.LOGE(Camera2_Preview.MODULENAME, "Unable to find CCI in list!");
                 Trace.endSection();
                 return;
             }
             if (!_cci.imageSemaphore.tryAcquire()) {
-                DebugLog.LOGE("Camera2_Preview", "Unable to aquire image semaphore, need to free some buffers!!");
+                DebugLog.LOGE(Camera2_Preview.MODULENAME, "Unable to aquire image semaphore, need to free some buffers!!");
                 Trace.endSection();
                 return;
             }
@@ -1875,10 +1866,10 @@ public class Camera2_Preview {
         }
 
         private ByteBuffer convertNV21toPaddedYUV(ByteBuffer buff, Image.Plane y, Image.Plane u, Image.Plane v, int height, int width, int bufferSize, int lumaPaddingX, int lumaPaddingY, int chromaPaddingX, int chromaPaddingY) {
+            int col;
             int row;
             int p;
             int p2;
-            int col;
             ByteBuffer out = buff != null ? buff : ByteBuffer.allocateDirect(bufferSize);
             out.rewind();
             if (lumaPaddingX == 0) {
@@ -1888,14 +1879,14 @@ public class Camera2_Preview {
                 while (y.getBuffer().hasRemaining()) {
                     y.getBuffer().limit(y.getBuffer().position() + width);
                     out.put(y.getBuffer());
-                    for (p = 0; p < lumaPaddingX; ++p) {
+                    for (p2 = 0; p2 < lumaPaddingX; ++p2) {
                         out.put((byte) 0);
                     }
                     y.getBuffer().limit(actualLimit);
                 }
             }
             if (lumaPaddingY > 0) {
-                for (p2 = 0; p2 < lumaPaddingY * this.actualBufferSize[0]; ++p2) {
+                for (p = 0; p < lumaPaddingY * this.actualBufferSize[0]; ++p) {
                     out.put((byte) 0);
                 }
             }
@@ -1905,12 +1896,12 @@ public class Camera2_Preview {
                     if (!u.getBuffer().hasRemaining()) continue;
                     u.getBuffer().get();
                 }
-                for (p = 0; p < chromaPaddingX; ++p) {
+                for (p2 = 0; p2 < chromaPaddingX; ++p2) {
                     out.put((byte) 0);
                 }
             }
             if (chromaPaddingY > 0) {
-                for (p2 = 0; p2 < chromaPaddingY * this.actualBufferSize[2]; ++p2) {
+                for (p = 0; p < chromaPaddingY * this.actualBufferSize[2]; ++p) {
                     out.put((byte) 0);
                 }
             }
@@ -1920,12 +1911,12 @@ public class Camera2_Preview {
                     if (!v.getBuffer().hasRemaining()) continue;
                     v.getBuffer().get();
                 }
-                for (p = 0; p < chromaPaddingX; ++p) {
+                for (p2 = 0; p2 < chromaPaddingX; ++p2) {
                     out.put((byte) 0);
                 }
             }
             if (chromaPaddingY > 0) {
-                for (p2 = 0; p2 < chromaPaddingY * this.actualBufferSize[2]; ++p2) {
+                for (p = 0; p < chromaPaddingY * this.actualBufferSize[2]; ++p) {
                     out.put((byte) 0);
                 }
             }
@@ -1947,14 +1938,14 @@ public class Camera2_Preview {
                 return 268439808;
             }
             long[] buffers = new long[]{Camera2_Preview.this.getBufferAddress(y.getBuffer()), Camera2_Preview.this.getBufferAddress(u.getBuffer()), Camera2_Preview.this.getBufferAddress(v.getBuffer())};
-            if (buffers[0] == 0 || buffers[1] == 0 || buffers[2] == 0) {
+            if (buffers[0] == 0L || buffers[1] == 0L || buffers[2] == 0L) {
                 return 268439808;
             }
             if (u.getPixelStride() == 2) {
-                if (buffers[1] + 1 == buffers[2]) {
+                if (buffers[1] + 1L == buffers[2]) {
                     return 268439815;
                 }
-                if (buffers[2] + 1 == buffers[1]) {
+                if (buffers[2] + 1L == buffers[1]) {
                     return 268439817;
                 }
             }
@@ -1978,7 +1969,7 @@ public class Camera2_Preview {
                 }
                 return 268439828;
             }
-            DebugLog.LOGE("Camera2_Preview", "Unable to detect a supported image format, Unknown Image Format");
+            DebugLog.LOGE(Camera2_Preview.MODULENAME, "Unable to detect a supported image format, Unknown Image Format");
             return 268439808;
         }
     }

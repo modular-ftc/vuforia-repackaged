@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_123.
+ * Decompiled with CFR 0_132.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -33,7 +33,6 @@ import java.nio.ByteBuffer;
 
 public class DrawOverlayView
 extends View {
-    private static final String MODULENAME = "DrawOverlayView";
     private double mLeft;
     private double mTop;
     private float[] mScale;
@@ -41,6 +40,7 @@ extends View {
     private DisplayMetrics metrics;
     private Bitmap overlayBitmap;
     private Drawable drawable = null;
+    private static final String MODULENAME = "DrawOverlayView";
 
     public DrawOverlayView(Context context) {
         super(context);
