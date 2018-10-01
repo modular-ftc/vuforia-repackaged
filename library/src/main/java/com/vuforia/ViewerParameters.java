@@ -1,35 +1,26 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Vec4F;
+import com.vuforia.VuforiaJNI;
 
 public class ViewerParameters {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected ViewerParameters(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected ViewerParameters(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public ViewerParameters(ViewerParameters arg0) {
-        this(VuforiaJNI.new_ViewerParameters(ViewerParameters.getCPtr(arg0), arg0), true);
+    protected static long getCPtr(ViewerParameters viewerParameters) {
+        return viewerParameters == null ? 0L : viewerParameters.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    protected static long getCPtr(ViewerParameters obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof ViewerParameters) {
-            equal = ((ViewerParameters)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -40,6 +31,18 @@ public class ViewerParameters {
             }
             this.swigCPtr = 0L;
         }
+    }
+
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof ViewerParameters) {
+            bl = ((ViewerParameters)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public ViewerParameters(ViewerParameters viewerParameters) {
+        this(VuforiaJNI.new_ViewerParameters(ViewerParameters.getCPtr(viewerParameters), viewerParameters), true);
     }
 
     public float getVersion() {
@@ -78,8 +81,8 @@ public class ViewerParameters {
         return VuforiaJNI.ViewerParameters_getNumDistortionCoefficients(this.swigCPtr, this);
     }
 
-    public float getDistortionCoefficient(int idx) {
-        return VuforiaJNI.ViewerParameters_getDistortionCoefficient(this.swigCPtr, this, idx);
+    public float getDistortionCoefficient(int n) {
+        return VuforiaJNI.ViewerParameters_getDistortionCoefficient(this.swigCPtr, this, n);
     }
 
     public Vec4F getFieldOfView() {

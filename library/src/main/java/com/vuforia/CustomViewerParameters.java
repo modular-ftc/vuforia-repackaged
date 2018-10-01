@@ -1,41 +1,28 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Vec4F;
+import com.vuforia.ViewerParameters;
+import com.vuforia.VuforiaJNI;
 
 public class CustomViewerParameters
 extends ViewerParameters {
     private long swigCPtr;
 
-    protected CustomViewerParameters(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.CustomViewerParameters_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected CustomViewerParameters(long l, boolean bl) {
+        super(VuforiaJNI.CustomViewerParameters_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    public CustomViewerParameters(float version, String name, String manufacturer) {
-        this(VuforiaJNI.new_CustomViewerParameters__SWIG_0(version, name, manufacturer), true);
+    protected static long getCPtr(CustomViewerParameters customViewerParameters) {
+        return customViewerParameters == null ? 0L : customViewerParameters.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public CustomViewerParameters(CustomViewerParameters arg0) {
-        this(VuforiaJNI.new_CustomViewerParameters__SWIG_1(CustomViewerParameters.getCPtr(arg0), arg0), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof CustomViewerParameters) {
-            equal = ((CustomViewerParameters)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    protected static long getCPtr(CustomViewerParameters obj) {
-        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -50,40 +37,57 @@ extends ViewerParameters {
         super.delete();
     }
 
-    public void setButtonType(int val) {
-        VuforiaJNI.CustomViewerParameters_setButtonType(this.swigCPtr, this, val);
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof CustomViewerParameters) {
+            bl = ((CustomViewerParameters)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
     }
 
-    public void setScreenToLensDistance(float val) {
-        VuforiaJNI.CustomViewerParameters_setScreenToLensDistance(this.swigCPtr, this, val);
+    public CustomViewerParameters(float f, String string, String string2) {
+        this(VuforiaJNI.new_CustomViewerParameters__SWIG_0(f, string, string2), true);
     }
 
-    public void setInterLensDistance(float val) {
-        VuforiaJNI.CustomViewerParameters_setInterLensDistance(this.swigCPtr, this, val);
+    public CustomViewerParameters(CustomViewerParameters customViewerParameters) {
+        this(VuforiaJNI.new_CustomViewerParameters__SWIG_1(CustomViewerParameters.getCPtr(customViewerParameters), customViewerParameters), true);
     }
 
-    public void setTrayAlignment(int val) {
-        VuforiaJNI.CustomViewerParameters_setTrayAlignment(this.swigCPtr, this, val);
+    public void setButtonType(int n) {
+        VuforiaJNI.CustomViewerParameters_setButtonType(this.swigCPtr, this, n);
     }
 
-    public void setLensCentreToTrayDistance(float val) {
-        VuforiaJNI.CustomViewerParameters_setLensCentreToTrayDistance(this.swigCPtr, this, val);
+    public void setScreenToLensDistance(float f) {
+        VuforiaJNI.CustomViewerParameters_setScreenToLensDistance(this.swigCPtr, this, f);
+    }
+
+    public void setInterLensDistance(float f) {
+        VuforiaJNI.CustomViewerParameters_setInterLensDistance(this.swigCPtr, this, f);
+    }
+
+    public void setTrayAlignment(int n) {
+        VuforiaJNI.CustomViewerParameters_setTrayAlignment(this.swigCPtr, this, n);
+    }
+
+    public void setLensCentreToTrayDistance(float f) {
+        VuforiaJNI.CustomViewerParameters_setLensCentreToTrayDistance(this.swigCPtr, this, f);
     }
 
     public void clearDistortionCoefficients() {
         VuforiaJNI.CustomViewerParameters_clearDistortionCoefficients(this.swigCPtr, this);
     }
 
-    public void addDistortionCoefficient(float val) {
-        VuforiaJNI.CustomViewerParameters_addDistortionCoefficient(this.swigCPtr, this, val);
+    public void addDistortionCoefficient(float f) {
+        VuforiaJNI.CustomViewerParameters_addDistortionCoefficient(this.swigCPtr, this, f);
     }
 
-    public void setFieldOfView(Vec4F val) {
-        VuforiaJNI.CustomViewerParameters_setFieldOfView(this.swigCPtr, this, Vec4F.getCPtr(val), val);
+    public void setFieldOfView(Vec4F vec4F) {
+        VuforiaJNI.CustomViewerParameters_setFieldOfView(this.swigCPtr, this, Vec4F.getCPtr(vec4F), vec4F);
     }
 
-    public void setContainsMagnet(boolean val) {
-        VuforiaJNI.CustomViewerParameters_setContainsMagnet(this.swigCPtr, this, val);
+    public void setContainsMagnet(boolean bl) {
+        VuforiaJNI.CustomViewerParameters_setContainsMagnet(this.swigCPtr, this, bl);
     }
 }
 

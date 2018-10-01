@@ -1,44 +1,27 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Image;
+import com.vuforia.VuforiaJNI;
 
 public class Frame
 implements Cloneable {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Frame(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Frame(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public Frame() {
-        this(VuforiaJNI.new_Frame__SWIG_0(), true);
+    protected static long getCPtr(Frame frame) {
+        return frame == null ? 0L : frame.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public Frame(Frame other) {
-        this(VuforiaJNI.new_Frame__SWIG_1(Frame.getCPtr(other), other), true);
-    }
-
-    public Frame clone() {
-        return new Frame(this);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Frame) {
-            equal = ((Frame)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    protected static long getCPtr(Frame obj) {
-        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected synchronized void delete() {
@@ -49,6 +32,26 @@ implements Cloneable {
             }
             this.swigCPtr = 0L;
         }
+    }
+
+    public Frame clone() {
+        return new Frame(this);
+    }
+
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Frame) {
+            bl = ((Frame)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public Frame() {
+        this(VuforiaJNI.new_Frame__SWIG_0(), true);
+    }
+
+    public Frame(Frame frame) {
+        this(VuforiaJNI.new_Frame__SWIG_1(Frame.getCPtr(frame), frame), true);
     }
 
     public double getTimeStamp() {
@@ -63,9 +66,9 @@ implements Cloneable {
         return VuforiaJNI.Frame_getNumImages(this.swigCPtr, this);
     }
 
-    public Image getImage(int idx) {
-        long cPtr = VuforiaJNI.Frame_getImage(this.swigCPtr, this, idx);
-        return cPtr == 0L ? null : new Image(cPtr, false);
+    public Image getImage(int n) {
+        long l = VuforiaJNI.Frame_getImage(this.swigCPtr, this, n);
+        return l == 0L ? null : new Image(l, false);
     }
 }
 

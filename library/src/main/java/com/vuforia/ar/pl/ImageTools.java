@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.graphics.Bitmap
@@ -13,7 +13,6 @@ package com.vuforia.ar.pl;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
-
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
@@ -24,28 +23,28 @@ public class ImageTools {
     private static final int CAMERA_IMAGE_FORMAT_NV21 = 268439817;
     private static final int CAMERA_IMAGE_FORMAT_LUM = 268439809;
 
-    public static byte[] encodeImage(byte[] pixels, int width, int height, int format, int stride, int quality) {
-        if (pixels == null) {
+    public static byte[] encodeImage(byte[] arrby, int n, int n2, int n3, int n4, int n5) {
+        if (arrby == null) {
             return null;
         }
-        if (format == 268439817) {
-            YuvImage yuvImage = new YuvImage(pixels, 17, width, height, null);
-            ByteArrayOutputStream encodedBuffer = new ByteArrayOutputStream();
-            if (yuvImage.compressToJpeg(new Rect(0, 0, width, height), quality, (OutputStream)encodedBuffer)) {
-                return encodedBuffer.toByteArray();
+        if (n3 == 268439817) {
+            YuvImage yuvImage = new YuvImage(arrby, 17, n, n2, null);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            if (yuvImage.compressToJpeg(new Rect(0, 0, n, n2), n5, (OutputStream)byteArrayOutputStream)) {
+                return byteArrayOutputStream.toByteArray();
             }
             return null;
         }
-        if (format == 268439809) {
-            ByteArrayOutputStream encodedBuffer;
-            int numPixels = width * height;
-            int[] colors = new int[numPixels];
-            for (int p = 0; p < numPixels; ++p) {
-                colors[p] = pixels[p] << 24 | 16777215;
+        if (n3 == 268439809) {
+            ByteArrayOutputStream byteArrayOutputStream;
+            int n6 = n * n2;
+            int[] arrn = new int[n6];
+            for (int i = 0; i < n6; ++i) {
+                arrn[i] = arrby[i] << 24 | 16777215;
             }
-            Bitmap bmp = Bitmap.createBitmap((int[])colors, (int)0, (int)width, (int)width, (int)height, (Bitmap.Config)Bitmap.Config.ARGB_8888);
-            if (bmp.compress(Bitmap.CompressFormat.JPEG, quality, (OutputStream)(encodedBuffer = new ByteArrayOutputStream()))) {
-                return encodedBuffer.toByteArray();
+            Bitmap bitmap = Bitmap.createBitmap((int[])arrn, (int)0, (int)n, (int)n, (int)n2, (Bitmap.Config)Bitmap.Config.ARGB_8888);
+            if (bitmap.compress(Bitmap.CompressFormat.JPEG, n5, (OutputStream)(byteArrayOutputStream = new ByteArrayOutputStream()))) {
+                return byteArrayOutputStream.toByteArray();
             }
             return null;
         }

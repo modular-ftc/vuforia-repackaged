@@ -1,37 +1,30 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Device;
+import com.vuforia.EyewearCalibrationProfileManager;
+import com.vuforia.EyewearUserCalibrator;
+import com.vuforia.Type;
+import com.vuforia.VuforiaJNI;
 
 public class EyewearDevice
 extends Device {
     private long swigCPtr;
 
-    protected EyewearDevice(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.EyewearDevice_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected EyewearDevice(long l, boolean bl) {
+        super(VuforiaJNI.EyewearDevice_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(EyewearDevice obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(EyewearDevice eyewearDevice) {
+        return eyewearDevice == null ? 0L : eyewearDevice.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.EyewearDevice_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof EyewearDevice) {
-            equal = ((EyewearDevice)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -46,6 +39,19 @@ extends Device {
         super.delete();
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof EyewearDevice) {
+            bl = ((EyewearDevice)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.EyewearDevice_getClassType(), true);
+    }
+
     public boolean isSeeThru() {
         return VuforiaJNI.EyewearDevice_isSeeThru(this.swigCPtr, this);
     }
@@ -54,8 +60,8 @@ extends Device {
         return VuforiaJNI.EyewearDevice_isDualDisplay(this.swigCPtr, this);
     }
 
-    public boolean setDisplayExtended(boolean enable) {
-        return VuforiaJNI.EyewearDevice_setDisplayExtended(this.swigCPtr, this, enable);
+    public boolean setDisplayExtended(boolean bl) {
+        return VuforiaJNI.EyewearDevice_setDisplayExtended(this.swigCPtr, this, bl);
     }
 
     public boolean isDisplayExtended() {
@@ -70,8 +76,8 @@ extends Device {
         return VuforiaJNI.EyewearDevice_getScreenOrientation(this.swigCPtr, this);
     }
 
-    public boolean setPredictiveTracking(boolean enable) {
-        return VuforiaJNI.EyewearDevice_setPredictiveTracking(this.swigCPtr, this, enable);
+    public boolean setPredictiveTracking(boolean bl) {
+        return VuforiaJNI.EyewearDevice_setPredictiveTracking(this.swigCPtr, this, bl);
     }
 
     public boolean isPredictiveTrackingEnabled() {

@@ -1,51 +1,25 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class Vec3F {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Vec3F(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Vec3F(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public Vec3F() {
-        this(VuforiaJNI.new_Vec3F__SWIG_0(), true);
-    }
-
-    protected static long getCPtr(Vec3F obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public Vec3F(float[] v) {
-        this(VuforiaJNI.new_Vec3F__SWIG_1(v), true);
+    protected static long getCPtr(Vec3F vec3F) {
+        return vec3F == null ? 0L : vec3F.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public Vec3F(float v0, float v1, float v2) {
-        this(VuforiaJNI.new_Vec3F__SWIG_2(v0, v1, v2), true);
-    }
-
-    public Vec3F(Vec3F other) {
-        this(VuforiaJNI.new_Vec3F__SWIG_3(Vec3F.getCPtr(other), other), true);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Vec3F) {
-            equal = ((Vec3F) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    public void setData(float[] value) {
-        VuforiaJNI.Vec3F_data_set(this.swigCPtr, this, value);
     }
 
     protected synchronized void delete() {
@@ -58,8 +32,36 @@ public class Vec3F {
         }
     }
 
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Vec3F) {
+            bl = ((Vec3F)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public Vec3F() {
+        this(VuforiaJNI.new_Vec3F__SWIG_0(), true);
+    }
+
+    public Vec3F(float[] arrf) {
+        this(VuforiaJNI.new_Vec3F__SWIG_1(arrf), true);
+    }
+
+    public Vec3F(float f, float f2, float f3) {
+        this(VuforiaJNI.new_Vec3F__SWIG_2(f, f2, f3), true);
+    }
+
+    public void setData(float[] arrf) {
+        VuforiaJNI.Vec3F_data_set(this.swigCPtr, this, arrf);
+    }
+
     public float[] getData() {
         return VuforiaJNI.Vec3F_data_get(this.swigCPtr, this);
+    }
+
+    public Vec3F(Vec3F vec3F) {
+        this(VuforiaJNI.new_Vec3F__SWIG_3(Vec3F.getCPtr(vec3F), vec3F), true);
     }
 }
 

@@ -1,45 +1,27 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Area;
+import com.vuforia.VuforiaJNI;
 
 public class RectangleInt
 extends Area {
     private long swigCPtr;
 
-    protected RectangleInt(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.RectangleInt_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected RectangleInt(long l, boolean bl) {
+        super(VuforiaJNI.RectangleInt_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    public RectangleInt() {
-        this(VuforiaJNI.new_RectangleInt__SWIG_0(), true);
-    }
-
-    protected static long getCPtr(RectangleInt obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public RectangleInt(RectangleInt other) {
-        this(VuforiaJNI.new_RectangleInt__SWIG_1(RectangleInt.getCPtr(other), other), true);
+    protected static long getCPtr(RectangleInt rectangleInt) {
+        return rectangleInt == null ? 0L : rectangleInt.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public RectangleInt(int leftTopX, int leftTopY, int rightBottomX, int rightBottomY) {
-        this(VuforiaJNI.new_RectangleInt__SWIG_2(leftTopX, leftTopY, rightBottomX, rightBottomY), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof RectangleInt) {
-            equal = ((RectangleInt) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -52,6 +34,27 @@ extends Area {
             this.swigCPtr = 0L;
         }
         super.delete();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof RectangleInt) {
+            bl = ((RectangleInt)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public RectangleInt() {
+        this(VuforiaJNI.new_RectangleInt__SWIG_0(), true);
+    }
+
+    public RectangleInt(RectangleInt rectangleInt) {
+        this(VuforiaJNI.new_RectangleInt__SWIG_1(RectangleInt.getCPtr(rectangleInt), rectangleInt), true);
+    }
+
+    public RectangleInt(int n, int n2, int n3, int n4) {
+        this(VuforiaJNI.new_RectangleInt__SWIG_2(n, n2, n3, n4), true);
     }
 
     public int getLeftTopX() {

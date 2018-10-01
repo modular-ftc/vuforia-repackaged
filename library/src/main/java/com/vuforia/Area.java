@@ -1,19 +1,21 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class Area {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Area(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Area(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(Area obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(Area area) {
+        return area == null ? 0L : area.swigCPtr;
     }
 
     protected void finalize() {
@@ -30,12 +32,12 @@ public class Area {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Area) {
-            equal = ((Area)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Area) {
+            bl = ((Area)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public int getType() {

@@ -1,37 +1,37 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Anchor;
+import com.vuforia.CylinderTarget;
+import com.vuforia.DeviceTrackable;
+import com.vuforia.ImageTarget;
+import com.vuforia.Matrix34F;
+import com.vuforia.ModelTarget;
+import com.vuforia.ObjectTarget;
+import com.vuforia.Trackable;
+import com.vuforia.Type;
+import com.vuforia.VuMarkTarget;
+import com.vuforia.VuMarkTemplate;
+import com.vuforia.VuforiaJNI;
 
 public class MultiTarget
 extends ObjectTarget {
     private long swigCPtr;
 
-    protected MultiTarget(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.MultiTarget_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected MultiTarget(long l, boolean bl) {
+        super(VuforiaJNI.MultiTarget_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(MultiTarget obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(MultiTarget multiTarget) {
+        return multiTarget == null ? 0L : multiTarget.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.MultiTarget_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof MultiTarget) {
-            equal = ((MultiTarget)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -46,90 +46,91 @@ extends ObjectTarget {
         super.delete();
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof MultiTarget) {
+            bl = ((MultiTarget)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.MultiTarget_getClassType(), true);
+    }
+
     public int getNumParts() {
         return VuforiaJNI.MultiTarget_getNumParts(this.swigCPtr, this);
     }
 
-    public Trackable getPart(int idx) {
-        long cPtr = VuforiaJNI.MultiTarget_getPart__SWIG_0(this.swigCPtr, this, idx);
-        if (cPtr == 0L) {
+    public Trackable getPart(int n) {
+        long l = VuforiaJNI.MultiTarget_getPart__SWIG_0(this.swigCPtr, this, n);
+        if (l == 0L) {
             return null;
         }
-        Trackable tmp = new Trackable(cPtr, false);
-        if (tmp.isOfType(ImageTarget.getClassType())) {
-            return new ImageTarget(cPtr, false);
+        Trackable trackable = new Trackable(l, false);
+        if (trackable.isOfType(ImageTarget.getClassType())) {
+            return new ImageTarget(l, false);
         }
-        if (tmp.isOfType(CylinderTarget.getClassType())) {
-            return new CylinderTarget(cPtr, false);
+        if (trackable.isOfType(CylinderTarget.getClassType())) {
+            return new CylinderTarget(l, false);
         }
-        if (tmp.isOfType(MultiTarget.getClassType())) {
-            return new MultiTarget(cPtr, false);
+        if (trackable.isOfType(MultiTarget.getClassType())) {
+            return new MultiTarget(l, false);
         }
-        if (tmp.isOfType(VuMarkTarget.getClassType())) {
-            return new VuMarkTarget(cPtr, false);
+        if (trackable.isOfType(VuMarkTarget.getClassType())) {
+            return new VuMarkTarget(l, false);
         }
-        if (tmp.isOfType(VuMarkTemplate.getClassType())) {
-            return new VuMarkTemplate(cPtr, false);
+        if (trackable.isOfType(VuMarkTemplate.getClassType())) {
+            return new VuMarkTemplate(l, false);
         }
-        if (tmp.isOfType(ObjectTarget.getClassType())) {
-            return new ObjectTarget(cPtr, false);
+        if (trackable.isOfType(ModelTarget.getClassType())) {
+            return new ModelTarget(l, false);
         }
-        if (tmp.isOfType(Word.getClassType())) {
-            return new Word(cPtr, false);
+        if (trackable.isOfType(ObjectTarget.getClassType())) {
+            return new ObjectTarget(l, false);
         }
-        if (tmp.isOfType(Marker.getClassType())) {
-            return new Marker(cPtr, false);
+        if (trackable.isOfType(Anchor.getClassType())) {
+            return new Anchor(l, false);
         }
-        if (tmp.isOfType(Surface.getClassType())) {
-            return new Surface(cPtr, false);
-        }
-        if (tmp.isOfType(Prop.getClassType())) {
-            return new Prop(cPtr, false);
-        }
-        if (tmp.isOfType(DeviceTrackable.getClassType())) {
-            return new DeviceTrackable(cPtr, false);
+        if (trackable.isOfType(DeviceTrackable.getClassType())) {
+            return new DeviceTrackable(l, false);
         }
         return null;
     }
 
-    public Trackable getPart(String name) {
-        long cPtr = VuforiaJNI.MultiTarget_getPart__SWIG_1(this.swigCPtr, this, name);
-        if (cPtr == 0L) {
+    public Trackable getPart(String string) {
+        long l = VuforiaJNI.MultiTarget_getPart__SWIG_1(this.swigCPtr, this, string);
+        if (l == 0L) {
             return null;
         }
-        Trackable tmp = new Trackable(cPtr, false);
-        if (tmp.isOfType(ImageTarget.getClassType())) {
-            return new ImageTarget(cPtr, false);
+        Trackable trackable = new Trackable(l, false);
+        if (trackable.isOfType(ImageTarget.getClassType())) {
+            return new ImageTarget(l, false);
         }
-        if (tmp.isOfType(CylinderTarget.getClassType())) {
-            return new CylinderTarget(cPtr, false);
+        if (trackable.isOfType(CylinderTarget.getClassType())) {
+            return new CylinderTarget(l, false);
         }
-        if (tmp.isOfType(MultiTarget.getClassType())) {
-            return new MultiTarget(cPtr, false);
+        if (trackable.isOfType(MultiTarget.getClassType())) {
+            return new MultiTarget(l, false);
         }
-        if (tmp.isOfType(VuMarkTarget.getClassType())) {
-            return new VuMarkTarget(cPtr, false);
+        if (trackable.isOfType(VuMarkTarget.getClassType())) {
+            return new VuMarkTarget(l, false);
         }
-        if (tmp.isOfType(VuMarkTemplate.getClassType())) {
-            return new VuMarkTemplate(cPtr, false);
+        if (trackable.isOfType(VuMarkTemplate.getClassType())) {
+            return new VuMarkTemplate(l, false);
         }
-        if (tmp.isOfType(ObjectTarget.getClassType())) {
-            return new ObjectTarget(cPtr, false);
+        if (trackable.isOfType(ModelTarget.getClassType())) {
+            return new ModelTarget(l, false);
         }
-        if (tmp.isOfType(Word.getClassType())) {
-            return new Word(cPtr, false);
+        if (trackable.isOfType(ObjectTarget.getClassType())) {
+            return new ObjectTarget(l, false);
         }
-        if (tmp.isOfType(Marker.getClassType())) {
-            return new Marker(cPtr, false);
+        if (trackable.isOfType(Anchor.getClassType())) {
+            return new Anchor(l, false);
         }
-        if (tmp.isOfType(Surface.getClassType())) {
-            return new Surface(cPtr, false);
-        }
-        if (tmp.isOfType(Prop.getClassType())) {
-            return new Prop(cPtr, false);
-        }
-        if (tmp.isOfType(DeviceTrackable.getClassType())) {
-            return new DeviceTrackable(cPtr, false);
+        if (trackable.isOfType(DeviceTrackable.getClassType())) {
+            return new DeviceTrackable(l, false);
         }
         return null;
     }
@@ -138,16 +139,16 @@ extends ObjectTarget {
         return VuforiaJNI.MultiTarget_addPart(this.swigCPtr, this, Trackable.getCPtr(trackable), trackable);
     }
 
-    public boolean removePart(int idx) {
-        return VuforiaJNI.MultiTarget_removePart(this.swigCPtr, this, idx);
+    public boolean removePart(int n) {
+        return VuforiaJNI.MultiTarget_removePart(this.swigCPtr, this, n);
     }
 
-    public boolean setPartOffset(int idx, Matrix34F offset) {
-        return VuforiaJNI.MultiTarget_setPartOffset(this.swigCPtr, this, idx, Matrix34F.getCPtr(offset), offset);
+    public boolean setPartOffset(int n, Matrix34F matrix34F) {
+        return VuforiaJNI.MultiTarget_setPartOffset(this.swigCPtr, this, n, Matrix34F.getCPtr(matrix34F), matrix34F);
     }
 
-    public boolean getPartOffset(int idx, Matrix34F offset) {
-        return VuforiaJNI.MultiTarget_getPartOffset(this.swigCPtr, this, idx, Matrix34F.getCPtr(offset), offset);
+    public boolean getPartOffset(int n, Matrix34F matrix34F) {
+        return VuforiaJNI.MultiTarget_getPartOffset(this.swigCPtr, this, n, Matrix34F.getCPtr(matrix34F), matrix34F);
     }
 }
 

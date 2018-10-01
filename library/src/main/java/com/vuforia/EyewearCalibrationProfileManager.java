@@ -1,19 +1,23 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Matrix34F;
+import com.vuforia.Vuforia;
+import com.vuforia.VuforiaJNI;
 
 public class EyewearCalibrationProfileManager {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected EyewearCalibrationProfileManager(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected EyewearCalibrationProfileManager(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(EyewearCalibrationProfileManager obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(EyewearCalibrationProfileManager eyewearCalibrationProfileManager) {
+        return eyewearCalibrationProfileManager == null ? 0L : eyewearCalibrationProfileManager.swigCPtr;
     }
 
     protected void finalize() {
@@ -30,12 +34,12 @@ public class EyewearCalibrationProfileManager {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof EyewearCalibrationProfileManager) {
-            equal = ((EyewearCalibrationProfileManager)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof EyewearCalibrationProfileManager) {
+            bl = ((EyewearCalibrationProfileManager)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public long getMaxCount() {
@@ -46,52 +50,52 @@ public class EyewearCalibrationProfileManager {
         return VuforiaJNI.EyewearCalibrationProfileManager_getUsedCount(this.swigCPtr, this);
     }
 
-    public boolean isProfileUsed(int profileID) {
-        return VuforiaJNI.EyewearCalibrationProfileManager_isProfileUsed(this.swigCPtr, this, profileID);
+    public boolean isProfileUsed(int n) {
+        return VuforiaJNI.EyewearCalibrationProfileManager_isProfileUsed(this.swigCPtr, this, n);
     }
 
     public int getActiveProfile() {
         return VuforiaJNI.EyewearCalibrationProfileManager_getActiveProfile(this.swigCPtr, this);
     }
 
-    public boolean setActiveProfile(int profileID) {
-        return VuforiaJNI.EyewearCalibrationProfileManager_setActiveProfile(this.swigCPtr, this, profileID);
+    public boolean setActiveProfile(int n) {
+        return VuforiaJNI.EyewearCalibrationProfileManager_setActiveProfile(this.swigCPtr, this, n);
     }
 
-    public Matrix34F getCameraToEyePose(int profileID, int eyeID) {
-        return new Matrix34F(VuforiaJNI.EyewearCalibrationProfileManager_getCameraToEyePose(this.swigCPtr, this, profileID, eyeID), true);
+    public Matrix34F getCameraToEyePose(int n, int n2) {
+        return new Matrix34F(VuforiaJNI.EyewearCalibrationProfileManager_getCameraToEyePose(this.swigCPtr, this, n, n2), true);
     }
 
-    public Matrix34F getEyeProjection(int profileID, int eyeID) {
-        return new Matrix34F(VuforiaJNI.EyewearCalibrationProfileManager_getEyeProjection(this.swigCPtr, this, profileID, eyeID), true);
+    public Matrix34F getEyeProjection(int n, int n2) {
+        return new Matrix34F(VuforiaJNI.EyewearCalibrationProfileManager_getEyeProjection(this.swigCPtr, this, n, n2), true);
     }
 
-    public boolean setCameraToEyePose(int profileID, int eyeID, Matrix34F cameraToEyePose) {
-        return VuforiaJNI.EyewearCalibrationProfileManager_setCameraToEyePose(this.swigCPtr, this, profileID, eyeID, Matrix34F.getCPtr(cameraToEyePose), cameraToEyePose);
+    public boolean setCameraToEyePose(int n, int n2, Matrix34F matrix34F) {
+        return VuforiaJNI.EyewearCalibrationProfileManager_setCameraToEyePose(this.swigCPtr, this, n, n2, Matrix34F.getCPtr(matrix34F), matrix34F);
     }
 
-    public boolean setEyeProjection(int profileID, int eyeID, Matrix34F eyeProjection) {
-        return VuforiaJNI.EyewearCalibrationProfileManager_setEyeProjection(this.swigCPtr, this, profileID, eyeID, Matrix34F.getCPtr(eyeProjection), eyeProjection);
+    public boolean setEyeProjection(int n, int n2, Matrix34F matrix34F) {
+        return VuforiaJNI.EyewearCalibrationProfileManager_setEyeProjection(this.swigCPtr, this, n, n2, Matrix34F.getCPtr(matrix34F), matrix34F);
     }
 
-    public String getProfileName(int profileID) {
-        short[] codes = VuforiaJNI.EyewearCalibrationProfileManager_getProfileName(this.swigCPtr, this, profileID);
-        if (codes == null) {
+    public String getProfileName(int n) {
+        short[] arrs = VuforiaJNI.EyewearCalibrationProfileManager_getProfileName(this.swigCPtr, this, n);
+        if (arrs == null) {
             return null;
         }
-        StringBuilder result = new StringBuilder(codes.length);
-        for (short code : codes) {
-            result.appendCodePoint(code);
+        StringBuilder stringBuilder = new StringBuilder(arrs.length);
+        for (short s : arrs) {
+            stringBuilder.appendCodePoint(s);
         }
-        return result.toString();
+        return stringBuilder.toString();
     }
 
-    public boolean setProfileName(int profileID, String name) {
-        return VuforiaJNI.EyewearCalibrationProfileManager_setProfileName(this.swigCPtr, this, profileID, Vuforia.convertStringToShortArray(name));
+    public boolean setProfileName(int n, String string) {
+        return VuforiaJNI.EyewearCalibrationProfileManager_setProfileName(this.swigCPtr, this, n, Vuforia.convertStringToShortArray(string));
     }
 
-    public boolean clearProfile(int profileID) {
-        return VuforiaJNI.EyewearCalibrationProfileManager_clearProfile(this.swigCPtr, this, profileID);
+    public boolean clearProfile(int n) {
+        return VuforiaJNI.EyewearCalibrationProfileManager_clearProfile(this.swigCPtr, this, n);
     }
 }
 

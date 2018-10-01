@@ -1,46 +1,31 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.EyewearDevice;
+import com.vuforia.RenderingPrimitives;
+import com.vuforia.Type;
+import com.vuforia.ViewerParameters;
+import com.vuforia.ViewerParametersList;
+import com.vuforia.Vuforia;
+import com.vuforia.VuforiaJNI;
 
 public class Device {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Device(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Device(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(Device obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(Device device) {
+        return device == null ? 0L : device.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public static Device getInstance() {
-        if (!Vuforia.wasInitializedJava()) {
-            throw new RuntimeException("Use of the Java Vuforia APIs requires initalization via the com.vuforia.Vuforia class");
-        }
-        long instancePtr = VuforiaJNI.Device_getInstance();
-        if (VuforiaJNI.Device_isOfType(instancePtr, null, Type.getCPtr(EyewearDevice.getClassType()), EyewearDevice.getClassType())) {
-            return new EyewearDevice(instancePtr, false);
-        }
-        return new Device(instancePtr, false);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Device) {
-            equal = ((Device) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.Device_getClassType(), true);
     }
 
     protected synchronized void delete() {
@@ -53,6 +38,29 @@ public class Device {
         }
     }
 
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Device) {
+            bl = ((Device)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Device getInstance() {
+        if (!Vuforia.wasInitializedJava()) {
+            throw new RuntimeException("Use of the Java Vuforia APIs requires initalization via the com.vuforia.Vuforia class");
+        }
+        long l = VuforiaJNI.Device_getInstance();
+        if (VuforiaJNI.Device_isOfType(l, null, Type.getCPtr(EyewearDevice.getClassType()), EyewearDevice.getClassType())) {
+            return new EyewearDevice(l, false);
+        }
+        return new Device(l, false);
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.Device_getClassType(), true);
+    }
+
     public Type getType() {
         return new Type(VuforiaJNI.Device_getType(this.swigCPtr, this), true);
     }
@@ -61,16 +69,16 @@ public class Device {
         return VuforiaJNI.Device_isOfType(this.swigCPtr, this, Type.getCPtr(type), type);
     }
 
-    public boolean setMode(int m) {
-        return VuforiaJNI.Device_setMode(this.swigCPtr, this, m);
+    public boolean setMode(int n) {
+        return VuforiaJNI.Device_setMode(this.swigCPtr, this, n);
     }
 
     public int getMode() {
         return VuforiaJNI.Device_getMode(this.swigCPtr, this);
     }
 
-    public void setViewerActive(boolean active) {
-        VuforiaJNI.Device_setViewerActive(this.swigCPtr, this, active);
+    public void setViewerActive(boolean bl) {
+        VuforiaJNI.Device_setViewerActive(this.swigCPtr, this, bl);
     }
 
     public boolean isViewerActive() {
@@ -81,8 +89,8 @@ public class Device {
         return new ViewerParametersList(VuforiaJNI.Device_getViewerList(this.swigCPtr, this), false);
     }
 
-    public boolean selectViewer(ViewerParameters vp) {
-        return VuforiaJNI.Device_selectViewer(this.swigCPtr, this, ViewerParameters.getCPtr(vp), vp);
+    public boolean selectViewer(ViewerParameters viewerParameters) {
+        return VuforiaJNI.Device_selectViewer(this.swigCPtr, this, ViewerParameters.getCPtr(viewerParameters), viewerParameters);
     }
 
     public ViewerParameters getSelectedViewer() {

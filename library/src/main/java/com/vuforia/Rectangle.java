@@ -1,45 +1,27 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Area;
+import com.vuforia.VuforiaJNI;
 
 public class Rectangle
 extends Area {
     private long swigCPtr;
 
-    protected Rectangle(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.Rectangle_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected Rectangle(long l, boolean bl) {
+        super(VuforiaJNI.Rectangle_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    public Rectangle() {
-        this(VuforiaJNI.new_Rectangle__SWIG_0(), true);
-    }
-
-    protected static long getCPtr(Rectangle obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public Rectangle(Rectangle other) {
-        this(VuforiaJNI.new_Rectangle__SWIG_1(Rectangle.getCPtr(other), other), true);
+    protected static long getCPtr(Rectangle rectangle) {
+        return rectangle == null ? 0L : rectangle.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public Rectangle(float leftTopX, float leftTopY, float rightBottomX, float rightBottomY) {
-        this(VuforiaJNI.new_Rectangle__SWIG_2(leftTopX, leftTopY, rightBottomX, rightBottomY), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Rectangle) {
-            equal = ((Rectangle) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -52,6 +34,27 @@ extends Area {
             this.swigCPtr = 0L;
         }
         super.delete();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Rectangle) {
+            bl = ((Rectangle)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public Rectangle() {
+        this(VuforiaJNI.new_Rectangle__SWIG_0(), true);
+    }
+
+    public Rectangle(Rectangle rectangle) {
+        this(VuforiaJNI.new_Rectangle__SWIG_1(Rectangle.getCPtr(rectangle), rectangle), true);
+    }
+
+    public Rectangle(float f, float f2, float f3, float f4) {
+        this(VuforiaJNI.new_Rectangle__SWIG_2(f, f2, f3, f4), true);
     }
 
     public float getLeftTopX() {

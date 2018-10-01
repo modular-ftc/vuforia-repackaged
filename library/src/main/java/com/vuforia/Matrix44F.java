@@ -1,43 +1,25 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class Matrix44F {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Matrix44F(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Matrix44F(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public Matrix44F() {
-        this(VuforiaJNI.new_Matrix44F__SWIG_0(), true);
+    protected static long getCPtr(Matrix44F matrix44F) {
+        return matrix44F == null ? 0L : matrix44F.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public Matrix44F(Matrix44F other) {
-        this(VuforiaJNI.new_Matrix44F__SWIG_1(Matrix44F.getCPtr(other), other), true);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Matrix44F) {
-            equal = ((Matrix44F)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    public void setData(float[] value) {
-        VuforiaJNI.Matrix44F_data_set(this.swigCPtr, this, value);
-    }
-
-    protected static long getCPtr(Matrix44F obj) {
-        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected synchronized void delete() {
@@ -50,8 +32,28 @@ public class Matrix44F {
         }
     }
 
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Matrix44F) {
+            bl = ((Matrix44F)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public void setData(float[] arrf) {
+        VuforiaJNI.Matrix44F_data_set(this.swigCPtr, this, arrf);
+    }
+
     public float[] getData() {
         return VuforiaJNI.Matrix44F_data_get(this.swigCPtr, this);
+    }
+
+    public Matrix44F() {
+        this(VuforiaJNI.new_Matrix44F__SWIG_0(), true);
+    }
+
+    public Matrix44F(Matrix44F matrix44F) {
+        this(VuforiaJNI.new_Matrix44F__SWIG_1(Matrix44F.getCPtr(matrix44F), matrix44F), true);
     }
 }
 

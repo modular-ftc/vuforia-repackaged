@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -18,11 +18,16 @@ package com.vuforia.ar.pl;
 
 import android.app.Activity;
 import android.content.Context;
+import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.Window;
 import android.widget.FrameLayout;
-
+import com.vuforia.ar.pl.Camera1_Preview;
+import com.vuforia.ar.pl.CameraSurface;
+import com.vuforia.ar.pl.SystemTools;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -36,27 +41,28 @@ public class SurfaceManager {
     Lock addSurfaceLock = new ReentrantLock();
     private static final String MODULENAME = "SurfaceManager";
 
-    private GLSurfaceView searchForGLSurfaceView(View rootView) {
-        GLSurfaceView result;
-        result = null;
+    private GLSurfaceView searchForGLSurfaceView(View view) {
+        GLSurfaceView gLSurfaceView;
+        gLSurfaceView = null;
         this.glSurfaceViewChildPosition = 0;
         try {
-            ViewGroup rootViewGroup = (ViewGroup) rootView;
-            int numChildren = rootViewGroup.getChildCount();
-            for (int i = 0; i < numChildren; ++i) {
-                View childView = rootViewGroup.getChildAt(i);
-                if (childView instanceof GLSurfaceView) {
-                    result = (GLSurfaceView) childView;
+            ViewGroup viewGroup = (ViewGroup)view;
+            int n = viewGroup.getChildCount();
+            for (int i = 0; i < n; ++i) {
+                View view2 = viewGroup.getChildAt(i);
+                if (view2 instanceof GLSurfaceView) {
+                    gLSurfaceView = (GLSurfaceView)view2;
                     this.glSurfaceViewChildPosition = i;
-                } else if (!(childView instanceof ViewGroup) || (result = this.searchForGLSurfaceView(childView)) == null) {
+                } else if (!(view2 instanceof ViewGroup) || (gLSurfaceView = this.searchForGLSurfaceView(view2)) == null) {
                     continue;
                 }
                 break;
             }
-        } catch (Exception e) {
+        }
+        catch (Exception exception) {
             return null;
         }
-        return result;
+        return gLSurfaceView;
     }
 
     private boolean applyRenderWhenDirty() {
@@ -71,16 +77,16 @@ public class SurfaceManager {
      * Enabled force condition propagation
      * Lifted jumps to return sites
      */
-    private void setupCameraSurface(Camera1_Preview.CameraCacheInfo cci) {
-        if (cci.surface == null) {
-            Activity a = SystemTools.getActivityFromNative();
-            if (a == null) return;
-            cci.surface = new CameraSurface((Context) a);
-        } else if (cci.surface.getParent() != null && ViewGroup.class.isInstance((Object) cci.surface.getParent())) {
-            ViewGroup vg = (ViewGroup) cci.surface.getParent();
-            vg.removeView((View) cci.surface);
+    private void setupCameraSurface(Camera1_Preview.CameraCacheInfo cameraCacheInfo) {
+        if (cameraCacheInfo.surface == null) {
+            Activity activity = SystemTools.getActivityFromNative();
+            if (activity == null) return;
+            cameraCacheInfo.surface = new CameraSurface((Context)activity);
+        } else if (cameraCacheInfo.surface.getParent() != null && ViewGroup.class.isInstance((Object)cameraCacheInfo.surface.getParent())) {
+            ViewGroup viewGroup = (ViewGroup)cameraCacheInfo.surface.getParent();
+            viewGroup.removeView((View)cameraCacheInfo.surface);
         }
-        cci.surface.setCamera(cci.camera);
+        cameraCacheInfo.surface.setCamera(cameraCacheInfo.camera);
     }
 
     public boolean retrieveGLSurfaceView() {
@@ -89,19 +95,20 @@ public class SurfaceManager {
             if (activity == null) {
                 return false;
             }
-            View decorView = activity.getWindow().getDecorView();
-            this.glSurfaceView = this.searchForGLSurfaceView(decorView);
-            this.cameraSurfaceParentView = this.glSurfaceView == null ? decorView : (View) this.glSurfaceView.getParent();
-        } catch (Exception e) {
+            View view = activity.getWindow().getDecorView();
+            this.glSurfaceView = this.searchForGLSurfaceView(view);
+            this.cameraSurfaceParentView = this.glSurfaceView == null ? view : (View)this.glSurfaceView.getParent();
+        }
+        catch (Exception exception) {
             return false;
         }
         return this.glSurfaceView != null;
     }
 
-    public boolean setEnableRenderWhenDirty(boolean enabled) {
-        this.renderWhenDirtyEnabled = enabled;
-        boolean result = this.applyRenderWhenDirty();
-        return result;
+    public boolean setEnableRenderWhenDirty(boolean bl) {
+        this.renderWhenDirtyEnabled = bl;
+        boolean bl2 = this.applyRenderWhenDirty();
+        return bl2;
     }
 
     public void requestRender() {
@@ -113,47 +120,43 @@ public class SurfaceManager {
     /*
      * WARNING - Removed try catching itself - possible behaviour change.
      */
-    public boolean addCameraSurface(Camera1_Preview.CameraCacheInfo cci) {
-        boolean didExceptionHappen;
+    public boolean addCameraSurface(Camera1_Preview.CameraCacheInfo cameraCacheInfo) {
+        boolean bl;
         Activity activity = SystemTools.getActivityFromNative();
         if (activity == null) {
             return false;
         }
-        this.cciForSurface = cci;
-        didExceptionHappen = false;
+        this.cciForSurface = cameraCacheInfo;
+        bl = false;
         this.viewLock.lock();
         try {
-            activity.runOnUiThread(new Runnable() {
+            activity.runOnUiThread(new Runnable(){
 
-                /*
-                 * WARNING - Removed try catching itself - possible behaviour change.
-                 */
                 @Override
                 public void run() {
-                    block5:
-                    {
-                        SurfaceManager.this.addSurfaceLock.lock();
-                        SurfaceManager.this.retrieveGLSurfaceView();
-                        try {
-                            SurfaceManager.this.setupCameraSurface(SurfaceManager.this.cciForSurface);
-                            ViewGroup vg = (ViewGroup) SurfaceManager.this.cameraSurfaceParentView;
-                            vg.addView((View) SurfaceManager.this.cciForSurface.surface, SurfaceManager.this.glSurfaceViewChildPosition + 1, (ViewGroup.LayoutParams) new FrameLayout.LayoutParams(-1, -1));
-                            SurfaceManager.this.cciForSurface.surface.setVisibility(0);
-                            break block5;
-                        } catch (Exception vg) {
-                            break block5;
-                        } finally {
-                            SurfaceManager.this.addSurfaceLock.unlock();
-                        }
+                    SurfaceManager.this.addSurfaceLock.lock();
+                    SurfaceManager.this.retrieveGLSurfaceView();
+                    try {
+                        SurfaceManager.this.setupCameraSurface(SurfaceManager.this.cciForSurface);
+                        ViewGroup viewGroup = (ViewGroup)SurfaceManager.this.cameraSurfaceParentView;
+                        viewGroup.addView((View)SurfaceManager.this.cciForSurface.surface, SurfaceManager.this.glSurfaceViewChildPosition + 1, (ViewGroup.LayoutParams)new FrameLayout.LayoutParams(-1, -1));
+                        SurfaceManager.this.cciForSurface.surface.setVisibility(0);
+                    }
+                    catch (Exception exception) {
+                    }
+                    finally {
+                        SurfaceManager.this.addSurfaceLock.unlock();
                     }
                 }
             });
-        } catch (Exception exception) {
-            didExceptionHappen = true;
-        } finally {
+        }
+        catch (Exception exception) {
+            bl = true;
+        }
+        finally {
             this.viewLock.unlock();
         }
-        return !didExceptionHappen;
+        return !bl;
     }
 
 }

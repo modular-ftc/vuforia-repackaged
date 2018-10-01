@@ -1,11 +1,15 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
 
+import com.vuforia.ImageTarget;
+import com.vuforia.TargetSearchResult;
+import com.vuforia.VuforiaJNI;
+
 public class TargetFinder {
-    protected boolean swigCMemOwn;
     private long swigCPtr;
+    protected boolean swigCMemOwn;
     public static final int INIT_DEFAULT = 0;
     public static final int INIT_RUNNING = 1;
     public static final int INIT_SUCCESS = 2;
@@ -25,13 +29,13 @@ public class TargetFinder {
     public static final int FILTER_NONE = 0;
     public static final int FILTER_CURRENTLY_TRACKED = 1;
 
-    protected TargetFinder(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected TargetFinder(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(TargetFinder obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(TargetFinder targetFinder) {
+        return targetFinder == null ? 0L : targetFinder.swigCPtr;
     }
 
     protected void finalize() {
@@ -48,16 +52,16 @@ public class TargetFinder {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof TargetFinder) {
-            equal = ((TargetFinder)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof TargetFinder) {
+            bl = ((TargetFinder)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
-    public boolean startInit(String userAuth, String secretAuth) {
-        return VuforiaJNI.TargetFinder_startInit(this.swigCPtr, this, userAuth, secretAuth);
+    public boolean startInit(String string, String string2) {
+        return VuforiaJNI.TargetFinder_startInit(this.swigCPtr, this, string, string2);
     }
 
     public int getInitState() {
@@ -84,8 +88,8 @@ public class TargetFinder {
         return VuforiaJNI.TargetFinder_isRequesting(this.swigCPtr, this);
     }
 
-    public int updateSearchResults(int filter) {
-        return VuforiaJNI.TargetFinder_updateSearchResults__SWIG_0(this.swigCPtr, this, filter);
+    public int updateSearchResults(int n) {
+        return VuforiaJNI.TargetFinder_updateSearchResults__SWIG_0(this.swigCPtr, this, n);
     }
 
     public int updateSearchResults() {
@@ -96,14 +100,14 @@ public class TargetFinder {
         return VuforiaJNI.TargetFinder_getResultCount(this.swigCPtr, this);
     }
 
-    public TargetSearchResult getResult(int idx) {
-        long cPtr = VuforiaJNI.TargetFinder_getResult(this.swigCPtr, this, idx);
-        return cPtr == 0L ? null : new TargetSearchResult(cPtr, false);
+    public TargetSearchResult getResult(int n) {
+        long l = VuforiaJNI.TargetFinder_getResult(this.swigCPtr, this, n);
+        return l == 0L ? null : new TargetSearchResult(l, false);
     }
 
-    public ImageTarget enableTracking(TargetSearchResult result) {
-        long cPtr = VuforiaJNI.TargetFinder_enableTracking(this.swigCPtr, this, TargetSearchResult.getCPtr(result), result);
-        return cPtr == 0L ? null : new ImageTarget(cPtr, false);
+    public ImageTarget enableTracking(TargetSearchResult targetSearchResult) {
+        long l = VuforiaJNI.TargetFinder_enableTracking(this.swigCPtr, this, TargetSearchResult.getCPtr(targetSearchResult), targetSearchResult);
+        return l == 0L ? null : new ImageTarget(l, false);
     }
 
     public void clearTrackables() {
@@ -114,9 +118,9 @@ public class TargetFinder {
         return VuforiaJNI.TargetFinder_getNumImageTargets(this.swigCPtr, this);
     }
 
-    public ImageTarget getImageTarget(int idx) {
-        long cPtr = VuforiaJNI.TargetFinder_getImageTarget(this.swigCPtr, this, idx);
-        return cPtr == 0L ? null : new ImageTarget(cPtr, false);
+    public ImageTarget getImageTarget(int n) {
+        long l = VuforiaJNI.TargetFinder_getImageTarget(this.swigCPtr, this, n);
+        return l == 0L ? null : new ImageTarget(l, false);
     }
 }
 

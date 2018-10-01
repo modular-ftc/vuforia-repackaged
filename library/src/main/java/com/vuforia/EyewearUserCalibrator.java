@@ -1,19 +1,23 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.EyewearCalibrationReading;
+import com.vuforia.Matrix34F;
+import com.vuforia.VuforiaJNI;
 
 public class EyewearUserCalibrator {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected EyewearUserCalibrator(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected EyewearUserCalibrator(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(EyewearUserCalibrator obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(EyewearUserCalibrator eyewearUserCalibrator) {
+        return eyewearUserCalibrator == null ? 0L : eyewearUserCalibrator.swigCPtr;
     }
 
     protected void finalize() {
@@ -30,22 +34,22 @@ public class EyewearUserCalibrator {
         }
     }
 
-    public boolean getProjectionMatrix(EyewearCalibrationReading[] reading, Matrix34F cameraToEyePose, Matrix34F eyeProjection) {
-        if (cameraToEyePose == null || eyeProjection == null) {
+    public boolean getProjectionMatrix(EyewearCalibrationReading[] arreyewearCalibrationReading, Matrix34F matrix34F, Matrix34F matrix34F2) {
+        if (matrix34F == null || matrix34F2 == null) {
             throw new NullPointerException("Matrix34F argument is null");
         }
-        return this.getProjectionMatrix(reading, reading.length, cameraToEyePose, eyeProjection);
+        return this.getProjectionMatrix(arreyewearCalibrationReading, arreyewearCalibrationReading.length, matrix34F, matrix34F2);
     }
 
-    public int getProjectionMatrices(EyewearCalibrationReading[] leftReading, EyewearCalibrationReading[] rightReading, Matrix34F leftCameraToEyePose, Matrix34F leftEyeProjection, Matrix34F rightCameraToEyePose, Matrix34F rightEyeProjection) {
-        if (leftCameraToEyePose == null || leftEyeProjection == null || rightCameraToEyePose == null || rightEyeProjection == null) {
+    public int getProjectionMatrices(EyewearCalibrationReading[] arreyewearCalibrationReading, EyewearCalibrationReading[] arreyewearCalibrationReading2, Matrix34F matrix34F, Matrix34F matrix34F2, Matrix34F matrix34F3, Matrix34F matrix34F4) {
+        if (matrix34F == null || matrix34F2 == null || matrix34F3 == null || matrix34F4 == null) {
             throw new NullPointerException("Matrix34F argument is null");
         }
-        return this.getProjectionMatrices(leftReading, leftReading.length, rightReading, rightReading.length, leftCameraToEyePose, leftEyeProjection, rightCameraToEyePose, rightEyeProjection);
+        return this.getProjectionMatrices(arreyewearCalibrationReading, arreyewearCalibrationReading.length, arreyewearCalibrationReading2, arreyewearCalibrationReading2.length, matrix34F, matrix34F2, matrix34F3, matrix34F4);
     }
 
-    public boolean init(long surfaceWidth, long surfaceHeight, float targetWidth, float targetHeight) {
-        return VuforiaJNI.EyewearUserCalibrator_init(this.swigCPtr, this, surfaceWidth, surfaceHeight, targetWidth, targetHeight);
+    public boolean init(long l, long l2, float f, float f2) {
+        return VuforiaJNI.EyewearUserCalibrator_init(this.swigCPtr, this, l, l2, f, f2);
     }
 
     public float getMinScaleHint() {
@@ -56,20 +60,20 @@ public class EyewearUserCalibrator {
         return VuforiaJNI.EyewearUserCalibrator_getMaxScaleHint(this.swigCPtr, this);
     }
 
-    public float getDrawingAspectRatio(long surfaceWidth, long surfaceHeight) {
-        return VuforiaJNI.EyewearUserCalibrator_getDrawingAspectRatio(this.swigCPtr, this, surfaceWidth, surfaceHeight);
+    public float getDrawingAspectRatio(long l, long l2) {
+        return VuforiaJNI.EyewearUserCalibrator_getDrawingAspectRatio(this.swigCPtr, this, l, l2);
     }
 
     public boolean isStereoStretched() {
         return VuforiaJNI.EyewearUserCalibrator_isStereoStretched(this.swigCPtr, this);
     }
 
-    private boolean getProjectionMatrix(EyewearCalibrationReading[] reading, int numReadings, Matrix34F cameraToEyePose, Matrix34F eyeProjection) {
-        return VuforiaJNI.EyewearUserCalibrator_getProjectionMatrix(this.swigCPtr, this, EyewearCalibrationReading.cArrayUnwrap(reading), numReadings, Matrix34F.getCPtr(cameraToEyePose), cameraToEyePose, Matrix34F.getCPtr(eyeProjection), eyeProjection);
+    private boolean getProjectionMatrix(EyewearCalibrationReading[] arreyewearCalibrationReading, int n, Matrix34F matrix34F, Matrix34F matrix34F2) {
+        return VuforiaJNI.EyewearUserCalibrator_getProjectionMatrix(this.swigCPtr, this, EyewearCalibrationReading.cArrayUnwrap(arreyewearCalibrationReading), n, Matrix34F.getCPtr(matrix34F), matrix34F, Matrix34F.getCPtr(matrix34F2), matrix34F2);
     }
 
-    private int getProjectionMatrices(EyewearCalibrationReading[] leftReading, int numLeftReadings, EyewearCalibrationReading[] rightReading, int numRightReadings, Matrix34F leftCameraToEyePose, Matrix34F leftEyeProjection, Matrix34F rightCameraToEyePose, Matrix34F rightEyeProjection) {
-        return VuforiaJNI.EyewearUserCalibrator_getProjectionMatrices(this.swigCPtr, this, EyewearCalibrationReading.cArrayUnwrap(leftReading), numLeftReadings, EyewearCalibrationReading.cArrayUnwrap(rightReading), numRightReadings, Matrix34F.getCPtr(leftCameraToEyePose), leftCameraToEyePose, Matrix34F.getCPtr(leftEyeProjection), leftEyeProjection, Matrix34F.getCPtr(rightCameraToEyePose), rightCameraToEyePose, Matrix34F.getCPtr(rightEyeProjection), rightEyeProjection);
+    private int getProjectionMatrices(EyewearCalibrationReading[] arreyewearCalibrationReading, int n, EyewearCalibrationReading[] arreyewearCalibrationReading2, int n2, Matrix34F matrix34F, Matrix34F matrix34F2, Matrix34F matrix34F3, Matrix34F matrix34F4) {
+        return VuforiaJNI.EyewearUserCalibrator_getProjectionMatrices(this.swigCPtr, this, EyewearCalibrationReading.cArrayUnwrap(arreyewearCalibrationReading), n, EyewearCalibrationReading.cArrayUnwrap(arreyewearCalibrationReading2), n2, Matrix34F.getCPtr(matrix34F), matrix34F, Matrix34F.getCPtr(matrix34F2), matrix34F2, Matrix34F.getCPtr(matrix34F3), matrix34F3, Matrix34F.getCPtr(matrix34F4), matrix34F4);
     }
 
     public static final class CONSISTENCY {

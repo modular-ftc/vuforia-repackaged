@@ -1,21 +1,22 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
 
+import com.vuforia.VuforiaJNI;
 import java.nio.ByteBuffer;
 
 public class Image {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Image(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Image(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(Image obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(Image image) {
+        return image == null ? 0L : image.swigCPtr;
     }
 
     protected synchronized void delete() {
@@ -28,12 +29,12 @@ public class Image {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Image) {
-            equal = ((Image)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Image) {
+            bl = ((Image)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public int getWidth() {

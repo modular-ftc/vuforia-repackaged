@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -18,12 +18,13 @@ package com.vuforia.ar.pl;
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
-
+import com.vuforia.ar.pl.DebugLog;
 import java.lang.reflect.Method;
 
 public class SystemTools {
@@ -55,23 +56,11 @@ public class SystemTools {
 
     public static native Activity getActivityFromNative();
 
-    public static boolean checkMinimumApiLevel(int apiLevel) {
-        return Build.VERSION.SDK_INT >= apiLevel;
+    public static boolean checkMinimumApiLevel(int n) {
+        return Build.VERSION.SDK_INT >= n;
     }
 
-    public static void sendKillSignal() {
-        SystemTools.sendKillSignal(0, true);
-    }
-
-    public static void sendKillSignal(int errorCode) {
-        SystemTools.sendKillSignal(errorCode, true);
-    }
-
-    public static void sendKillSignal(boolean enableLifecycleEvents) {
-        SystemTools.sendKillSignal(0, enableLifecycleEvents);
-    }
-
-    public static void sendKillSignal(final int errorCode, final boolean enableLifecycleEvents) {
+    public static void sendKillSignal(final int n) {
         final Activity activity = SystemTools.getActivityFromNative();
         if (activity == null) {
             return;
@@ -80,119 +69,94 @@ public class SystemTools {
 
             @Override
             public void run() {
-                if (enableLifecycleEvents) {
-                    block6 : {
-                        try {
-                            Method method = activity.getClass().getDeclaredMethod("onPause", new Class[0]);
-                            method.setAccessible(true);
-                            method.invoke((Object)activity, new Object[0]);
-                            method = activity.getClass().getDeclaredMethod("onDestroy", new Class[0]);
-                            method.setAccessible(true);
-                            method.invoke((Object)activity, new Object[0]);
-                        }
-                        catch (Exception e) {
-                            SystemTools.logSystemError("Error attempting to call onPause and onDestroy, will proceed with exiting");
-                            if (e == null || e.getCause() == null) break block6;
-                            SystemTools.logSystemError(e.getCause().toString());
-                            for (StackTraceElement i : e.getStackTrace()) {
-                                SystemTools.logSystemError(i.toString());
-                            }
-                        }
-                    }
-                    try {
-                        Thread.sleep(1000L);
-                    }
-                    catch (InterruptedException e) {
-                        // empty catch block
-                    }
-                }
-                System.exit(errorCode);
+                activity.setResult(n);
+                activity.finish();
             }
         });
     }
 
-    public static /* varargs */ Method retrieveClassMethod(Class<?> cls, String name, Class<?> ... parameterTypes) {
-        Method classMethod = null;
+    public static /* varargs */ Method retrieveClassMethod(Class<?> class_, String string, Class<?> ... arrclass) {
+        Method method = null;
         try {
-            classMethod = cls.getMethod(name, parameterTypes);
+            method = class_.getMethod(string, arrclass);
         }
         catch (Exception exception) {
             // empty catch block
         }
-        if (classMethod != null) {
+        if (method != null) {
             // empty if block
         }
-        return classMethod;
+        return method;
     }
 
     public static int getDeviceOrientation(Activity activity) {
         if (activity == null) {
             return 268455952;
         }
-        Configuration config = activity.getResources().getConfiguration();
+        Configuration configuration = activity.getResources().getConfiguration();
         Display display = ((WindowManager)activity.getSystemService("window")).getDefaultDisplay();
-        int displayRotation = SystemTools.checkMinimumApiLevel(8) ? display.getRotation() : display.getOrientation();
-        int activityOrientation = displayRotation == 0 ? 268455954 : (displayRotation == 1 ? 268455956 : (displayRotation == 2 ? 268455955 : (displayRotation == 3 ? 268455957 : 268455952)));
-        return activityOrientation;
+        int n = SystemTools.checkMinimumApiLevel(8) ? display.getRotation() : display.getOrientation();
+        int n2 = n == 0 ? 268455954 : (n == 1 ? 268455956 : (n == 2 ? 268455955 : (n == 3 ? 268455957 : 268455952)));
+        return n2;
     }
 
     public static int getActivityOrientation(Activity activity) {
         if (activity == null) {
             return 268455952;
         }
-        Configuration config = activity.getResources().getConfiguration();
+        Configuration configuration = activity.getResources().getConfiguration();
         Display display = ((WindowManager)activity.getSystemService("window")).getDefaultDisplay();
-        int displayRotation = SystemTools.checkMinimumApiLevel(8) ? display.getRotation() : display.getOrientation();
-        int activityOrientation = 268455952;
-        switch (config.orientation) {
+        int n = SystemTools.checkMinimumApiLevel(8) ? display.getRotation() : display.getOrientation();
+        int n2 = 268455952;
+        switch (configuration.orientation) {
             case 1: 
             case 3: {
-                activityOrientation = displayRotation == 0 || displayRotation == 3 ? 268455954 : 268455955;
+                n2 = n == 0 || n == 3 ? 268455954 : 268455955;
                 break;
             }
             case 2: {
-                activityOrientation = displayRotation == 0 || displayRotation == 1 ? 268455956 : 268455957;
+                n2 = n == 0 || n == 1 ? 268455956 : 268455957;
                 break;
             }
         }
-        return activityOrientation;
+        return n2;
     }
 
     public static String getNativeLibraryPath(Activity activity) {
         if (activity == null) {
             return null;
         }
-        String path = null;
+        String string = null;
         try {
-            ApplicationInfo appInfo = activity.getApplicationInfo();
-            if (appInfo != null) {
+            ApplicationInfo applicationInfo = activity.getApplicationInfo();
+            if (applicationInfo != null) {
                 if (SystemTools.checkMinimumApiLevel(9)) {
-                    path = appInfo.nativeLibraryDir;
-                    if (path != null && path.length() > 0 && path.charAt(path.length() - 1) != '/') {
-                        path = path + '/';
+                    string = applicationInfo.nativeLibraryDir;
+                    if (string != null && string.length() > 0 && string.charAt(string.length() - 1) != '/') {
+                        string = string + '/';
                     }
                 } else {
-                    path = "/data/data/" + activity.getPackageName() + "/lib/";
+                    string = "/data/data/" + activity.getPackageName() + "/lib/";
                 }
             }
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             return null;
         }
-        return path;
+        return string;
     }
 
     public static int[] getActivitySize(Activity activity) {
         if (activity == null) {
             return null;
         }
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int screenWidth = metrics.widthPixels;
-        int screenHeight = metrics.heightPixels;
-        if (screenWidth > 0 && screenHeight > 0) {
-            int[] screenSize = new int[]{screenWidth, screenHeight};
-            return screenSize;
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int n = displayMetrics.widthPixels;
+        int n2 = displayMetrics.heightPixels;
+        if (n > 0 && n2 > 0) {
+            int[] arrn = new int[]{n, n2};
+            return arrn;
         }
         return null;
     }
@@ -201,17 +165,17 @@ public class SystemTools {
         if (activity == null) {
             return null;
         }
-        DisplayMetrics metrics = new DisplayMetrics();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
         if (SystemTools.checkMinimumApiLevel(17)) {
-            activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+            activity.getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
         } else {
-            activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         }
-        float xdpi = metrics.xdpi;
-        float ydpi = metrics.ydpi;
-        if (xdpi > 0.0f && ydpi > 0.0f) {
-            float[] dpi = new float[]{xdpi, ydpi};
-            return dpi;
+        float f = displayMetrics.xdpi;
+        float f2 = displayMetrics.ydpi;
+        if (f > 0.0f && f2 > 0.0f) {
+            float[] arrf = new float[]{f, f2};
+            return arrf;
         }
         return null;
     }
@@ -220,23 +184,22 @@ public class SystemTools {
         if (activity == null) {
             return null;
         }
-        Point displaySize = new Point();
+        Point point = new Point();
         try {
-            activity.getWindowManager().getDefaultDisplay().getRealSize(displaySize);
-            if (displaySize.x > 0 && displaySize.y > 0) {
-                int[] displaySizes = new int[2];
-                int orientation = SystemTools.getActivityOrientation(activity);
-                if (orientation == 268455954 || orientation == 268455955) {
-                    displaySizes[0] = displaySize.y;
-                    displaySizes[1] = displaySize.x;
+            activity.getWindowManager().getDefaultDisplay().getRealSize(point);
+            if (point.x > 0 && point.y > 0) {
+                int[] arrn = new int[2];
+                if (point.y > point.x) {
+                    arrn[0] = point.y;
+                    arrn[1] = point.x;
                 } else {
-                    displaySizes[0] = displaySize.x;
-                    displaySizes[1] = displaySize.y;
+                    arrn[0] = point.x;
+                    arrn[1] = point.y;
                 }
-                return displaySizes;
+                return arrn;
             }
         }
-        catch (NoSuchMethodError nsme) {
+        catch (NoSuchMethodError noSuchMethodError) {
             DebugLog.LOGE("SystemTools", "Display.getRealSize is not supported on this platform");
         }
         return null;

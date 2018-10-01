@@ -1,8 +1,9 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
 
+import com.vuforia.VuforiaJNI;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
@@ -10,13 +11,13 @@ public class InstanceId {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected InstanceId(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected InstanceId(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(InstanceId obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(InstanceId instanceId) {
+        return instanceId == null ? 0L : instanceId.swigCPtr;
     }
 
     protected void finalize() {
@@ -33,12 +34,12 @@ public class InstanceId {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof InstanceId) {
-            equal = ((InstanceId)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof InstanceId) {
+            bl = ((InstanceId)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public ByteBuffer getBuffer() {

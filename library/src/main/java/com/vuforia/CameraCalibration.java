@@ -1,37 +1,45 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Vec2F;
+import com.vuforia.Vec4F;
+import com.vuforia.VuforiaJNI;
 
 public class CameraCalibration {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected CameraCalibration(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected CameraCalibration(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(CameraCalibration obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(CameraCalibration cameraCalibration) {
+        return cameraCalibration == null ? 0L : cameraCalibration.swigCPtr;
+    }
+
+    protected void finalize() {
+        this.delete();
     }
 
     protected synchronized void delete() {
         if (this.swigCPtr != 0L) {
             if (this.swigCMemOwn) {
                 this.swigCMemOwn = false;
-                throw new UnsupportedOperationException("C++ destructor does not have public access");
+                VuforiaJNI.delete_CameraCalibration(this.swigCPtr);
             }
             this.swigCPtr = 0L;
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof CameraCalibration) {
-            equal = ((CameraCalibration)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof CameraCalibration) {
+            bl = ((CameraCalibration)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public Vec2F getSize() {

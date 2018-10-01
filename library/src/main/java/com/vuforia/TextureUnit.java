@@ -1,19 +1,21 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class TextureUnit {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected TextureUnit(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected TextureUnit(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(TextureUnit obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(TextureUnit textureUnit) {
+        return textureUnit == null ? 0L : textureUnit.swigCPtr;
     }
 
     protected synchronized void delete() {
@@ -26,12 +28,12 @@ public class TextureUnit {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof TextureUnit) {
-            equal = ((TextureUnit)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof TextureUnit) {
+            bl = ((TextureUnit)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public int type() {

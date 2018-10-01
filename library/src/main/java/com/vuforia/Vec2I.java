@@ -1,51 +1,25 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class Vec2I {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Vec2I(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Vec2I(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public Vec2I() {
-        this(VuforiaJNI.new_Vec2I__SWIG_0(), true);
-    }
-
-    protected static long getCPtr(Vec2I obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public Vec2I(int[] v) {
-        this(VuforiaJNI.new_Vec2I__SWIG_1(v), true);
+    protected static long getCPtr(Vec2I vec2I) {
+        return vec2I == null ? 0L : vec2I.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public Vec2I(int v0, int v1) {
-        this(VuforiaJNI.new_Vec2I__SWIG_2(v0, v1), true);
-    }
-
-    public Vec2I(Vec2I other) {
-        this(VuforiaJNI.new_Vec2I__SWIG_3(Vec2I.getCPtr(other), other), true);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Vec2I) {
-            equal = ((Vec2I) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    public void setData(int[] value) {
-        VuforiaJNI.Vec2I_data_set(this.swigCPtr, this, value);
     }
 
     protected synchronized void delete() {
@@ -58,8 +32,36 @@ public class Vec2I {
         }
     }
 
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Vec2I) {
+            bl = ((Vec2I)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public Vec2I() {
+        this(VuforiaJNI.new_Vec2I__SWIG_0(), true);
+    }
+
+    public Vec2I(int[] arrn) {
+        this(VuforiaJNI.new_Vec2I__SWIG_1(arrn), true);
+    }
+
+    public Vec2I(int n, int n2) {
+        this(VuforiaJNI.new_Vec2I__SWIG_2(n, n2), true);
+    }
+
+    public void setData(int[] arrn) {
+        VuforiaJNI.Vec2I_data_set(this.swigCPtr, this, arrn);
+    }
+
     public int[] getData() {
         return VuforiaJNI.Vec2I_data_get(this.swigCPtr, this);
+    }
+
+    public Vec2I(Vec2I vec2I) {
+        this(VuforiaJNI.new_Vec2I__SWIG_3(Vec2I.getCPtr(vec2I), vec2I), true);
     }
 }
 

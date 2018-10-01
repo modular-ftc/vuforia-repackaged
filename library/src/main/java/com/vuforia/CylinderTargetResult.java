@@ -1,37 +1,30 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.CylinderTarget;
+import com.vuforia.ObjectTargetResult;
+import com.vuforia.Trackable;
+import com.vuforia.Type;
+import com.vuforia.VuforiaJNI;
 
 public class CylinderTargetResult
 extends ObjectTargetResult {
     private long swigCPtr;
 
-    protected CylinderTargetResult(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.CylinderTargetResult_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected CylinderTargetResult(long l, boolean bl) {
+        super(VuforiaJNI.CylinderTargetResult_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(CylinderTargetResult obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(CylinderTargetResult cylinderTargetResult) {
+        return cylinderTargetResult == null ? 0L : cylinderTargetResult.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.CylinderTargetResult_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof CylinderTargetResult) {
-            equal = ((CylinderTargetResult)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -44,6 +37,19 @@ extends ObjectTargetResult {
             this.swigCPtr = 0L;
         }
         super.delete();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof CylinderTargetResult) {
+            bl = ((CylinderTargetResult)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.CylinderTargetResult_getClassType(), true);
     }
 
     @Override

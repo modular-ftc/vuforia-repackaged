@@ -1,43 +1,26 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Matrix34F;
+import com.vuforia.VuforiaJNI;
 
 public class EyewearCalibrationReading {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected EyewearCalibrationReading(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected EyewearCalibrationReading(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public EyewearCalibrationReading() {
-        this(VuforiaJNI.new_EyewearCalibrationReading(), true);
-    }
-
-    protected static long getCPtr(EyewearCalibrationReading obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(EyewearCalibrationReading eyewearCalibrationReading) {
+        return eyewearCalibrationReading == null ? 0L : eyewearCalibrationReading.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    protected static long[] cArrayUnwrap(EyewearCalibrationReading[] arrayWrapper) {
-        long[] cArray = new long[arrayWrapper.length];
-        for (int i = 0; i < arrayWrapper.length; ++i) {
-            cArray[i] = EyewearCalibrationReading.getCPtr(arrayWrapper[i]);
-        }
-        return cArray;
-    }
-
-    protected static EyewearCalibrationReading[] cArrayWrap(long[] cArray, boolean cMemoryOwn) {
-        EyewearCalibrationReading[] arrayWrapper = new EyewearCalibrationReading[cArray.length];
-        for (int i = 0; i < cArray.length; ++i) {
-            arrayWrapper[i] = new EyewearCalibrationReading(cArray[i], cMemoryOwn);
-        }
-        return arrayWrapper;
     }
 
     protected synchronized void delete() {
@@ -50,37 +33,72 @@ public class EyewearCalibrationReading {
         }
     }
 
-    public Matrix34F getPose() {
-        long cPtr = VuforiaJNI.EyewearCalibrationReading_Pose_get(this.swigCPtr, this);
-        return cPtr == 0L ? null : new Matrix34F(cPtr, false);
+    protected static long[] cArrayUnwrap(EyewearCalibrationReading[] arreyewearCalibrationReading) {
+        long[] arrl = new long[arreyewearCalibrationReading.length];
+        for (int i = 0; i < arreyewearCalibrationReading.length; ++i) {
+            arrl[i] = EyewearCalibrationReading.getCPtr(arreyewearCalibrationReading[i]);
+        }
+        return arrl;
     }
 
-    public void setPose(Matrix34F value) {
-        VuforiaJNI.EyewearCalibrationReading_Pose_set(this.swigCPtr, this, Matrix34F.getCPtr(value), value);
+    protected static EyewearCalibrationReading[] cArrayWrap(long[] arrl, boolean bl) {
+        EyewearCalibrationReading[] arreyewearCalibrationReading = new EyewearCalibrationReading[arrl.length];
+        for (int i = 0; i < arrl.length; ++i) {
+            arreyewearCalibrationReading[i] = new EyewearCalibrationReading(arrl[i], bl);
+        }
+        return arreyewearCalibrationReading;
+    }
+
+    public void setPose(Matrix34F matrix34F) {
+        VuforiaJNI.EyewearCalibrationReading_Pose_set(this.swigCPtr, this, Matrix34F.getCPtr(matrix34F), matrix34F);
+    }
+
+    public Matrix34F getPose() {
+        long l = VuforiaJNI.EyewearCalibrationReading_Pose_get(this.swigCPtr, this);
+        return l == 0L ? null : new Matrix34F(l, false);
+    }
+
+    public void setScale(float f) {
+        VuforiaJNI.EyewearCalibrationReading_Scale_set(this.swigCPtr, this, f);
     }
 
     public float getScale() {
         return VuforiaJNI.EyewearCalibrationReading_Scale_get(this.swigCPtr, this);
     }
 
-    public void setScale(float value) {
-        VuforiaJNI.EyewearCalibrationReading_Scale_set(this.swigCPtr, this, value);
+    public void setCenterX(float f) {
+        VuforiaJNI.EyewearCalibrationReading_CenterX_set(this.swigCPtr, this, f);
     }
 
     public float getCenterX() {
         return VuforiaJNI.EyewearCalibrationReading_CenterX_get(this.swigCPtr, this);
     }
 
-    public void setCenterY(float value) {
-        VuforiaJNI.EyewearCalibrationReading_CenterY_set(this.swigCPtr, this, value);
-    }
-
-    public void setCenterX(float value) {
-        VuforiaJNI.EyewearCalibrationReading_CenterX_set(this.swigCPtr, this, value);
+    public void setCenterY(float f) {
+        VuforiaJNI.EyewearCalibrationReading_CenterY_set(this.swigCPtr, this, f);
     }
 
     public float getCenterY() {
         return VuforiaJNI.EyewearCalibrationReading_CenterY_get(this.swigCPtr, this);
     }
+
+    public void setType(int n) {
+        VuforiaJNI.EyewearCalibrationReading_Type_set(this.swigCPtr, this, n);
+    }
+
+    public int getType() {
+        return VuforiaJNI.EyewearCalibrationReading_Type_get(this.swigCPtr, this);
+    }
+
+    public EyewearCalibrationReading() {
+        this(VuforiaJNI.new_EyewearCalibrationReading(), true);
+    }
+
+    public static final class AlignmentType {
+        public static final int RECTANGLE = 0;
+        public static final int HORIZONTAL_LINE = 1;
+        public static final int VERTICAL_LINE = 2;
+    }
+
 }
 

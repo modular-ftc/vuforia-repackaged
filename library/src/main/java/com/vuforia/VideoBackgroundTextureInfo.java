@@ -1,35 +1,26 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Vec2I;
+import com.vuforia.VuforiaJNI;
 
 public class VideoBackgroundTextureInfo {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected VideoBackgroundTextureInfo(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected VideoBackgroundTextureInfo(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public VideoBackgroundTextureInfo() {
-        this(VuforiaJNI.new_VideoBackgroundTextureInfo(), true);
+    protected static long getCPtr(VideoBackgroundTextureInfo videoBackgroundTextureInfo) {
+        return videoBackgroundTextureInfo == null ? 0L : videoBackgroundTextureInfo.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    protected static long getCPtr(VideoBackgroundTextureInfo obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof VideoBackgroundTextureInfo) {
-            equal = ((VideoBackgroundTextureInfo)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -42,18 +33,30 @@ public class VideoBackgroundTextureInfo {
         }
     }
 
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof VideoBackgroundTextureInfo) {
+            bl = ((VideoBackgroundTextureInfo)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
     public Vec2I getTextureSize() {
-        long cPtr = VuforiaJNI.VideoBackgroundTextureInfo_TextureSize_get(this.swigCPtr, this);
-        return cPtr == 0L ? null : new Vec2I(cPtr, false);
+        long l = VuforiaJNI.VideoBackgroundTextureInfo_TextureSize_get(this.swigCPtr, this);
+        return l == 0L ? null : new Vec2I(l, false);
+    }
+
+    public Vec2I getImageSize() {
+        long l = VuforiaJNI.VideoBackgroundTextureInfo_ImageSize_get(this.swigCPtr, this);
+        return l == 0L ? null : new Vec2I(l, false);
     }
 
     public int getPixelFormat() {
         return VuforiaJNI.VideoBackgroundTextureInfo_PixelFormat_get(this.swigCPtr, this);
     }
 
-    public Vec2I getImageSize() {
-        long cPtr = VuforiaJNI.VideoBackgroundTextureInfo_ImageSize_get(this.swigCPtr, this);
-        return cPtr == 0L ? null : new Vec2I(cPtr, false);
+    public VideoBackgroundTextureInfo() {
+        this(VuforiaJNI.new_VideoBackgroundTextureInfo(), true);
     }
 }
 

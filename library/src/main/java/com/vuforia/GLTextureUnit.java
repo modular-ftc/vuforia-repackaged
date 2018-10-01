@@ -1,40 +1,26 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.TextureUnit;
+import com.vuforia.VuforiaJNI;
 
 public class GLTextureUnit
 extends TextureUnit {
     private long swigCPtr;
 
-    protected GLTextureUnit(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.GLTextureUnit_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected GLTextureUnit(long l, boolean bl) {
+        super(VuforiaJNI.GLTextureUnit_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    public GLTextureUnit(int unit) {
-        this(VuforiaJNI.new_GLTextureUnit__SWIG_0(unit), true);
-    }
-
-    protected static long getCPtr(GLTextureUnit obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public GLTextureUnit() {
-        this(VuforiaJNI.new_GLTextureUnit__SWIG_1(), true);
+    protected static long getCPtr(GLTextureUnit gLTextureUnit) {
+        return gLTextureUnit == null ? 0L : gLTextureUnit.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof GLTextureUnit) {
-            equal = ((GLTextureUnit) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -49,8 +35,25 @@ extends TextureUnit {
         super.delete();
     }
 
-    public void setTextureUnit(int value) {
-        VuforiaJNI.GLTextureUnit_TextureUnit_set(this.swigCPtr, this, value);
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof GLTextureUnit) {
+            bl = ((GLTextureUnit)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public GLTextureUnit(int n) {
+        this(VuforiaJNI.new_GLTextureUnit__SWIG_0(n), true);
+    }
+
+    public GLTextureUnit() {
+        this(VuforiaJNI.new_GLTextureUnit__SWIG_1(), true);
+    }
+
+    public void setTextureUnit(int n) {
+        VuforiaJNI.GLTextureUnit_TextureUnit_set(this.swigCPtr, this, n);
     }
 
     public int getTextureUnit() {

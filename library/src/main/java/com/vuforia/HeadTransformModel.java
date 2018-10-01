@@ -1,50 +1,28 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.TransformModel;
+import com.vuforia.Vec3F;
+import com.vuforia.VuforiaJNI;
 
 public class HeadTransformModel
 extends TransformModel {
     private long swigCPtr;
 
-    protected HeadTransformModel(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.HeadTransformModel_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected HeadTransformModel(long l, boolean bl) {
+        super(VuforiaJNI.HeadTransformModel_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    public HeadTransformModel() {
-        this(VuforiaJNI.new_HeadTransformModel__SWIG_0(), true);
+    protected static long getCPtr(HeadTransformModel headTransformModel) {
+        return headTransformModel == null ? 0L : headTransformModel.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public HeadTransformModel(HeadTransformModel other) {
-        this(VuforiaJNI.new_HeadTransformModel__SWIG_1(HeadTransformModel.getCPtr(other), other), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof HeadTransformModel) {
-            equal = ((HeadTransformModel)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    @Override
-    public int getType() {
-        return VuforiaJNI.HeadTransformModel_getType(this.swigCPtr, this);
-    }
-
-    public HeadTransformModel(Vec3F pivotPos) {
-        this(VuforiaJNI.new_HeadTransformModel__SWIG_2(Vec3F.getCPtr(pivotPos), pivotPos), true);
-    }
-
-    protected static long getCPtr(HeadTransformModel obj) {
-        return obj == null ? 0L : obj.swigCPtr;
     }
 
     @Override
@@ -59,8 +37,34 @@ extends TransformModel {
         super.delete();
     }
 
-    public boolean setPivotPoint(Vec3F pivot) {
-        return VuforiaJNI.HeadTransformModel_setPivotPoint(this.swigCPtr, this, Vec3F.getCPtr(pivot), pivot);
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof HeadTransformModel) {
+            bl = ((HeadTransformModel)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    @Override
+    public int getType() {
+        return VuforiaJNI.HeadTransformModel_getType(this.swigCPtr, this);
+    }
+
+    public HeadTransformModel() {
+        this(VuforiaJNI.new_HeadTransformModel__SWIG_0(), true);
+    }
+
+    public HeadTransformModel(HeadTransformModel headTransformModel) {
+        this(VuforiaJNI.new_HeadTransformModel__SWIG_1(HeadTransformModel.getCPtr(headTransformModel), headTransformModel), true);
+    }
+
+    public HeadTransformModel(Vec3F vec3F) {
+        this(VuforiaJNI.new_HeadTransformModel__SWIG_2(Vec3F.getCPtr(vec3F), vec3F), true);
+    }
+
+    public boolean setPivotPoint(Vec3F vec3F) {
+        return VuforiaJNI.HeadTransformModel_setPivotPoint(this.swigCPtr, this, Vec3F.getCPtr(vec3F), vec3F);
     }
 
     public Vec3F getPivotPoint() {

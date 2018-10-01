@@ -1,37 +1,29 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Trackable;
+import com.vuforia.Type;
+import com.vuforia.Vec3F;
+import com.vuforia.VuforiaJNI;
 
 public class ObjectTarget
 extends Trackable {
     private long swigCPtr;
 
-    protected ObjectTarget(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.ObjectTarget_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected ObjectTarget(long l, boolean bl) {
+        super(VuforiaJNI.ObjectTarget_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(ObjectTarget obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(ObjectTarget objectTarget) {
+        return objectTarget == null ? 0L : objectTarget.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.ObjectTarget_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof ObjectTarget) {
-            equal = ((ObjectTarget)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -46,6 +38,19 @@ extends Trackable {
         super.delete();
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof ObjectTarget) {
+            bl = ((ObjectTarget)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.ObjectTarget_getClassType(), true);
+    }
+
     public String getUniqueTargetId() {
         return VuforiaJNI.ObjectTarget_getUniqueTargetId(this.swigCPtr, this);
     }
@@ -54,8 +59,8 @@ extends Trackable {
         return new Vec3F(VuforiaJNI.ObjectTarget_getSize(this.swigCPtr, this), true);
     }
 
-    public boolean setSize(Vec3F size) {
-        return VuforiaJNI.ObjectTarget_setSize(this.swigCPtr, this, Vec3F.getCPtr(size), size);
+    public boolean setSize(Vec3F vec3F) {
+        return VuforiaJNI.ObjectTarget_setSize(this.swigCPtr, this, Vec3F.getCPtr(vec3F), vec3F);
     }
 }
 

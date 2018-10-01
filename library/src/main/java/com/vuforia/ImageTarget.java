@@ -1,37 +1,30 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Area;
+import com.vuforia.ObjectTarget;
+import com.vuforia.Type;
+import com.vuforia.VirtualButton;
+import com.vuforia.VuforiaJNI;
 
 public class ImageTarget
 extends ObjectTarget {
     private long swigCPtr;
 
-    protected ImageTarget(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.ImageTarget_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected ImageTarget(long l, boolean bl) {
+        super(VuforiaJNI.ImageTarget_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(ImageTarget obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(ImageTarget imageTarget) {
+        return imageTarget == null ? 0L : imageTarget.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.ImageTarget_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof ImageTarget) {
-            equal = ((ImageTarget)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -46,27 +39,40 @@ extends ObjectTarget {
         super.delete();
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof ImageTarget) {
+            bl = ((ImageTarget)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.ImageTarget_getClassType(), true);
+    }
+
     public int getNumVirtualButtons() {
         return VuforiaJNI.ImageTarget_getNumVirtualButtons(this.swigCPtr, this);
     }
 
-    public VirtualButton getVirtualButton(int idx) {
-        long cPtr = VuforiaJNI.ImageTarget_getVirtualButton__SWIG_0(this.swigCPtr, this, idx);
-        return cPtr == 0L ? null : new VirtualButton(cPtr, false);
+    public VirtualButton getVirtualButton(int n) {
+        long l = VuforiaJNI.ImageTarget_getVirtualButton__SWIG_0(this.swigCPtr, this, n);
+        return l == 0L ? null : new VirtualButton(l, false);
     }
 
-    public VirtualButton getVirtualButton(String name) {
-        long cPtr = VuforiaJNI.ImageTarget_getVirtualButton__SWIG_1(this.swigCPtr, this, name);
-        return cPtr == 0L ? null : new VirtualButton(cPtr, false);
+    public VirtualButton getVirtualButton(String string) {
+        long l = VuforiaJNI.ImageTarget_getVirtualButton__SWIG_1(this.swigCPtr, this, string);
+        return l == 0L ? null : new VirtualButton(l, false);
     }
 
-    public VirtualButton createVirtualButton(String name, Area area) {
-        long cPtr = VuforiaJNI.ImageTarget_createVirtualButton(this.swigCPtr, this, name, Area.getCPtr(area), area);
-        return cPtr == 0L ? null : new VirtualButton(cPtr, false);
+    public VirtualButton createVirtualButton(String string, Area area) {
+        long l = VuforiaJNI.ImageTarget_createVirtualButton(this.swigCPtr, this, string, Area.getCPtr(area), area);
+        return l == 0L ? null : new VirtualButton(l, false);
     }
 
-    public boolean destroyVirtualButton(VirtualButton button) {
-        return VuforiaJNI.ImageTarget_destroyVirtualButton(this.swigCPtr, this, VirtualButton.getCPtr(button), button);
+    public boolean destroyVirtualButton(VirtualButton virtualButton) {
+        return VuforiaJNI.ImageTarget_destroyVirtualButton(this.swigCPtr, this, VirtualButton.getCPtr(virtualButton), virtualButton);
     }
 
     public String getMetaData() {

@@ -1,37 +1,28 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Trackable;
+import com.vuforia.Type;
+import com.vuforia.VuforiaJNI;
 
 public class DeviceTrackable
 extends Trackable {
     private long swigCPtr;
 
-    protected DeviceTrackable(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.DeviceTrackable_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected DeviceTrackable(long l, boolean bl) {
+        super(VuforiaJNI.DeviceTrackable_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(DeviceTrackable obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(DeviceTrackable deviceTrackable) {
+        return deviceTrackable == null ? 0L : deviceTrackable.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.DeviceTrackable_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof DeviceTrackable) {
-            equal = ((DeviceTrackable)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -44,6 +35,19 @@ extends Trackable {
             this.swigCPtr = 0L;
         }
         super.delete();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof DeviceTrackable) {
+            bl = ((DeviceTrackable)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.DeviceTrackable_getClassType(), true);
     }
 }
 

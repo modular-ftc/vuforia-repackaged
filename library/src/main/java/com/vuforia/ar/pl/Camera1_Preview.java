@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -25,22 +25,24 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.vuforia.ar.pl.CameraSurface;
+import com.vuforia.ar.pl.DebugLog;
+import com.vuforia.ar.pl.SurfaceManager;
+import com.vuforia.ar.pl.SystemTools;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Camera1_Preview
 implements Camera.PreviewCallback {
-    private static boolean CONVERT_FORMAT_TO_PL = true;
-    private static boolean CONVERT_FORMAT_TO_ANDROID = false;
     private SurfaceManager surfaceManager = null;
+    private Vector<CameraCacheInfo> cameraCacheInfo = null;
+    private HashMap<Camera, Integer> cameraCacheInfoIndexCache = null;
     private static final int CAMERA_CAPTUREINFO_VALUE_WIDTH = 0;
     private static final int CAMERA_CAPTUREINFO_VALUE_HEIGHT = 1;
     private static final int CAMERA_CAPTUREINFO_VALUE_FORMAT = 2;
@@ -61,23 +63,25 @@ implements Camera.PreviewCallback {
     private static final int AR_CAMERA_PARAMTYPE_FOCUSRANGE = 536870920;
     private static final int AR_CAMERA_PARAMTYPE_FOCUSREGION = 536870928;
     private static final int AR_CAMERA_PARAMTYPE_EXPOSUREMODE = 536870944;
-    private static final int AR_CAMERA_PARAMTYPE_EXPOSUREVALUE = 536870976;
-    private static final int AR_CAMERA_PARAMTYPE_EXPOSURERANGE = 536871040;
-    private static final int AR_CAMERA_PARAMTYPE_EXPOSURECOMPENSATIONVALUE = 536871168;
-    private static final int AR_CAMERA_PARAMTYPE_EXPOSURECOMPENSATIONRANGE = 536871424;
-    private static final int AR_CAMERA_PARAMTYPE_WHITEBALANCEMODE = 536871936;
-    private static final int AR_CAMERA_PARAMTYPE_WHITEBALANCEVALUE = 536872960;
-    private static final int AR_CAMERA_PARAMTYPE_WHITEBALANCERANGE = 536875008;
-    private static final int AR_CAMERA_PARAMTYPE_ZOOMVALUE = 536879104;
-    private static final int AR_CAMERA_PARAMTYPE_ZOOMRANGE = 536887296;
-    private static final int AR_CAMERA_PARAMTYPE_BRIGHTNESSVALUE = 536903680;
-    private static final int AR_CAMERA_PARAMTYPE_BRIGHTNESSRANGE = 536936448;
-    private static final int AR_CAMERA_PARAMTYPE_CONTRASTVALUE = 537001984;
-    private static final int AR_CAMERA_PARAMTYPE_CONTRASTRANGE = 537133056;
-    private static final int AR_CAMERA_PARAMTYPE_ROTATION = 537395200;
-    private static final int AR_CAMERA_PARAMTYPE_ISO = 537919488;
-    private static final int AR_CAMERA_PARAMTYPE_RECORDING_HINT = 538968064;
-    private static final int AR_CAMERA_PARAMTYPE_VIDEO_STABILIZATION = 545259520;
+    private static final int AR_CAMERA_PARAMTYPE_ISO = 536870976;
+    private static final int AR_CAMERA_PARAMTYPE_ISORANGE = 536871040;
+    private static final int AR_CAMERA_PARAMTYPE_EXPOSURETIME = 536871168;
+    private static final int AR_CAMERA_PARAMTYPE_EXPOSURETIMERANGE = 536871424;
+    private static final int AR_CAMERA_PARAMTYPE_EXPOSUREVALUE = 536871936;
+    private static final int AR_CAMERA_PARAMTYPE_EXPOSUREVALUERANGE = 536872960;
+    private static final int AR_CAMERA_PARAMTYPE_WHITEBALANCEMODE = 536875008;
+    private static final int AR_CAMERA_PARAMTYPE_WHITEBALANCEVALUE = 536879104;
+    private static final int AR_CAMERA_PARAMTYPE_WHITEBALANCERANGE = 536887296;
+    private static final int AR_CAMERA_PARAMTYPE_ZOOMVALUE = 536903680;
+    private static final int AR_CAMERA_PARAMTYPE_ZOOMRANGE = 536936448;
+    private static final int AR_CAMERA_PARAMTYPE_BRIGHTNESSVALUE = 537001984;
+    private static final int AR_CAMERA_PARAMTYPE_BRIGHTNESSRANGE = 537133056;
+    private static final int AR_CAMERA_PARAMTYPE_CONTRASTVALUE = 537395200;
+    private static final int AR_CAMERA_PARAMTYPE_CONTRASTRANGE = 537919488;
+    private static final int AR_CAMERA_PARAMTYPE_ROTATION = 538968064;
+    private static final int AR_CAMERA_PARAMTYPE_RECORDING_HINT = 541065216;
+    private static final int AR_CAMERA_PARAMTYPE_LENS_IS_ADJUSTING = 545259520;
+    private static final int AR_CAMERA_PARAMTYPE_VIDEO_STABILIZATION = 553648128;
     private static final int AR_CAMERA_PARAMVALUE_BASE = 805306368;
     private static final int AR_CAMERA_TORCHMODE_OFF = 805306369;
     private static final int AR_CAMERA_TORCHMODE_ON = 805306370;
@@ -92,9 +96,9 @@ implements Camera.PreviewCallback {
     private static final int AR_CAMERA_EXPOSUREMODE_LOCKED = 805310464;
     private static final int AR_CAMERA_EXPOSUREMODE_AUTO = 805314560;
     private static final int AR_CAMERA_EXPOSUREMODE_CONTINUOUSAUTO = 805322752;
-    private static final int AR_CAMERA_WHITEBALANCEMODE_LOCKED = 805371904;
-    private static final int AR_CAMERA_WHITEBALANCEMODE_AUTO = 805437440;
-    private static final int AR_CAMERA_WHITEBALANCEMODE_CONTINUOUSAUTO = 805568512;
+    private static final int AR_CAMERA_WHITEBALANCEMODE_LOCKED = 806354944;
+    private static final int AR_CAMERA_WHITEBALANCEMODE_AUTO = 807403520;
+    private static final int AR_CAMERA_WHITEBALANCEMODE_CONTINUOUSAUTO = 809500672;
     private static final int AR_CAMERA_TYPE_UNKNOWN = 268447760;
     private static final int AR_CAMERA_TYPE_MONO = 268447761;
     private static final int AR_CAMERA_TYPE_STEREO = 268447762;
@@ -126,8 +130,8 @@ implements Camera.PreviewCallback {
     private static final int AR_CAMERA_IMAGE_FORMAT_BGR888 = 268439822;
     private static final int AR_CAMERA_IMAGE_FORMAT_BGR24 = 268439822;
     private static final int[] CAMERA_IMAGE_FORMAT_CONVERSIONTABLE = new int[]{16, 268439816, 17, 268439817, 4, 268439810, 842094169, 268439818};
-    private Vector<CameraCacheInfo> cameraCacheInfo = null;
-    private HashMap<Camera, Integer> cameraCacheInfoIndexCache = null;
+    private static boolean CONVERT_FORMAT_TO_PL = true;
+    private static boolean CONVERT_FORMAT_TO_ANDROID = false;
     private static final int NUM_CAPTURE_BUFFERS = 2;
     private static final int NUM_CAPTURE_BUFFERS_TO_ADD = 2;
     private static final int NUM_MAX_CAMERAOPEN_RETRY = 10;
@@ -144,34 +148,34 @@ implements Camera.PreviewCallback {
             if (activity == null) {
                 return false;
             }
-            PackageManager pm = activity.getPackageManager();
-            int isPermissionGranted = pm.checkPermission("android.permission.CAMERA", activity.getPackageName());
-            if (isPermissionGranted == 0) {
+            PackageManager packageManager = activity.getPackageManager();
+            int n = packageManager.checkPermission("android.permission.CAMERA", activity.getPackageName());
+            if (n == 0) {
                 return true;
             }
         }
-        catch (Exception activity) {
+        catch (Exception exception) {
             // empty catch block
         }
         return false;
     }
 
-    private int getCameraDeviceIndex(int camIndex, int type, int direction) {
-        if (type != 268447760) {
+    private int getCameraDeviceIndex(int n, int n2, int n3) {
+        if (n2 != 268447760) {
             // empty if block
         }
         if (SystemTools.checkMinimumApiLevel(9)) {
-            int camInfoDirection = -1;
-            switch (direction) {
+            int n4 = -1;
+            switch (n3) {
                 case 268443664: {
                     break;
                 }
                 case 268443665: {
-                    camInfoDirection = 0;
+                    n4 = 0;
                     break;
                 }
                 case 268443666: {
-                    camInfoDirection = 1;
+                    n4 = 1;
                     break;
                 }
                 default: {
@@ -179,26 +183,26 @@ implements Camera.PreviewCallback {
                     return -1;
                 }
             }
-            int num = Camera.getNumberOfCameras();
-            for (int i = 0; i < num; ++i) {
+            int n5 = Camera.getNumberOfCameras();
+            for (int i = 0; i < n5; ++i) {
                 Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
                 try {
-                    Camera.getCameraInfo(i, cameraInfo);
+                    Camera.getCameraInfo((int)i, (Camera.CameraInfo)cameraInfo);
                 }
-                catch (Exception e) {
+                catch (Exception exception) {
                     continue;
                 }
-                if (camInfoDirection >= 0 && camInfoDirection != cameraInfo.facing || camIndex >= 0 && camIndex != i) continue;
+                if (n4 >= 0 && n4 != cameraInfo.facing || n >= 0 && n != i) continue;
                 return i;
             }
             SystemTools.setSystemErrorCode(6);
             return -1;
         }
-        if (direction == 268443666) {
+        if (n3 == 268443666) {
             SystemTools.setSystemErrorCode(2);
             return -1;
         }
-        if (camIndex >= 1) {
+        if (n >= 1) {
             SystemTools.setSystemErrorCode(2);
             return -1;
         }
@@ -206,47 +210,47 @@ implements Camera.PreviewCallback {
     }
 
     private Camera.Parameters getCameraParameters(Camera camera) {
-        Camera.Parameters params = null;
+        Camera.Parameters parameters = null;
         try {
-            params = camera.getParameters();
+            parameters = camera.getParameters();
         }
         catch (Exception exception) {
             // empty catch block
         }
-        return params;
+        return parameters;
     }
 
-    private CameraCacheInfo getCameraCacheInfo(int cameraCacheInfoIndex) {
-        if (cameraCacheInfoIndex < 0 || cameraCacheInfoIndex >= this.cameraCacheInfo.size()) {
+    private CameraCacheInfo getCameraCacheInfo(int n) {
+        if (n < 0 || n >= this.cameraCacheInfo.size()) {
             return null;
         }
-        return this.cameraCacheInfo.get(cameraCacheInfoIndex);
+        return this.cameraCacheInfo.get(n);
     }
 
-    private boolean setCustomCameraParams(Camera.Parameters cameraParams, String customData) {
-        JSONObject jsonObj = null;
+    private boolean setCustomCameraParams(Camera.Parameters parameters, String string) {
+        JSONObject jSONObject = null;
         try {
-            jsonObj = new JSONObject(customData);
+            jSONObject = new JSONObject(string);
         }
-        catch (JSONException e) {
+        catch (JSONException jSONException) {
             return false;
         }
-        Iterator elements = jsonObj.keys();
-        while (elements.hasNext()) {
-            Object value;
-            String key = (String)elements.next();
+        Iterator iterator = jSONObject.keys();
+        while (iterator.hasNext()) {
+            Object object;
+            String string2 = (String)iterator.next();
             try {
-                value = jsonObj.get(key);
+                object = jSONObject.get(string2);
             }
-            catch (JSONException e) {
+            catch (JSONException jSONException) {
                 return false;
             }
-            if (value.getClass() == String.class) {
-                cameraParams.set(key, (String)value);
+            if (object.getClass() == String.class) {
+                parameters.set(string2, (String)object);
                 continue;
             }
-            if (value.getClass() == Integer.class) {
-                cameraParams.set(key, (Integer) value);
+            if (object.getClass() == Integer.class) {
+                parameters.set(string2, ((Integer)object).intValue());
                 continue;
             }
             return false;
@@ -254,95 +258,95 @@ implements Camera.PreviewCallback {
         return true;
     }
 
-    private boolean setCameraPreviewFps(int fps, Camera.Parameters params) {
-        List<int[]> supportedFpsRanges = params.getSupportedPreviewFpsRange();
-        int min_fps = fps * 1000;
-        int best_range = Integer.MAX_VALUE;
-        int[] selected_range = null;
-        if ((fps == 60 || fps == 120) && "true".equalsIgnoreCase(params.get(SAMSUNG_PARAM_VRMODE_SUPPORTED))) {
-            selected_range = new int[2];
-            params.set(SAMSUNG_PARAM_VRMODE, 1);
-            params.setRecordingHint(true);
-            params.set("focus-mode", "continuous-video");
-            if (fps == 60) {
-                params.set(SAMSUNG_PARAM_FAST_FPS_MODE, 1);
-                selected_range[0] = 60000;
-                selected_range[1] = 60000;
+    private boolean setCameraPreviewFps(int n, Camera.Parameters parameters) {
+        List list = parameters.getSupportedPreviewFpsRange();
+        int n2 = n * 1000;
+        int n3 = Integer.MAX_VALUE;
+        int[] arrn = null;
+        if ((n == 60 || n == 120) && "true".equalsIgnoreCase(parameters.get(SAMSUNG_PARAM_VRMODE_SUPPORTED))) {
+            arrn = new int[2];
+            parameters.set(SAMSUNG_PARAM_VRMODE, 1);
+            parameters.setRecordingHint(true);
+            parameters.set("focus-mode", "continuous-video");
+            if (n == 60) {
+                parameters.set(SAMSUNG_PARAM_FAST_FPS_MODE, 1);
+                arrn[0] = 60000;
+                arrn[1] = 60000;
             }
-            if (fps == 120) {
-                params.set(SAMSUNG_PARAM_FAST_FPS_MODE, 2);
-                selected_range[0] = 120000;
-                selected_range[1] = 120000;
+            if (n == 120) {
+                parameters.set(SAMSUNG_PARAM_FAST_FPS_MODE, 2);
+                arrn[0] = 120000;
+                arrn[1] = 120000;
             }
         } else {
-            if ("true".equalsIgnoreCase(params.get(SAMSUNG_PARAM_VRMODE_SUPPORTED)) && params.get(SAMSUNG_PARAM_FAST_FPS_MODE) != null && params.getInt(SAMSUNG_PARAM_FAST_FPS_MODE) != 0) {
-                params.set(SAMSUNG_PARAM_VRMODE, 0);
-                params.set(SAMSUNG_PARAM_FAST_FPS_MODE, 0);
+            if ("true".equalsIgnoreCase(parameters.get(SAMSUNG_PARAM_VRMODE_SUPPORTED)) && parameters.get(SAMSUNG_PARAM_FAST_FPS_MODE) != null && parameters.getInt(SAMSUNG_PARAM_FAST_FPS_MODE) != 0) {
+                parameters.set(SAMSUNG_PARAM_VRMODE, 0);
+                parameters.set(SAMSUNG_PARAM_FAST_FPS_MODE, 0);
             }
-            for (int[] range : supportedFpsRanges) {
-                int delta;
-                if (range[0] != min_fps || (delta = range[1] - range[0]) >= best_range) continue;
-                selected_range = range;
+            for (int[] arrn2 : list) {
+                int n4;
+                if (arrn2[0] != n2 || (n4 = arrn2[1] - arrn2[0]) >= n3) continue;
+                arrn = arrn2;
             }
         }
-        if (selected_range != null) {
-            params.setPreviewFpsRange(selected_range[0], selected_range[1]);
+        if (arrn != null) {
+            parameters.setPreviewFpsRange(arrn[0], arrn[1]);
             return true;
         }
         return false;
     }
 
-    private boolean setCameraCaptureParams(CameraCacheInfo camCacheInfo, Camera.Parameters camParams, int[] captureInfo, int[] overrideCaptureInfo) {
-        boolean previewSurfaceEnabled;
-        if (captureInfo != null || overrideCaptureInfo != null) {
-            camCacheInfo.overrideWidth = overrideCaptureInfo != null ? overrideCaptureInfo[0] : captureInfo[0];
-            camCacheInfo.overrideHeight = overrideCaptureInfo != null ? overrideCaptureInfo[1] : captureInfo[1];
-            camCacheInfo.overrideFormatAndroid = this.translateImageFormat(overrideCaptureInfo != null ? overrideCaptureInfo[2] : captureInfo[2], CONVERT_FORMAT_TO_ANDROID);
+    private boolean setCameraCaptureParams(CameraCacheInfo cameraCacheInfo, Camera.Parameters parameters, int[] arrn, int[] arrn2) {
+        boolean bl;
+        if (arrn != null || arrn2 != null) {
+            cameraCacheInfo.overrideWidth = arrn2 != null ? arrn2[0] : arrn[0];
+            cameraCacheInfo.overrideHeight = arrn2 != null ? arrn2[1] : arrn[1];
+            cameraCacheInfo.overrideFormatAndroid = this.translateImageFormat(arrn2 != null ? arrn2[2] : arrn[2], CONVERT_FORMAT_TO_ANDROID);
         }
-        if (captureInfo == null) {
+        if (arrn == null) {
             return true;
         }
-        camCacheInfo.requestWidth = captureInfo[0];
-        camCacheInfo.requestHeight = captureInfo[1];
-        camCacheInfo.requestFormatAndroid = this.translateImageFormat(captureInfo[2], CONVERT_FORMAT_TO_ANDROID);
-        int framerate = captureInfo[3];
+        cameraCacheInfo.requestWidth = arrn[0];
+        cameraCacheInfo.requestHeight = arrn[1];
+        cameraCacheInfo.requestFormatAndroid = this.translateImageFormat(arrn[2], CONVERT_FORMAT_TO_ANDROID);
+        int n = arrn[3];
         try {
-            if (camCacheInfo.requestWidth > 0 && camCacheInfo.requestHeight > 0) {
-                camParams.setPreviewSize(camCacheInfo.requestWidth, camCacheInfo.requestHeight);
+            if (cameraCacheInfo.requestWidth > 0 && cameraCacheInfo.requestHeight > 0) {
+                parameters.setPreviewSize(cameraCacheInfo.requestWidth, cameraCacheInfo.requestHeight);
             }
-            if (framerate > 0) {
+            if (n > 0) {
                 if (SystemTools.checkMinimumApiLevel(8)) {
-                    if (!this.setCameraPreviewFps(framerate, camParams)) {
-                        camParams.setPreviewFrameRate(framerate);
+                    if (!this.setCameraPreviewFps(n, parameters)) {
+                        parameters.setPreviewFrameRate(n);
                     }
                 } else {
-                    camParams.setPreviewFrameRate(framerate);
+                    parameters.setPreviewFrameRate(n);
                 }
             }
-            if (camCacheInfo.requestFormatAndroid != 0) {
-                camParams.setPreviewFormat(camCacheInfo.requestFormatAndroid);
+            if (cameraCacheInfo.requestFormatAndroid != 0) {
+                parameters.setPreviewFormat(cameraCacheInfo.requestFormatAndroid);
             }
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             return false;
         }
-        boolean bl = previewSurfaceEnabled = captureInfo[4] > 0;
-        if (previewSurfaceEnabled) {
+        boolean bl2 = bl = arrn[4] > 0;
+        if (bl) {
             if (SystemTools.checkMinimumApiLevel(11)) {
-                int textureID = -1;
+                int n2 = -1;
                 try {
-                    camCacheInfo.surfaceTexture = new SurfaceTexture(textureID);
+                    cameraCacheInfo.surfaceTexture = new SurfaceTexture(n2);
                 }
-                catch (Exception e) {
+                catch (Exception exception) {
                     return false;
                 }
                 try {
-                    camCacheInfo.camera.setPreviewTexture(camCacheInfo.surfaceTexture);
+                    cameraCacheInfo.camera.setPreviewTexture(cameraCacheInfo.surfaceTexture);
                 }
-                catch (Exception e) {}
+                catch (Exception exception) {}
             } else if (this.surfaceManager != null) {
-                boolean result = this.surfaceManager.addCameraSurface(camCacheInfo);
-                if (!result) {
+                boolean bl3 = this.surfaceManager.addCameraSurface(cameraCacheInfo);
+                if (!bl3) {
                     return false;
                 }
             } else {
@@ -352,120 +356,120 @@ implements Camera.PreviewCallback {
         return true;
     }
 
-    private boolean checkSamsungHighFPS(CameraCacheInfo cci) {
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+    private boolean checkSamsungHighFPS(CameraCacheInfo cameraCacheInfo) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
-        if ("true".equalsIgnoreCase(cameraParams.get(SAMSUNG_PARAM_VRMODE_SUPPORTED)) && cci.requestWidth > 0 && cci.requestHeight > 0 && cameraParams.get(SAMSUNG_PARAM_FAST_FPS_MODE) != null && cameraParams.getInt(SAMSUNG_PARAM_FAST_FPS_MODE) != 0 && (cci.requestWidth != cameraParams.getPreviewSize().width || cci.requestHeight != cameraParams.getPreviewSize().height)) {
+        if ("true".equalsIgnoreCase(parameters.get(SAMSUNG_PARAM_VRMODE_SUPPORTED)) && cameraCacheInfo.requestWidth > 0 && cameraCacheInfo.requestHeight > 0 && parameters.get(SAMSUNG_PARAM_FAST_FPS_MODE) != null && parameters.getInt(SAMSUNG_PARAM_FAST_FPS_MODE) != 0 && (cameraCacheInfo.requestWidth != parameters.getPreviewSize().width || cameraCacheInfo.requestHeight != parameters.getPreviewSize().height)) {
             DebugLog.LOGW(MODULENAME, "Detected Samsung high fps camera driver bug.");
-            DebugLog.LOGW(MODULENAME, "Preview size doesn't match request; width " + cci.requestWidth + "!=" + cameraParams.getPreviewSize().width + " or height " + cci.requestHeight + "!=" + cameraParams.getPreviewSize().height);
-            this.setCameraPreviewFps(30, cameraParams);
-            cameraParams.setPreviewSize(cci.requestWidth, cci.requestHeight);
+            DebugLog.LOGW(MODULENAME, "Preview size doesn't match request; width " + cameraCacheInfo.requestWidth + "!=" + parameters.getPreviewSize().width + " or height " + cameraCacheInfo.requestHeight + "!=" + parameters.getPreviewSize().height);
+            this.setCameraPreviewFps(30, parameters);
+            parameters.setPreviewSize(cameraCacheInfo.requestWidth, cameraCacheInfo.requestHeight);
             try {
-                cci.camera.setParameters(cameraParams);
+                cameraCacheInfo.camera.setParameters(parameters);
             }
-            catch (Exception e) {
+            catch (Exception exception) {
                 SystemTools.setSystemErrorCode(6);
                 return false;
             }
-            cameraParams = this.getCameraParameters(cci.camera);
-            if (cci.requestWidth != cameraParams.getPreviewSize().width || cci.requestHeight != cameraParams.getPreviewSize().height) {
+            parameters = this.getCameraParameters(cameraCacheInfo.camera);
+            if (cameraCacheInfo.requestWidth != parameters.getPreviewSize().width || cameraCacheInfo.requestHeight != parameters.getPreviewSize().height) {
                 DebugLog.LOGE(MODULENAME, "Unable to workaround Samsung high fps camera driver bug.");
-                DebugLog.LOGE(MODULENAME, "Preview size doesn't match request; width " + cci.requestWidth + "!=" + cameraParams.getPreviewSize().width + " or height " + cci.requestHeight + "!=" + cameraParams.getPreviewSize().height);
+                DebugLog.LOGE(MODULENAME, "Preview size doesn't match request; width " + cameraCacheInfo.requestWidth + "!=" + parameters.getPreviewSize().width + " or height " + cameraCacheInfo.requestHeight + "!=" + parameters.getPreviewSize().height);
                 return false;
             }
         }
         return true;
     }
 
-    private boolean setupPreviewBuffer(CameraCacheInfo cci) {
-        int bitsPerPixel;
+    private boolean setupPreviewBuffer(CameraCacheInfo cameraCacheInfo) {
+        int n;
         block7 : {
-            Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-            if (cameraParams == null) {
+            Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+            if (parameters == null) {
                 return false;
             }
-            int bufferFormatAndroid = 0;
+            int n2 = 0;
             try {
-                cci.bufferWidth = cci.requestWidth == cci.overrideWidth ? cameraParams.getPreviewSize().width : cci.overrideWidth;
-                cci.bufferHeight = cci.requestHeight == cci.overrideHeight ? cameraParams.getPreviewSize().height : cci.overrideHeight;
-                bufferFormatAndroid = cci.requestFormatAndroid == cci.overrideFormatAndroid ? cameraParams.getPreviewFormat() : cci.overrideFormatAndroid;
-                cci.bufferFormatPL = this.translateImageFormat(bufferFormatAndroid, CONVERT_FORMAT_TO_PL);
+                cameraCacheInfo.bufferWidth = cameraCacheInfo.requestWidth == cameraCacheInfo.overrideWidth ? parameters.getPreviewSize().width : cameraCacheInfo.overrideWidth;
+                cameraCacheInfo.bufferHeight = cameraCacheInfo.requestHeight == cameraCacheInfo.overrideHeight ? parameters.getPreviewSize().height : cameraCacheInfo.overrideHeight;
+                n2 = cameraCacheInfo.requestFormatAndroid == cameraCacheInfo.overrideFormatAndroid ? parameters.getPreviewFormat() : cameraCacheInfo.overrideFormatAndroid;
+                cameraCacheInfo.bufferFormatPL = this.translateImageFormat(n2, CONVERT_FORMAT_TO_PL);
             }
-            catch (Exception e) {
+            catch (Exception exception) {
                 return false;
             }
-            bitsPerPixel = 0;
+            n = 0;
             try {
-                PixelFormat pixelFormatInfo = new PixelFormat();
-                PixelFormat.getPixelFormatInfo(bufferFormatAndroid, pixelFormatInfo);
-                bitsPerPixel = pixelFormatInfo.bitsPerPixel;
+                PixelFormat pixelFormat = new PixelFormat();
+                PixelFormat.getPixelFormatInfo((int)n2, (PixelFormat)pixelFormat);
+                n = pixelFormat.bitsPerPixel;
             }
-            catch (Exception e) {
-                bitsPerPixel = this.getBitsPerPixel(bufferFormatAndroid);
-                if (bitsPerPixel != 0) break block7;
+            catch (Exception exception) {
+                n = this.getBitsPerPixel(n2);
+                if (n != 0) break block7;
                 return false;
             }
         }
-        int bufferSize = cci.bufferWidth * cci.bufferHeight * bitsPerPixel / 8 + 4096;
-        if (bufferSize <= cci.bufferSize) {
-            cci.camera.setPreviewCallbackWithBuffer(this);
+        int n3 = cameraCacheInfo.bufferWidth * cameraCacheInfo.bufferHeight * n / 8 + 4096;
+        if (n3 <= cameraCacheInfo.bufferSize) {
+            cameraCacheInfo.camera.setPreviewCallbackWithBuffer((Camera.PreviewCallback)this);
             return true;
         }
-        cci.buffer = new byte[2][];
+        cameraCacheInfo.buffer = new byte[2][];
         for (int i = 0; i < 2; ++i) {
-            cci.buffer[i] = new byte[bufferSize];
+            cameraCacheInfo.buffer[i] = new byte[n3];
             if (i >= 2) continue;
-            cci.camera.addCallbackBuffer(cci.buffer[i]);
+            cameraCacheInfo.camera.addCallbackBuffer(cameraCacheInfo.buffer[i]);
         }
-        cci.bufferSize = bufferSize;
-        cci.camera.setPreviewCallbackWithBuffer(this);
+        cameraCacheInfo.bufferSize = n3;
+        cameraCacheInfo.camera.setPreviewCallbackWithBuffer((Camera.PreviewCallback)this);
         System.gc();
         return true;
     }
 
-    private void setCameraCapsBit(CameraCacheInfo cci, int capsIndex, int paramType, boolean value) {
-        int baseValue = 0;
-        switch (capsIndex) {
+    private void setCameraCapsBit(CameraCacheInfo cameraCacheInfo, int n, int n2, boolean bl) {
+        int n3 = 0;
+        switch (n) {
             case 2: {
-                baseValue = 805306368;
+                n3 = 805306368;
                 break;
             }
             case 0: 
             case 1: {
-                baseValue = 536870912;
+                n3 = 536870912;
                 break;
             }
             default: {
                 return;
             }
         }
-        int index = (int)(Math.log(paramType & ~ baseValue) / Math.log(2.0));
-        if (value) {
-            int[] arrn = cci.caps;
-            int n = capsIndex;
-            arrn[n] = arrn[n] | 1 << index;
+        int n4 = (int)(Math.log(n2 & ~ n3) / Math.log(2.0));
+        if (bl) {
+            int[] arrn = cameraCacheInfo.caps;
+            int n5 = n;
+            arrn[n5] = arrn[n5] | 1 << n4;
         } else {
-            int[] arrn = cci.caps;
-            int n = capsIndex;
-            arrn[n] = arrn[n] & ~ (1 << index);
+            int[] arrn = cameraCacheInfo.caps;
+            int n6 = n;
+            arrn[n6] = arrn[n6] & ~ (1 << n4);
         }
     }
 
-    private int translateImageFormat(int fromValue, boolean conversionMode) {
+    private int translateImageFormat(int n, boolean bl) {
         for (int i = 0; i < CAMERA_IMAGE_FORMAT_CONVERSIONTABLE.length / 2; ++i) {
-            int compareValue;
-            int n = compareValue = conversionMode == CONVERT_FORMAT_TO_PL ? CAMERA_IMAGE_FORMAT_CONVERSIONTABLE[i * 2] : CAMERA_IMAGE_FORMAT_CONVERSIONTABLE[i * 2 + 1];
-            if (fromValue != compareValue) continue;
-            return conversionMode == CONVERT_FORMAT_TO_PL ? CAMERA_IMAGE_FORMAT_CONVERSIONTABLE[i * 2 + 1] : CAMERA_IMAGE_FORMAT_CONVERSIONTABLE[i * 2];
+            int n2;
+            int n3 = n2 = bl == CONVERT_FORMAT_TO_PL ? CAMERA_IMAGE_FORMAT_CONVERSIONTABLE[i * 2] : CAMERA_IMAGE_FORMAT_CONVERSIONTABLE[i * 2 + 1];
+            if (n != n2) continue;
+            return bl == CONVERT_FORMAT_TO_PL ? CAMERA_IMAGE_FORMAT_CONVERSIONTABLE[i * 2 + 1] : CAMERA_IMAGE_FORMAT_CONVERSIONTABLE[i * 2];
         }
-        return conversionMode == CONVERT_FORMAT_TO_PL ? 268439808 : 0;
+        return bl == CONVERT_FORMAT_TO_PL ? 268439808 : 0;
     }
 
-    int getBitsPerPixel(int imgFormat) {
-        switch (imgFormat) {
+    int getBitsPerPixel(int n) {
+        switch (n) {
             case 16: {
                 return 16;
             }
@@ -482,28 +486,28 @@ implements Camera.PreviewCallback {
         return 0;
     }
 
-    public void onPreviewFrame(byte[] capturedBuffer, Camera camera) {
-        Integer intObj;
-        long frameTimeStamp = System.nanoTime();
+    public void onPreviewFrame(byte[] arrby, Camera camera) {
+        Integer n;
+        long l = System.nanoTime();
         if (SystemTools.checkMinimumApiLevel(18)) {
             // empty if block
         }
-        if ((intObj = this.cameraCacheInfoIndexCache.get(camera)) == null) {
+        if ((n = this.cameraCacheInfoIndexCache.get((Object)camera)) == null) {
             if (SystemTools.checkMinimumApiLevel(18)) {
                 // empty if block
             }
             return;
         }
-        int cameraCacheInfoIndex = intObj;
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+        int n2 = n;
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n2);
+        if (cameraCacheInfo == null) {
             if (SystemTools.checkMinimumApiLevel(18)) {
                 // empty if block
             }
             return;
         }
-        this.newFrameAvailable(cci.deviceHandle, cameraCacheInfoIndex, cci.bufferWidth, cci.bufferHeight, cci.bufferFormatPL, capturedBuffer, frameTimeStamp);
-        camera.addCallbackBuffer(capturedBuffer);
+        this.newFrameAvailable(cameraCacheInfo.deviceHandle, n2, cameraCacheInfo.bufferWidth, cameraCacheInfo.bufferHeight, cameraCacheInfo.bufferFormatPL, arrby, l);
+        camera.addCallbackBuffer(arrby);
         if (SystemTools.checkMinimumApiLevel(18)) {
             // empty if block
         }
@@ -512,13 +516,13 @@ implements Camera.PreviewCallback {
     private native void newFrameAvailable(long var1, int var3, int var4, int var5, int var6, byte[] var7, long var8);
 
     public boolean init() {
-        this.cameraCacheInfo = new Vector<>();
-        this.cameraCacheInfoIndexCache = new HashMap<>();
+        this.cameraCacheInfo = new Vector<E>();
+        this.cameraCacheInfoIndexCache = new HashMap<K, V>();
         return true;
     }
 
-    public void setSurfaceManager(SurfaceManager sm) {
-        this.surfaceManager = sm;
+    public void setSurfaceManager(SurfaceManager surfaceManager) {
+        this.surfaceManager = surfaceManager;
     }
 
     public int getNumberOfCameras() {
@@ -528,27 +532,27 @@ implements Camera.PreviewCallback {
         }
         if (SystemTools.checkMinimumApiLevel(9)) {
             try {
-                int num = Camera.getNumberOfCameras();
-                return num;
+                int n = Camera.getNumberOfCameras();
+                return n;
             }
-            catch (Exception e) {
+            catch (Exception exception) {
                 SystemTools.setSystemErrorCode(6);
                 return -1;
             }
         }
-        boolean deviceHasCamera = false;
+        boolean bl = false;
         try {
-            PackageManager pm = SystemTools.getActivityFromNative().getPackageManager();
-            deviceHasCamera = pm.hasSystemFeature("android.hardware.camera");
+            PackageManager packageManager = SystemTools.getActivityFromNative().getPackageManager();
+            bl = packageManager.hasSystemFeature("android.hardware.camera");
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             SystemTools.setSystemErrorCode(6);
             return -1;
         }
-        return deviceHasCamera ? 1 : 0;
+        return bl ? 1 : 0;
     }
 
-    public int getOrientation(int cameraID) {
+    public int getOrientation(int n) {
         if (!this.checkPermission()) {
             SystemTools.setSystemErrorCode(6);
             return -1;
@@ -556,9 +560,9 @@ implements Camera.PreviewCallback {
         if (SystemTools.checkMinimumApiLevel(9)) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             try {
-                Camera.getCameraInfo(cameraID, cameraInfo);
+                Camera.getCameraInfo((int)n, (Camera.CameraInfo)cameraInfo);
             }
-            catch (Exception e) {
+            catch (Exception exception) {
                 SystemTools.setSystemErrorCode(6);
                 return -1;
             }
@@ -568,7 +572,7 @@ implements Camera.PreviewCallback {
         return -1;
     }
 
-    public int getDirection(int cameraID) {
+    public int getDirection(int n) {
         if (!this.checkPermission()) {
             SystemTools.setSystemErrorCode(6);
             return -1;
@@ -576,9 +580,9 @@ implements Camera.PreviewCallback {
         if (SystemTools.checkMinimumApiLevel(9)) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             try {
-                Camera.getCameraInfo(cameraID, cameraInfo);
+                Camera.getCameraInfo((int)n, (Camera.CameraInfo)cameraInfo);
             }
-            catch (Exception e) {
+            catch (Exception exception) {
                 SystemTools.setSystemErrorCode(6);
                 return -1;
             }
@@ -595,76 +599,77 @@ implements Camera.PreviewCallback {
         return 268443665;
     }
 
-    public int getDeviceID(int cameraCacheInfoIndex) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+    public int getDeviceID(int n) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null) {
             SystemTools.setSystemErrorCode(4);
             return -1;
         }
-        return cci.deviceID;
+        return cameraCacheInfo.deviceID;
     }
 
     /*
      * WARNING - Removed try catching itself - possible behaviour change.
      */
-    public int open(long deviceHandle, int camIndex, int type, int direction, String customData, int[] captureInfo, int[] overrideCaptureInfo) {
-        boolean setCustomData;
+    public int open(long l, int n, int n2, int n3, String string, int[] arrn, int[] arrn2) {
+        boolean bl;
+        int n4;
         if (!this.checkPermission()) {
             SystemTools.setSystemErrorCode(6);
             return -1;
         }
-        int cameraDeviceIndex = this.getCameraDeviceIndex(camIndex, type, direction);
-        if (cameraDeviceIndex < 0) {
+        int n5 = this.getCameraDeviceIndex(n, n2, n3);
+        if (n5 < 0) {
             return -1;
         }
-        int cameraCacheInfoIndex = -1;
-        CameraCacheInfo cci = null;
-        int cameraCacheInfoSize = this.cameraCacheInfo.size();
-        for (int i = 0; i < cameraCacheInfoSize; ++i) {
-            cci = this.cameraCacheInfo.get(i);
-            if (cci.deviceID != cameraDeviceIndex) continue;
-            cameraCacheInfoIndex = i;
+        int n6 = -1;
+        CameraCacheInfo cameraCacheInfo = null;
+        int n7 = this.cameraCacheInfo.size();
+        for (n4 = 0; n4 < n7; ++n4) {
+            cameraCacheInfo = this.cameraCacheInfo.get(n4);
+            if (cameraCacheInfo.deviceID != n5) continue;
+            n6 = n4;
             break;
         }
-        if (cameraCacheInfoIndex < 0) {
-            cci = new CameraCacheInfo();
-            cci.deviceID = cameraDeviceIndex;
-            cci.deviceHandle = deviceHandle;
-            cci.camera = null;
-            cci.surface = null;
-            cci.buffer = null;
-            cci.overrideWidth = 0;
-            cci.requestWidth = 0;
-            cci.bufferWidth = 0;
-            cci.overrideHeight = 0;
-            cci.requestHeight = 0;
-            cci.bufferHeight = 0;
-            cci.bufferFormatPL = 268439808;
-            cci.overrideFormatAndroid = 0;
-            cci.requestFormatAndroid = 0;
-            cci.caps = null;
-            cci.status = 268443649;
-            cci.isAutoFocusing = false;
-            cci.isHalDriven = false;
+        if (n6 < 0) {
+            cameraCacheInfo = new CameraCacheInfo();
+            cameraCacheInfo.deviceID = n5;
+            cameraCacheInfo.deviceHandle = l;
+            cameraCacheInfo.camera = null;
+            cameraCacheInfo.surface = null;
+            cameraCacheInfo.buffer = null;
+            cameraCacheInfo.overrideWidth = 0;
+            cameraCacheInfo.requestWidth = 0;
+            cameraCacheInfo.bufferWidth = 0;
+            cameraCacheInfo.overrideHeight = 0;
+            cameraCacheInfo.requestHeight = 0;
+            cameraCacheInfo.bufferHeight = 0;
+            cameraCacheInfo.bufferFormatPL = 268439808;
+            cameraCacheInfo.overrideFormatAndroid = 0;
+            cameraCacheInfo.requestFormatAndroid = 0;
+            cameraCacheInfo.caps = null;
+            cameraCacheInfo.status = 268443649;
+            cameraCacheInfo.isAutoFocusing = false;
+            cameraCacheInfo.isHalDriven = false;
         }
-        cci.bufferSize = 0;
-        boolean resultCameraOpened = false;
-        int cameraOpenRetryCount = 10;
+        cameraCacheInfo.bufferSize = 0;
+        n4 = 0;
+        int n8 = 10;
         do {
             try {
                 if (SystemTools.checkMinimumApiLevel(9)) {
-                    cci.camera = Camera.open(cci.deviceID);
-                } else if (cci.deviceID == 0) {
-                    cci.camera = Camera.open();
+                    cameraCacheInfo.camera = Camera.open((int)cameraCacheInfo.deviceID);
+                } else if (cameraCacheInfo.deviceID == 0) {
+                    cameraCacheInfo.camera = Camera.open();
                 }
-                resultCameraOpened = cci.camera != null;
+                n4 = cameraCacheInfo.camera != null ? 1 : 0;
             }
             catch (Exception exception) {
                 // empty catch block
             }
-            if (resultCameraOpened) continue;
+            if (n4 != 0) continue;
             try {
-                if (cameraOpenRetryCount <= 0) continue;
+                if (n8 <= 0) continue;
                 Camera1_Preview camera1_Preview = this;
                 synchronized (camera1_Preview) {
                     this.wait(250L);
@@ -673,443 +678,445 @@ implements Camera.PreviewCallback {
             catch (Exception exception) {
                 // empty catch block
             }
-        } while (!resultCameraOpened && cameraOpenRetryCount-- > 0);
-        if (cci.camera == null) {
+        } while (n4 == 0 && n8-- > 0);
+        if (cameraCacheInfo.camera == null) {
             SystemTools.setSystemErrorCode(6);
             return -1;
         }
-        boolean setCaptureInfo = captureInfo != null && captureInfo.length > 0 || overrideCaptureInfo != null && overrideCaptureInfo.length > 0;
-        boolean bl = setCustomData = customData != null && customData.length() > 0;
-        if (setCaptureInfo || setCustomData) {
-            boolean result;
-            Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-            if (cameraParams == null) {
+        boolean bl2 = arrn != null && arrn.length > 0 || arrn2 != null && arrn2.length > 0;
+        boolean bl3 = bl = string != null && string.length() > 0;
+        if (bl2 || bl) {
+            boolean bl4;
+            Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+            if (parameters == null) {
                 SystemTools.setSystemErrorCode(6);
                 return -1;
             }
-            if (setCaptureInfo) {
-                if (captureInfo != null && captureInfo.length != 5) {
+            if (bl2) {
+                if (arrn != null && arrn.length != 5) {
                     SystemTools.setSystemErrorCode(2);
                     return -1;
                 }
-                result = this.setCameraCaptureParams(cci, cameraParams, captureInfo, overrideCaptureInfo);
-                if (!result) {
+                bl4 = this.setCameraCaptureParams(cameraCacheInfo, parameters, arrn, arrn2);
+                if (!bl4) {
                     SystemTools.setSystemErrorCode(6);
                     return -1;
                 }
             }
-            if (setCustomData && !(result = this.setCustomCameraParams(cameraParams, customData))) {
+            if (bl && !(bl4 = this.setCustomCameraParams(parameters, string))) {
                 SystemTools.setSystemErrorCode(2);
                 return -1;
             }
             try {
-                cci.camera.setParameters(cameraParams);
+                cameraCacheInfo.camera.setParameters(parameters);
             }
-            catch (Exception e) {
+            catch (Exception exception) {
                 SystemTools.setSystemErrorCode(6);
                 return -1;
             }
-            if (!this.checkSamsungHighFPS(cci)) {
+            if (!this.checkSamsungHighFPS(cameraCacheInfo)) {
                 return -1;
             }
         }
-        cci.status = 268443650;
-        if (cameraCacheInfoIndex < 0) {
-            this.cameraCacheInfo.add(cci);
-            cameraCacheInfoIndex = this.cameraCacheInfo.size() - 1;
+        cameraCacheInfo.status = 268443650;
+        if (n6 < 0) {
+            this.cameraCacheInfo.add(cameraCacheInfo);
+            n6 = this.cameraCacheInfo.size() - 1;
         }
-        this.cameraCacheInfoIndexCache.put(cci.camera, cameraCacheInfoIndex);
-        return cameraCacheInfoIndex;
+        this.cameraCacheInfoIndexCache.put(cameraCacheInfo.camera, n6);
+        return n6;
     }
 
-    public int registerHalCamera(int camIndex, int type, int direction, String customData, int[] captureInfo, int[] overrideCaptureInfo) {
+    public int registerHalCamera(int n, int n2, int n3, String string, int[] arrn, int[] arrn2) {
         if (!this.checkPermission()) {
             SystemTools.setSystemErrorCode(6);
             return -1;
         }
-        int cameraDeviceIndex = this.getCameraDeviceIndex(camIndex, type, direction);
-        if (cameraDeviceIndex < 0) {
+        int n4 = this.getCameraDeviceIndex(n, n2, n3);
+        if (n4 < 0) {
             return -1;
         }
-        int cameraCacheInfoIndex = -1;
-        CameraCacheInfo cci = null;
-        int cameraCacheInfoSize = this.cameraCacheInfo.size();
-        for (int i = 0; i < cameraCacheInfoSize; ++i) {
-            cci = this.cameraCacheInfo.get(i);
-            if (cci.deviceID != cameraDeviceIndex || !cci.isHalDriven) continue;
-            cameraCacheInfoIndex = i;
+        int n5 = -1;
+        CameraCacheInfo cameraCacheInfo = null;
+        int n6 = this.cameraCacheInfo.size();
+        for (int i = 0; i < n6; ++i) {
+            cameraCacheInfo = this.cameraCacheInfo.get(i);
+            if (cameraCacheInfo.deviceID != n4 || !cameraCacheInfo.isHalDriven) continue;
+            n5 = i;
             break;
         }
-        if (cameraCacheInfoIndex < 0) {
-            cci = new CameraCacheInfo();
-            cci.deviceID = cameraDeviceIndex;
-            cci.camera = null;
-            cci.surface = null;
-            cci.buffer = null;
-            cci.overrideWidth = 0;
-            cci.requestWidth = 0;
-            cci.bufferWidth = 0;
-            cci.overrideHeight = 0;
-            cci.requestHeight = 0;
-            cci.bufferHeight = 0;
-            cci.bufferFormatPL = 268439808;
-            cci.overrideFormatAndroid = 0;
-            cci.requestFormatAndroid = 0;
-            cci.caps = null;
-            cci.status = 268443649;
-            cci.isAutoFocusing = false;
-            cci.isHalDriven = true;
+        if (n5 < 0) {
+            cameraCacheInfo = new CameraCacheInfo();
+            cameraCacheInfo.deviceID = n4;
+            cameraCacheInfo.camera = null;
+            cameraCacheInfo.surface = null;
+            cameraCacheInfo.buffer = null;
+            cameraCacheInfo.overrideWidth = 0;
+            cameraCacheInfo.requestWidth = 0;
+            cameraCacheInfo.bufferWidth = 0;
+            cameraCacheInfo.overrideHeight = 0;
+            cameraCacheInfo.requestHeight = 0;
+            cameraCacheInfo.bufferHeight = 0;
+            cameraCacheInfo.bufferFormatPL = 268439808;
+            cameraCacheInfo.overrideFormatAndroid = 0;
+            cameraCacheInfo.requestFormatAndroid = 0;
+            cameraCacheInfo.caps = null;
+            cameraCacheInfo.status = 268443649;
+            cameraCacheInfo.isAutoFocusing = false;
+            cameraCacheInfo.isHalDriven = true;
         }
-        cci.bufferSize = 0;
-        if (cameraCacheInfoIndex < 0) {
-            this.cameraCacheInfo.add(cci);
-            cameraCacheInfoIndex = this.cameraCacheInfo.size() - 1;
+        cameraCacheInfo.bufferSize = 0;
+        if (n5 < 0) {
+            this.cameraCacheInfo.add(cameraCacheInfo);
+            n5 = this.cameraCacheInfo.size() - 1;
             DebugLog.LOGD("Camera1_Preview", "New HAL camera cache info added to cache");
         }
-        return cameraCacheInfoIndex;
+        return n5;
     }
 
-    public boolean close(int cameraCacheInfoIndex) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+    public boolean close(int n) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null) {
             SystemTools.setSystemErrorCode(4);
             return false;
         }
-        if (cci.isHalDriven) {
+        if (cameraCacheInfo.isHalDriven) {
             DebugLog.LOGW("Camera1_Preview", "We shouldn't be here for HAL driven camera!");
             return true;
         }
-        this.cameraCacheInfoIndexCache.remove(cci.camera);
-        boolean result = false;
+        this.cameraCacheInfoIndexCache.remove((Object)cameraCacheInfo.camera);
+        boolean bl = false;
         try {
-            cci.camera.release();
-            result = true;
+            cameraCacheInfo.camera.release();
+            bl = true;
         }
         catch (Exception exception) {
             // empty catch block
         }
-        cci.camera = null;
-        cci.buffer = null;
-        cci.status = 268443649;
+        cameraCacheInfo.camera = null;
+        cameraCacheInfo.buffer = null;
+        cameraCacheInfo.status = 268443649;
         System.gc();
-        return result;
+        return bl;
     }
 
-    public int[] getCameraCapabilities(int cameraCacheInfoIndex) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+    public int[] getCameraCapabilities(int n) {
+        ListIterator<E> listIterator;
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null) {
             SystemTools.setSystemErrorCode(4);
             return null;
         }
-        if (cci.caps != null) {
-            return cci.caps;
+        if (cameraCacheInfo.caps != null) {
+            return cameraCacheInfo.caps;
         }
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return null;
         }
-        List<Camera.Size> supportedImageSizes = cameraParams.getSupportedPreviewSizes();
-        List<Integer> supportedFrameRates = cameraParams.getSupportedPreviewFrameRates();
-        List<Integer> supportedImageFormats = cameraParams.getSupportedPreviewFormats();
-        List<String> supportedFlashModes = cameraParams.getSupportedFlashModes();
-        List<String> supportedFocusModes = cameraParams.getSupportedFocusModes();
-        int numSupportedImageSizes = supportedImageSizes != null ? supportedImageSizes.size() : 0;
-        int numSupportedFrameRates = supportedFrameRates != null ? supportedFrameRates.size() : 0;
-        int numSupportedImageFormats = supportedImageFormats != null ? supportedImageFormats.size() : 0;
-        int capsArraySize = 6 + numSupportedImageSizes * 2 + numSupportedFrameRates + numSupportedImageFormats;
-        cci.caps = new int[capsArraySize];
-        int capsIndex = 0;
-        cci.caps[capsIndex] = 536870912;
-        this.setCameraCapsBit(cci, capsIndex, 536870913, supportedFlashModes != null ? supportedFlashModes.contains("torch") || supportedFlashModes.contains("on") : false);
-        this.setCameraCapsBit(cci, capsIndex, 536870914, true);
-        this.setCameraCapsBit(cci, capsIndex, 536870916, SystemTools.checkMinimumApiLevel(8));
-        this.setCameraCapsBit(cci, capsIndex, 536870928, SystemTools.checkMinimumApiLevel(14));
-        this.setCameraCapsBit(cci, capsIndex, 536871168, SystemTools.checkMinimumApiLevel(8));
-        this.setCameraCapsBit(cci, capsIndex, 536871424, SystemTools.checkMinimumApiLevel(8));
-        this.setCameraCapsBit(cci, capsIndex, 536879104, SystemTools.checkMinimumApiLevel(8) && cameraParams.isZoomSupported());
-        this.setCameraCapsBit(cci, capsIndex, 536887296, SystemTools.checkMinimumApiLevel(8) && cameraParams.isZoomSupported());
-        this.setCameraCapsBit(cci, capsIndex, 545259520, SystemTools.checkMinimumApiLevel(15));
-        capsIndex = 1;
-        cci.caps[capsIndex] = 536870912;
-        this.setCameraCapsBit(cci, capsIndex, 536870913, supportedFlashModes != null ? supportedFlashModes.contains("torch") || supportedFlashModes.contains("on") : false);
-        this.setCameraCapsBit(cci, capsIndex, 536870914, true);
-        this.setCameraCapsBit(cci, capsIndex, 536870928, SystemTools.checkMinimumApiLevel(14));
-        this.setCameraCapsBit(cci, capsIndex, 536871168, SystemTools.checkMinimumApiLevel(8));
-        this.setCameraCapsBit(cci, capsIndex, 536879104, SystemTools.checkMinimumApiLevel(8) && cameraParams.isZoomSupported());
-        this.setCameraCapsBit(cci, capsIndex, 545259520, SystemTools.checkMinimumApiLevel(15));
-        capsIndex = 2;
-        cci.caps[capsIndex] = 805306368;
-        if (supportedFlashModes != null && (supportedFlashModes.contains("torch") || supportedFlashModes.contains("on"))) {
-            this.setCameraCapsBit(cci, capsIndex, 805306369, true);
-            this.setCameraCapsBit(cci, capsIndex, 805306370, true);
+        List list = parameters.getSupportedPreviewSizes();
+        List list2 = parameters.getSupportedPreviewFrameRates();
+        List list3 = parameters.getSupportedPreviewFormats();
+        List list4 = parameters.getSupportedFlashModes();
+        List list5 = parameters.getSupportedFocusModes();
+        int n2 = list != null ? list.size() : 0;
+        int n3 = list2 != null ? list2.size() : 0;
+        int n4 = list3 != null ? list3.size() : 0;
+        int n5 = 6 + n2 * 2 + n3 + n4;
+        cameraCacheInfo.caps = new int[n5];
+        int n6 = 0;
+        cameraCacheInfo.caps[n6] = 536870912;
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536870913, list4 != null ? list4.contains("torch") || list4.contains("on") : false);
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536870914, true);
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536870916, SystemTools.checkMinimumApiLevel(8));
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536870928, SystemTools.checkMinimumApiLevel(14));
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536871936, SystemTools.checkMinimumApiLevel(8));
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536872960, SystemTools.checkMinimumApiLevel(8));
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536903680, SystemTools.checkMinimumApiLevel(8) && parameters.isZoomSupported());
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536936448, SystemTools.checkMinimumApiLevel(8) && parameters.isZoomSupported());
+        this.setCameraCapsBit(cameraCacheInfo, n6, 553648128, SystemTools.checkMinimumApiLevel(15));
+        n6 = 1;
+        cameraCacheInfo.caps[n6] = 536870912;
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536870913, list4 != null ? list4.contains("torch") || list4.contains("on") : false);
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536870914, true);
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536870928, SystemTools.checkMinimumApiLevel(14));
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536871936, SystemTools.checkMinimumApiLevel(8));
+        this.setCameraCapsBit(cameraCacheInfo, n6, 536903680, SystemTools.checkMinimumApiLevel(8) && parameters.isZoomSupported());
+        this.setCameraCapsBit(cameraCacheInfo, n6, 553648128, SystemTools.checkMinimumApiLevel(15));
+        n6 = 2;
+        cameraCacheInfo.caps[n6] = 805306368;
+        if (list4 != null && (list4.contains("torch") || list4.contains("on"))) {
+            this.setCameraCapsBit(cameraCacheInfo, n6, 805306369, true);
+            this.setCameraCapsBit(cameraCacheInfo, n6, 805306370, true);
         }
-        if (supportedFocusModes != null) {
-            this.setCameraCapsBit(cci, capsIndex, 805306384, true);
-            this.setCameraCapsBit(cci, capsIndex, 805306400, supportedFocusModes.contains("auto"));
-            this.setCameraCapsBit(cci, capsIndex, 805306432, supportedFocusModes.contains("continuous-video"));
-            this.setCameraCapsBit(cci, capsIndex, 805306496, supportedFocusModes.contains("macro"));
-            this.setCameraCapsBit(cci, capsIndex, 805306624, supportedFocusModes.contains("infinity"));
-            this.setCameraCapsBit(cci, capsIndex, 805306880, supportedFocusModes.contains("fixed"));
+        if (list5 != null) {
+            this.setCameraCapsBit(cameraCacheInfo, n6, 805306384, true);
+            this.setCameraCapsBit(cameraCacheInfo, n6, 805306400, list5.contains("auto"));
+            this.setCameraCapsBit(cameraCacheInfo, n6, 805306432, list5.contains("continuous-video"));
+            this.setCameraCapsBit(cameraCacheInfo, n6, 805306496, list5.contains("macro"));
+            this.setCameraCapsBit(cameraCacheInfo, n6, 805306624, list5.contains("infinity"));
+            this.setCameraCapsBit(cameraCacheInfo, n6, 805306880, list5.contains("fixed"));
         }
-        cci.caps[3] = numSupportedImageSizes;
-        cci.caps[4] = numSupportedFrameRates;
-        cci.caps[5] = numSupportedImageFormats;
-        int indexOffset = 6;
-        if (numSupportedImageSizes > 0) {
-            ListIterator<Camera.Size> iterSizes = supportedImageSizes.listIterator();
-            while (iterSizes.hasNext()) {
-                Camera.Size size = iterSizes.next();
-                cci.caps[indexOffset] = size.width;
-                cci.caps[indexOffset + 1] = size.height;
-                indexOffset += 2;
+        cameraCacheInfo.caps[3] = n2;
+        cameraCacheInfo.caps[4] = n3;
+        cameraCacheInfo.caps[5] = n4;
+        int n7 = 6;
+        if (n2 > 0) {
+            listIterator = list.listIterator();
+            while (listIterator.hasNext()) {
+                Camera.Size size = (Camera.Size)listIterator.next();
+                cameraCacheInfo.caps[n7] = size.width;
+                cameraCacheInfo.caps[n7 + 1] = size.height;
+                n7 += 2;
             }
         }
-        if (numSupportedFrameRates > 0) {
-            ListIterator<Integer> iterFramerates = supportedFrameRates.listIterator();
-            while (iterFramerates.hasNext()) {
-                int framerate;
-                cci.caps[indexOffset] = framerate = iterFramerates.next();
-                ++indexOffset;
+        if (n3 > 0) {
+            listIterator = list2.listIterator();
+            while (listIterator.hasNext()) {
+                int n8;
+                cameraCacheInfo.caps[n7] = n8 = ((Integer)listIterator.next()).intValue();
+                ++n7;
             }
         }
-        if (numSupportedImageFormats > 0) {
-            ListIterator<Integer> iterFormats = supportedImageFormats.listIterator();
-            while (iterFormats.hasNext()) {
-                int format = iterFormats.next();
-                cci.caps[indexOffset] = this.translateImageFormat(format, true);
-                ++indexOffset;
+        if (n4 > 0) {
+            listIterator = list3.listIterator();
+            while (listIterator.hasNext()) {
+                int n9 = (Integer)listIterator.next();
+                cameraCacheInfo.caps[n7] = this.translateImageFormat(n9, true);
+                ++n7;
             }
         }
-        return cci.caps;
+        return cameraCacheInfo.caps;
     }
 
-    public boolean setCaptureInfo(int cameraCacheInfoIndex, int[] captureInfo, int[] overrideCaptureInfo) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+    public boolean setCaptureInfo(int n, int[] arrn, int[] arrn2) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null) {
             SystemTools.setSystemErrorCode(4);
             return false;
         }
-        if (captureInfo.length != 5) {
+        if (arrn.length != 5) {
             SystemTools.setSystemErrorCode(2);
             return false;
         }
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
-        boolean result = this.setCameraCaptureParams(cci, cameraParams, captureInfo, overrideCaptureInfo);
-        if (!result) {
+        boolean bl = this.setCameraCaptureParams(cameraCacheInfo, parameters, arrn, arrn2);
+        if (!bl) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
         try {
-            cci.camera.setParameters(cameraParams);
+            cameraCacheInfo.camera.setParameters(parameters);
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
-        if (!this.checkSamsungHighFPS(cci)) {
+        if (!this.checkSamsungHighFPS(cameraCacheInfo)) {
             return false;
         }
         return true;
     }
 
-    public int[] getCaptureInfo(int cameraCacheInfoIndex) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+    public int[] getCaptureInfo(int n) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null) {
             SystemTools.setSystemErrorCode(4);
             return null;
         }
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return null;
         }
-        int[] captureInfo = null;
+        int[] arrn = null;
         try {
-            captureInfo = new int[5];
-            captureInfo[0] = cameraParams.getPreviewSize().width;
-            captureInfo[1] = cameraParams.getPreviewSize().height;
-            captureInfo[2] = this.translateImageFormat(cameraParams.getPreviewFormat(), CONVERT_FORMAT_TO_PL);
-            captureInfo[3] = cameraParams.getPreviewFrameRate();
-            captureInfo[4] = cci.surface != null || cci.surfaceTexture != null ? 1 : 0;
+            arrn = new int[5];
+            arrn[0] = parameters.getPreviewSize().width;
+            arrn[1] = parameters.getPreviewSize().height;
+            arrn[2] = this.translateImageFormat(parameters.getPreviewFormat(), CONVERT_FORMAT_TO_PL);
+            arrn[3] = parameters.getPreviewFrameRate();
+            arrn[4] = cameraCacheInfo.surface != null || cameraCacheInfo.surfaceTexture != null ? 1 : 0;
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             SystemTools.setSystemErrorCode(6);
             return null;
         }
-        return captureInfo;
+        return arrn;
     }
 
-    public boolean start(int cameraCacheInfoIndex) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+    public boolean start(int n) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null) {
             SystemTools.setSystemErrorCode(4);
             return false;
         }
-        if (!this.setupPreviewBuffer(cci)) {
+        if (!this.setupPreviewBuffer(cameraCacheInfo)) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
         try {
-            cci.camera.startPreview();
-            cci.status = 268443651;
+            cameraCacheInfo.camera.startPreview();
+            cameraCacheInfo.status = 268443651;
             return true;
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
     }
 
-    public boolean stop(int cameraCacheInfoIndex) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+    public boolean stop(int n) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null) {
             SystemTools.setSystemErrorCode(4);
             return false;
         }
         try {
-            cci.camera.stopPreview();
-            cci.status = 268443650;
+            cameraCacheInfo.camera.stopPreview();
+            cameraCacheInfo.status = 268443650;
             return true;
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
     }
 
-    public boolean setBatchParameters(int cameraCacheInfoIndex, String customData) {
-        if (customData == null) {
+    public boolean setBatchParameters(int n, String string) {
+        if (string == null) {
             return false;
         }
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null || cci.camera == null) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null || cameraCacheInfo.camera == null) {
             SystemTools.setSystemErrorCode(4);
             return false;
         }
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
-        if (!this.setCustomCameraParams(cameraParams, customData)) {
+        if (!this.setCustomCameraParams(parameters, string)) {
             return false;
         }
-        cci.camera.setParameters(cameraParams);
+        cameraCacheInfo.camera.setParameters(parameters);
         return true;
     }
 
-    boolean setUntypedCameraParameter(int cameraCacheInfoIndex, String name, String value) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null || cci.camera == null) {
+    boolean setUntypedCameraParameter(int n, String string, String string2) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null || cameraCacheInfo.camera == null) {
             SystemTools.setSystemErrorCode(4);
             return false;
         }
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
         try {
-            cameraParams.set(name, value);
-            cci.camera.setParameters(cameraParams);
+            parameters.set(string, string2);
+            cameraCacheInfo.camera.setParameters(parameters);
             return true;
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
     }
 
-    String getUntypedCameraParameter(int cameraCacheInfoIndex, String name) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null || cci.camera == null) {
+    String getUntypedCameraParameter(int n, String string) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null || cameraCacheInfo.camera == null) {
             SystemTools.setSystemErrorCode(4);
             return null;
         }
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return null;
         }
-        String parameterValue = cameraParams.get(name);
-        if (parameterValue == null) {
+        String string2 = parameters.get(string);
+        if (string2 == null) {
             SystemTools.setSystemErrorCode(6);
         }
-        return parameterValue;
+        return string2;
     }
 
-    String getFlattenedParameters(int cameraCacheInfoIndex) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null || cci.camera == null) {
+    String getFlattenedParameters(int n) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null || cameraCacheInfo.camera == null) {
             SystemTools.setSystemErrorCode(4);
             return "";
         }
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return "";
         }
-        return cameraParams.flatten();
+        return parameters.flatten();
     }
 
-    boolean setTypedCameraParameter(int cameraCacheInfoIndex, int type, Object value) {
-        Camera.Parameters cameraParams;
-        boolean doPostSetAction;
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        block75 : {
-            if (cci == null || cci.camera == null) {
+    boolean setTypedCameraParameter(int n, int n2, Object object) {
+        CameraCacheInfo cameraCacheInfo;
+        Camera.Parameters parameters;
+        boolean bl;
+        block74 : {
+            cameraCacheInfo = this.getCameraCacheInfo(n);
+            if (cameraCacheInfo == null || cameraCacheInfo.camera == null) {
                 SystemTools.setSystemErrorCode(4);
                 return false;
             }
-            cameraParams = this.getCameraParameters(cci.camera);
-            if (cameraParams == null) {
+            parameters = this.getCameraParameters(cameraCacheInfo.camera);
+            if (parameters == null) {
                 SystemTools.setSystemErrorCode(6);
                 return false;
             }
-            doPostSetAction = false;
+            bl = false;
             try {
-                block3 : switch (type) {
-                    case 537919488: {
-                        String isoValStr = Integer.toString(((Number)value).intValue());
-                        String supportedIsoValues = cameraParams.get("iso-values");
-                        if (supportedIsoValues != null) {
-                            String[] supportedIsoValuesParts = supportedIsoValues.split(",");
-                            for (int x = 0; x < supportedIsoValuesParts.length; ++x) {
-                                if (!supportedIsoValuesParts[x].toLowerCase().contains(isoValStr.toLowerCase())) continue;
-                                isoValStr = supportedIsoValuesParts[x];
+                block3 : switch (n2) {
+                    case 536870976: {
+                        String string = Integer.toString(((Number)object).intValue());
+                        String string2 = parameters.get("iso-values");
+                        if (string2 != null) {
+                            String[] arrstring = string2.split(",");
+                            for (int i = 0; i < arrstring.length; ++i) {
+                                if (!arrstring[i].toLowerCase().contains(string.toLowerCase())) continue;
+                                string = arrstring[i];
                                 break;
                             }
                         }
-                        cameraParams.set("iso", isoValStr);
+                        parameters.set("iso", string);
                         break;
                     }
-                    case 538968064: {
-                        int val = ((Number)value).intValue();
+                    case 541065216: {
+                        int n3 = ((Number)object).intValue();
                         if (SystemTools.checkMinimumApiLevel(14)) {
-                            cameraParams.setRecordingHint(val != 0);
+                            parameters.setRecordingHint(n3 != 0);
                             break;
                         }
-                        cameraParams.set("recording-hint", val != 0 ? "true" : "false");
+                        parameters.set("recording-hint", n3 != 0 ? "true" : "false");
                         break;
                     }
                     case 536870913: {
-                        int torchMode = ((Number)value).intValue();
-                        switch (torchMode) {
+                        int n4 = ((Number)object).intValue();
+                        switch (n4) {
                             case 805306370: {
-                                if (cameraParams.getSupportedFlashModes().contains("torch")) {
-                                    cameraParams.setFlashMode("torch");
+                                if (parameters.getSupportedFlashModes().contains("torch")) {
+                                    parameters.setFlashMode("torch");
                                     break block3;
                                 }
-                                cameraParams.setFlashMode("on");
+                                parameters.setFlashMode("on");
                                 break block3;
                             }
                             case 805306369: {
-                                cameraParams.setFlashMode("off");
+                                parameters.setFlashMode("off");
                                 break block3;
                             }
                             case 805306372: {
@@ -1121,41 +1128,41 @@ implements Camera.PreviewCallback {
                         return false;
                     }
                     case 536870914: {
-                        cci.camera.cancelAutoFocus();
-                        int focusMode = ((Number)value).intValue();
-                        switch (focusMode) {
+                        cameraCacheInfo.camera.cancelAutoFocus();
+                        int n5 = ((Number)object).intValue();
+                        switch (n5) {
                             case 805306384: {
-                                if (cameraParams.getSupportedFocusModes().contains("normal")) {
-                                    cameraParams.setFocusMode("normal");
+                                if (parameters.getSupportedFocusModes().contains("normal")) {
+                                    parameters.setFocusMode("normal");
                                     break block3;
                                 }
-                                cameraParams.setFocusMode("auto");
-                                doPostSetAction = true;
+                                parameters.setFocusMode("auto");
+                                bl = true;
                                 break block3;
                             }
                             case 805306400: {
-                                cameraParams.setFocusMode("auto");
-                                doPostSetAction = true;
+                                parameters.setFocusMode("auto");
+                                bl = true;
                                 break block3;
                             }
                             case 805306432: {
-                                if (cameraParams.getSupportedFocusModes().contains("continuous-video")) {
-                                    cameraParams.setFocusMode("continuous-video");
+                                if (parameters.getSupportedFocusModes().contains("continuous-video")) {
+                                    parameters.setFocusMode("continuous-video");
                                     break block3;
                                 }
                                 SystemTools.setSystemErrorCode(6);
                                 return false;
                             }
                             case 805306496: {
-                                cameraParams.setFocusMode("macro");
+                                parameters.setFocusMode("macro");
                                 break block3;
                             }
                             case 805306624: {
-                                cameraParams.setFocusMode("infinity");
+                                parameters.setFocusMode("infinity");
                                 break block3;
                             }
                             case 805306880: {
-                                cameraParams.setFocusMode("fixed");
+                                parameters.setFocusMode("fixed");
                                 break block3;
                             }
                         }
@@ -1172,21 +1179,21 @@ implements Camera.PreviewCallback {
                     }
                     case 536870928: {
                         if (SystemTools.checkMinimumApiLevel(14)) {
-                            float[] focusRegion = (float[])value;
-                            if (focusRegion.length != 5) {
+                            float[] arrf = (float[])object;
+                            if (arrf.length != 5) {
                                 SystemTools.setSystemErrorCode(2);
                                 return false;
                             }
-                            if (focusRegion[0] < 0.0f || focusRegion[0] > 1.0f || focusRegion[1] < 0.0f || focusRegion[1] > 1.0f || focusRegion[2] < 0.0f || focusRegion[2] > 1.0f || focusRegion[3] < 0.0f || focusRegion[3] > 1.0f || focusRegion[4] < 0.0f || focusRegion[4] > 1.0f) {
+                            if (arrf[0] < 0.0f || arrf[0] > 1.0f || arrf[1] < 0.0f || arrf[1] > 1.0f || arrf[2] < 0.0f || arrf[2] > 1.0f || arrf[3] < 0.0f || arrf[3] > 1.0f || arrf[4] < 0.0f || arrf[4] > 1.0f) {
                                 SystemTools.setSystemErrorCode(2);
                                 return false;
                             }
-                            Rect focusRect = new Rect((int)((double)focusRegion[0] * 2000.0) - 1000, (int)((double)focusRegion[1] * 2000.0) - 1000, (int)((double)focusRegion[2] * 2000.0) - 1000, (int)((double)focusRegion[3] * 2000.0) - 1000);
-                            ArrayList<Camera.Area> focusAreaList = new ArrayList<Camera.Area>();
-                            Camera.Area focusArea = new Camera.Area(focusRect, (int)((double)focusRegion[4] * 1000.0));
-                            focusAreaList.add(focusArea);
-                            if (cameraParams.getMaxNumFocusAreas() > 0) {
-                                cameraParams.setFocusAreas(focusAreaList);
+                            Rect rect = new Rect((int)((double)arrf[0] * 2000.0) - 1000, (int)((double)arrf[1] * 2000.0) - 1000, (int)((double)arrf[2] * 2000.0) - 1000, (int)((double)arrf[3] * 2000.0) - 1000);
+                            ArrayList<Camera.Area> arrayList = new ArrayList<Camera.Area>();
+                            Camera.Area area = new Camera.Area(rect, (int)((double)arrf[4] * 1000.0));
+                            arrayList.add(area);
+                            if (parameters.getMaxNumFocusAreas() > 0) {
+                                parameters.setFocusAreas(arrayList);
                             }
                             break;
                         }
@@ -1194,22 +1201,21 @@ implements Camera.PreviewCallback {
                         return false;
                     }
                     case 536870944: {
-                        int exposureMode = ((Number)value).intValue();
-                        switch (exposureMode) {
+                        int n6 = ((Number)object).intValue();
+                        switch (n6) {
                             case 805310464: {
-                                if (cameraParams.isAutoExposureLockSupported()) {
-                                    cameraParams.setAutoExposureLock(true);
+                                if (parameters.isAutoExposureLockSupported()) {
+                                    parameters.setAutoExposureLock(true);
                                     break block3;
                                 }
-                                break block75;
+                                break block74;
                             }
-                            case 805314560: 
                             case 805322752: {
-                                if (cameraParams.isAutoExposureLockSupported()) {
-                                    cameraParams.setAutoExposureLock(false);
+                                if (parameters.isAutoExposureLockSupported()) {
+                                    parameters.setAutoExposureLock(false);
                                     break block3;
                                 }
-                                break block75;
+                                break block74;
                             }
                             default: {
                                 SystemTools.setSystemErrorCode(3);
@@ -1217,66 +1223,49 @@ implements Camera.PreviewCallback {
                             }
                         }
                     }
-                    case 536870976: {
-                        SystemTools.setSystemErrorCode(6);
-                        return false;
-                    }
-                    case 536871040: {
-                        SystemTools.setSystemErrorCode(6);
-                        return false;
-                    }
-                    case 536871168: {
+                    case 536871936: {
                         if (SystemTools.checkMinimumApiLevel(8)) {
-                            int expCompValue = ((Number)value).intValue();
-                            cameraParams.setExposureCompensation(expCompValue);
+                            float f = ((Number)object).floatValue();
+                            float f2 = parameters.getExposureCompensationStep();
+                            if (f2 == 0.0f) {
+                                SystemTools.setSystemErrorCode(6);
+                                return false;
+                            }
+                            parameters.setExposureCompensation(Math.round(f / f2));
                             break;
                         }
                         SystemTools.setSystemErrorCode(6);
                         return false;
-                    }
-                    case 536871424: {
-                        SystemTools.setSystemErrorCode(6);
-                        return false;
-                    }
-                    case 536871936: {
-                        int whiteBalanceMode = ((Number)value).intValue();
-                        switch (whiteBalanceMode) {
-                            case 805371904: {
-                                if (cameraParams.isAutoWhiteBalanceLockSupported()) {
-                                    cameraParams.setAutoWhiteBalanceLock(true);
-                                    break block3;
-                                }
-                                break block75;
-                            }
-                            case 805437440: 
-                            case 805568512: {
-                                if (cameraParams.isAutoWhiteBalanceLockSupported()) {
-                                    cameraParams.setAutoWhiteBalanceLock(false);
-                                    break block3;
-                                }
-                                break block75;
-                            }
-                            default: {
-                                SystemTools.setSystemErrorCode(3);
-                                SystemTools.logSystemError("Cannot set unknown white balance mode (" + whiteBalanceMode + ")");
-                                return false;
-                            }
-                        }
                     }
                     case 536872960: {
                         SystemTools.setSystemErrorCode(6);
                         return false;
                     }
                     case 536875008: {
-                        SystemTools.setSystemErrorCode(6);
-                        return false;
+                        int n7 = ((Number)object).intValue();
+                        switch (n7) {
+                            case 806354944: {
+                                if (parameters.isAutoWhiteBalanceLockSupported()) {
+                                    parameters.setAutoWhiteBalanceLock(true);
+                                    break block3;
+                                }
+                                break block74;
+                            }
+                            case 809500672: {
+                                if (parameters.isAutoWhiteBalanceLockSupported()) {
+                                    parameters.setAutoWhiteBalanceLock(false);
+                                    break block3;
+                                }
+                                break block74;
+                            }
+                            default: {
+                                SystemTools.setSystemErrorCode(3);
+                                SystemTools.logSystemError("Cannot set unknown white balance mode (" + n7 + ")");
+                                return false;
+                            }
+                        }
                     }
                     case 536879104: {
-                        if (SystemTools.checkMinimumApiLevel(8) && cameraParams.isZoomSupported()) {
-                            int zoomValue = ((Number)value).intValue();
-                            cameraParams.setZoom(zoomValue);
-                            break;
-                        }
                         SystemTools.setSystemErrorCode(6);
                         return false;
                     }
@@ -1285,6 +1274,11 @@ implements Camera.PreviewCallback {
                         return false;
                     }
                     case 536903680: {
+                        if (SystemTools.checkMinimumApiLevel(8) && parameters.isZoomSupported()) {
+                            int n8 = ((Number)object).intValue();
+                            parameters.setZoom(n8);
+                            break;
+                        }
                         SystemTools.setSystemErrorCode(6);
                         return false;
                     }
@@ -1304,13 +1298,21 @@ implements Camera.PreviewCallback {
                         SystemTools.setSystemErrorCode(6);
                         return false;
                     }
-                    case 545259520: {
-                        boolean videoStabilizationMode = (Boolean)value;
-                        if (videoStabilizationMode) {
-                            cameraParams.setVideoStabilization(true);
+                    case 537919488: {
+                        SystemTools.setSystemErrorCode(6);
+                        return false;
+                    }
+                    case 538968064: {
+                        SystemTools.setSystemErrorCode(6);
+                        return false;
+                    }
+                    case 553648128: {
+                        boolean bl2 = (Boolean)object;
+                        if (bl2) {
+                            parameters.setVideoStabilization(true);
                             break;
                         }
-                        cameraParams.setVideoStabilization(false);
+                        parameters.setVideoStabilization(false);
                         break;
                     }
                     default: {
@@ -1318,31 +1320,31 @@ implements Camera.PreviewCallback {
                     }
                 }
             }
-            catch (Exception e) {
+            catch (Exception exception) {
                 SystemTools.setSystemErrorCode(6);
                 return false;
             }
         }
         try {
-            cci.camera.setParameters(cameraParams);
+            cameraCacheInfo.camera.setParameters(parameters);
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
-        if (doPostSetAction) {
+        if (bl) {
             try {
-                switch (type) {
+                switch (n2) {
                     case 536870914: {
-                        cci.isAutoFocusing = true;
-                        cci.camera.autoFocus(new Camera.AutoFocusCallback(){
+                        cameraCacheInfo.isAutoFocusing = true;
+                        cameraCacheInfo.camera.autoFocus(new Camera.AutoFocusCallback(){
 
-                            public void onAutoFocus(boolean success, Camera camera) {
-                                CameraCacheInfo cci;
-                                int cameraCacheInfoIndex;
-                                Object intObj = Camera1_Preview.this.cameraCacheInfoIndexCache.get(camera);
-                                if (intObj != null && (cci = Camera1_Preview.this.getCameraCacheInfo(cameraCacheInfoIndex = (Integer) intObj)) != null) {
-                                    cci.isAutoFocusing = false;
+                            public void onAutoFocus(boolean bl, Camera camera) {
+                                int n;
+                                CameraCacheInfo cameraCacheInfo;
+                                Object v = Camera1_Preview.this.cameraCacheInfoIndexCache.get((Object)camera);
+                                if (v != null && (cameraCacheInfo = Camera1_Preview.this.getCameraCacheInfo(n = ((Integer)v).intValue())) != null) {
+                                    cameraCacheInfo.isAutoFocusing = false;
                                 }
                             }
                         });
@@ -1350,7 +1352,7 @@ implements Camera.PreviewCallback {
                     }
                 }
             }
-            catch (Exception e) {
+            catch (Exception exception) {
                 SystemTools.setSystemErrorCode(6);
                 return false;
             }
@@ -1358,45 +1360,45 @@ implements Camera.PreviewCallback {
         return true;
     }
 
-    Object getTypedCameraParameter(int cameraCacheInfoIndex, int type) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null || cci.camera == null) {
+    Object getTypedCameraParameter(int n, int n2) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null || cameraCacheInfo.camera == null) {
             SystemTools.setSystemErrorCode(4);
             return null;
         }
-        Camera.Parameters cameraParams = this.getCameraParameters(cci.camera);
-        if (cameraParams == null) {
+        Camera.Parameters parameters = this.getCameraParameters(cameraCacheInfo.camera);
+        if (parameters == null) {
             SystemTools.setSystemErrorCode(6);
             return null;
         }
         try {
-            switch (type) {
+            switch (n2) {
                 case 536870913: {
-                    String flashMode = cameraParams.getFlashMode();
-                    if (flashMode.equals("torch") || flashMode.equals("on")) {
+                    String string = parameters.getFlashMode();
+                    if (string.equals("torch") || string.equals("on")) {
                         return 805306370;
                     }
-                    if (flashMode.equals("off")) {
+                    if (string.equals("off")) {
                         return 805306369;
                     }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
                 case 536870914: {
-                    String focusMode = cameraParams.getFocusMode();
-                    if (focusMode.equals("auto")) {
-                        return cci.isAutoFocusing ? 805306400 : 805306384;
+                    String string = parameters.getFocusMode();
+                    if (string.equals("auto")) {
+                        return cameraCacheInfo.isAutoFocusing ? 805306400 : 805306384;
                     }
-                    if (focusMode.equals("continuous-video")) {
+                    if (string.equals("continuous-video")) {
                         return 805306432;
                     }
-                    if (focusMode.equals("infinity")) {
+                    if (string.equals("infinity")) {
                         return 805306624;
                     }
-                    if (focusMode.equals("macro")) {
+                    if (string.equals("macro")) {
                         return 805306496;
                     }
-                    if (focusMode.equals("fixed")) {
+                    if (string.equals("fixed")) {
                         return 805306880;
                     }
                     SystemTools.setSystemErrorCode(6);
@@ -1404,27 +1406,27 @@ implements Camera.PreviewCallback {
                 }
                 case 536870916: {
                     if (SystemTools.checkMinimumApiLevel(8)) {
-                        return Float.valueOf(cameraParams.getFocalLength());
+                        return Float.valueOf(parameters.getFocalLength());
                     }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
                 case 536870920: {
                     if (SystemTools.checkMinimumApiLevel(9)) {
-                        float[] focusDistances = new float[3];
-                        cameraParams.getFocusDistances(focusDistances);
-                        float[] focusValueRange = new float[]{focusDistances[0], focusDistances[2]};
-                        return focusValueRange;
+                        float[] arrf = new float[3];
+                        parameters.getFocusDistances(arrf);
+                        float[] arrf2 = new float[]{arrf[0], arrf[2]};
+                        return arrf2;
                     }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
                 case 536870928: {
-                    List focusAreas;
-                    if (SystemTools.checkMinimumApiLevel(14) && cameraParams.getMaxNumFocusAreas() > 0 && (focusAreas = cameraParams.getFocusAreas()).size() > 0) {
-                        Camera.Area focusArea = (Camera.Area)focusAreas.get(0);
-                        float[] focusRegion = new float[]{focusArea.rect.left, focusArea.rect.top, focusArea.rect.right, focusArea.rect.bottom, focusArea.weight};
-                        return focusRegion;
+                    List list;
+                    if (SystemTools.checkMinimumApiLevel(14) && parameters.getMaxNumFocusAreas() > 0 && (list = parameters.getFocusAreas()).size() > 0) {
+                        Camera.Area area = (Camera.Area)list.get(0);
+                        float[] arrf = new float[]{area.rect.left, area.rect.top, area.rect.right, area.rect.bottom, area.weight};
+                        return arrf;
                     }
                     SystemTools.setSystemErrorCode(6);
                     return null;
@@ -1433,34 +1435,18 @@ implements Camera.PreviewCallback {
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
-                case 536870976: {
-                    SystemTools.setSystemErrorCode(6);
-                    return null;
-                }
-                case 536871040: {
-                    SystemTools.setSystemErrorCode(6);
-                    return null;
-                }
-                case 536871168: {
-                    if (SystemTools.checkMinimumApiLevel(8)) {
-                        return cameraParams.getExposureCompensation();
-                    }
-                    SystemTools.setSystemErrorCode(6);
-                    return null;
-                }
-                case 536871424: {
-                    if (SystemTools.checkMinimumApiLevel(8)) {
-                        int[] exposureCompRange = new int[]{cameraParams.getMinExposureCompensation(), cameraParams.getMaxExposureCompensation()};
-                        return exposureCompRange;
-                    }
-                    SystemTools.setSystemErrorCode(6);
-                    return null;
-                }
                 case 536871936: {
+                    if (SystemTools.checkMinimumApiLevel(8)) {
+                        return Float.valueOf(parameters.getExposureCompensationStep() * (float)parameters.getExposureCompensation());
+                    }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
                 case 536872960: {
+                    if (SystemTools.checkMinimumApiLevel(8)) {
+                        float[] arrf = new float[]{parameters.getExposureCompensationStep() * (float)parameters.getMinExposureCompensation(), parameters.getExposureCompensationStep() * (float)parameters.getMaxExposureCompensation()};
+                        return arrf;
+                    }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
@@ -1469,25 +1455,25 @@ implements Camera.PreviewCallback {
                     return null;
                 }
                 case 536879104: {
-                    if (SystemTools.checkMinimumApiLevel(8) && cameraParams.isZoomSupported()) {
-                        return cameraParams.getZoom();
-                    }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
                 case 536887296: {
-                    if (SystemTools.checkMinimumApiLevel(8) && cameraParams.isZoomSupported()) {
-                        int[] zoomRange = new int[]{0, cameraParams.getMaxZoom()};
-                        return zoomRange;
-                    }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
                 case 536903680: {
+                    if (SystemTools.checkMinimumApiLevel(8) && parameters.isZoomSupported()) {
+                        return parameters.getZoom();
+                    }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
                 case 536936448: {
+                    if (SystemTools.checkMinimumApiLevel(8) && parameters.isZoomSupported()) {
+                        int[] arrn = new int[]{0, parameters.getMaxZoom()};
+                        return arrn;
+                    }
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
@@ -1503,8 +1489,16 @@ implements Camera.PreviewCallback {
                     SystemTools.setSystemErrorCode(6);
                     return null;
                 }
-                case 545259520: {
-                    if (cameraParams.getVideoStabilization()) {
+                case 537919488: {
+                    SystemTools.setSystemErrorCode(6);
+                    return null;
+                }
+                case 538968064: {
+                    SystemTools.setSystemErrorCode(6);
+                    return null;
+                }
+                case 553648128: {
+                    if (parameters.getVideoStabilization()) {
                         return true;
                     }
                     return false;
@@ -1512,19 +1506,19 @@ implements Camera.PreviewCallback {
             }
             return null;
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             SystemTools.setSystemErrorCode(6);
             return null;
         }
     }
 
-    int getStatus(int cameraCacheInfoIndex) {
-        CameraCacheInfo cci = this.getCameraCacheInfo(cameraCacheInfoIndex);
-        if (cci == null) {
+    int getStatus(int n) {
+        CameraCacheInfo cameraCacheInfo = this.getCameraCacheInfo(n);
+        if (cameraCacheInfo == null) {
             SystemTools.setSystemErrorCode(4);
             return 268443648;
         }
-        return cci.status;
+        return cameraCacheInfo.status;
     }
 
     public class CameraCacheInfo {

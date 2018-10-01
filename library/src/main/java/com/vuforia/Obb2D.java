@@ -1,43 +1,26 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Vec2F;
+import com.vuforia.VuforiaJNI;
 
 public class Obb2D {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Obb2D(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Obb2D(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public Obb2D() {
-        this(VuforiaJNI.new_Obb2D__SWIG_0(), true);
-    }
-
-    protected static long getCPtr(Obb2D obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public Obb2D(Obb2D other) {
-        this(VuforiaJNI.new_Obb2D__SWIG_1(Obb2D.getCPtr(other), other), true);
+    protected static long getCPtr(Obb2D obb2D) {
+        return obb2D == null ? 0L : obb2D.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public Obb2D(Vec2F nCenter, Vec2F nHalfExtents, float nRotation) {
-        this(VuforiaJNI.new_Obb2D__SWIG_2(Vec2F.getCPtr(nCenter), nCenter, Vec2F.getCPtr(nHalfExtents), nHalfExtents, nRotation), true);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Obb2D) {
-            equal = ((Obb2D) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -48,6 +31,26 @@ public class Obb2D {
             }
             this.swigCPtr = 0L;
         }
+    }
+
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Obb2D) {
+            bl = ((Obb2D)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public Obb2D() {
+        this(VuforiaJNI.new_Obb2D__SWIG_0(), true);
+    }
+
+    public Obb2D(Obb2D obb2D) {
+        this(VuforiaJNI.new_Obb2D__SWIG_1(Obb2D.getCPtr(obb2D), obb2D), true);
+    }
+
+    public Obb2D(Vec2F vec2F, Vec2F vec2F2, float f) {
+        this(VuforiaJNI.new_Obb2D__SWIG_2(Vec2F.getCPtr(vec2F), vec2F, Vec2F.getCPtr(vec2F2), vec2F2, f), true);
     }
 
     public Vec2F getCenter() {

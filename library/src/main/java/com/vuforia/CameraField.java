@@ -1,35 +1,25 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class CameraField {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected CameraField(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected CameraField(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public CameraField() {
-        this(VuforiaJNI.new_CameraField(), true);
+    protected static long getCPtr(CameraField cameraField) {
+        return cameraField == null ? 0L : cameraField.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    protected static long getCPtr(CameraField obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof CameraField) {
-            equal = ((CameraField)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -40,6 +30,18 @@ public class CameraField {
             }
             this.swigCPtr = 0L;
         }
+    }
+
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof CameraField) {
+            bl = ((CameraField)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public CameraField() {
+        this(VuforiaJNI.new_CameraField(), true);
     }
 
     public int getType() {

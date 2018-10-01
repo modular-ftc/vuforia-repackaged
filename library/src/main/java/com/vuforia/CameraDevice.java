@@ -1,38 +1,29 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.CameraCalibration;
+import com.vuforia.CameraField;
+import com.vuforia.VideoMode;
+import com.vuforia.Vuforia;
+import com.vuforia.VuforiaJNI;
 
 public class CameraDevice {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected CameraDevice(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected CameraDevice(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(CameraDevice obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(CameraDevice cameraDevice) {
+        return cameraDevice == null ? 0L : cameraDevice.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public static CameraDevice getInstance() {
-        if (!Vuforia.wasInitializedJava()) {
-            throw new RuntimeException("Use of the Java Vuforia APIs requires initalization via the com.vuforia.Vuforia class");
-        }
-        return new CameraDevice(VuforiaJNI.CameraDevice_getInstance(), false);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof CameraDevice) {
-            equal = ((CameraDevice)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -45,8 +36,23 @@ public class CameraDevice {
         }
     }
 
-    public boolean init(int camera) {
-        return VuforiaJNI.CameraDevice_init__SWIG_0(this.swigCPtr, this, camera);
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof CameraDevice) {
+            bl = ((CameraDevice)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static CameraDevice getInstance() {
+        if (!Vuforia.wasInitializedJava()) {
+            throw new RuntimeException("Use of the Java Vuforia APIs requires initalization via the com.vuforia.Vuforia class");
+        }
+        return new CameraDevice(VuforiaJNI.CameraDevice_getInstance(), false);
+    }
+
+    public boolean init(int n) {
+        return VuforiaJNI.CameraDevice_init__SWIG_0(this.swigCPtr, this, n);
     }
 
     public boolean init() {
@@ -69,76 +75,76 @@ public class CameraDevice {
         return VuforiaJNI.CameraDevice_getNumVideoModes(this.swigCPtr, this);
     }
 
-    public VideoMode getVideoMode(int nIndex) {
-        return new VideoMode(VuforiaJNI.CameraDevice_getVideoMode(this.swigCPtr, this, nIndex), true);
+    public VideoMode getVideoMode(int n) {
+        return new VideoMode(VuforiaJNI.CameraDevice_getVideoMode(this.swigCPtr, this, n), true);
     }
 
     public int getCameraDirection() {
         return VuforiaJNI.CameraDevice_getCameraDirection(this.swigCPtr, this);
     }
 
-    public boolean selectVideoMode(int index) {
-        return VuforiaJNI.CameraDevice_selectVideoMode(this.swigCPtr, this, index);
+    public boolean selectVideoMode(int n) {
+        return VuforiaJNI.CameraDevice_selectVideoMode(this.swigCPtr, this, n);
     }
 
     public CameraCalibration getCameraCalibration() {
         return new CameraCalibration(VuforiaJNI.CameraDevice_getCameraCalibration(this.swigCPtr, this), false);
     }
 
-    public boolean setFlashTorchMode(boolean on) {
-        return VuforiaJNI.CameraDevice_setFlashTorchMode(this.swigCPtr, this, on);
+    public boolean setFlashTorchMode(boolean bl) {
+        return VuforiaJNI.CameraDevice_setFlashTorchMode(this.swigCPtr, this, bl);
     }
 
-    public boolean setFocusMode(int focusMode) {
-        return VuforiaJNI.CameraDevice_setFocusMode(this.swigCPtr, this, focusMode);
+    public boolean setFocusMode(int n) {
+        return VuforiaJNI.CameraDevice_setFocusMode(this.swigCPtr, this, n);
     }
 
-    public boolean setField(String key, String value) {
-        return VuforiaJNI.CameraDevice_setField__SWIG_0(this.swigCPtr, this, key, value);
+    public boolean setField(String string, String string2) {
+        return VuforiaJNI.CameraDevice_setField__SWIG_0(this.swigCPtr, this, string, string2);
     }
 
-    public boolean setField(String key, long value) {
-        return VuforiaJNI.CameraDevice_setField__SWIG_1(this.swigCPtr, this, key, value);
+    public boolean setField(String string, long l) {
+        return VuforiaJNI.CameraDevice_setField__SWIG_1(this.swigCPtr, this, string, l);
     }
 
-    public boolean setField(String key, float value) {
-        return VuforiaJNI.CameraDevice_setField__SWIG_2(this.swigCPtr, this, key, value);
+    public boolean setField(String string, float f) {
+        return VuforiaJNI.CameraDevice_setField__SWIG_2(this.swigCPtr, this, string, f);
     }
 
-    public boolean setField(String key, boolean value) {
-        return VuforiaJNI.CameraDevice_setField__SWIG_3(this.swigCPtr, this, key, value);
+    public boolean setField(String string, boolean bl) {
+        return VuforiaJNI.CameraDevice_setField__SWIG_3(this.swigCPtr, this, string, bl);
     }
 
-    public boolean setField(String key, long[] intRange) {
-        return VuforiaJNI.CameraDevice_setField__SWIG_4(this.swigCPtr, this, key, intRange);
+    public boolean setField(String string, long[] arrl) {
+        return VuforiaJNI.CameraDevice_setField__SWIG_4(this.swigCPtr, this, string, arrl);
     }
 
     public int getNumFields() {
         return VuforiaJNI.CameraDevice_getNumFields(this.swigCPtr, this);
     }
 
-    public boolean getCameraField(int index, CameraField field) {
-        return VuforiaJNI.CameraDevice_getCameraField(this.swigCPtr, this, index, CameraField.getCPtr(field), field);
+    public boolean getCameraField(int n, CameraField cameraField) {
+        return VuforiaJNI.CameraDevice_getCameraField(this.swigCPtr, this, n, CameraField.getCPtr(cameraField), cameraField);
     }
 
-    public boolean getFieldString(String key, String value, long maxlength) {
-        return VuforiaJNI.CameraDevice_getFieldString(this.swigCPtr, this, key, value, maxlength);
+    public boolean getFieldInt64(String string, long[] arrl) {
+        return VuforiaJNI.CameraDevice_getFieldInt64(this.swigCPtr, this, string, arrl);
     }
 
-    public boolean getFieldInt64(String key, long[] value) {
-        return VuforiaJNI.CameraDevice_getFieldInt64(this.swigCPtr, this, key, value);
+    public boolean getFieldFloat(String string, float[] arrf) {
+        return VuforiaJNI.CameraDevice_getFieldFloat(this.swigCPtr, this, string, arrf);
     }
 
-    public boolean getFieldFloat(String key, float[] value) {
-        return VuforiaJNI.CameraDevice_getFieldFloat(this.swigCPtr, this, key, value);
+    public boolean getFieldBool(String string, boolean[] arrbl) {
+        return VuforiaJNI.CameraDevice_getFieldBool(this.swigCPtr, this, string, arrbl);
     }
 
-    public boolean getFieldBool(String key, boolean[] value) {
-        return VuforiaJNI.CameraDevice_getFieldBool(this.swigCPtr, this, key, value);
+    public boolean getFieldInt64Range(String string, long[] arrl) {
+        return VuforiaJNI.CameraDevice_getFieldInt64Range(this.swigCPtr, this, string, arrl);
     }
 
-    public boolean getFieldInt64Range(String key, long[] intRange) {
-        return VuforiaJNI.CameraDevice_getFieldInt64Range(this.swigCPtr, this, key, intRange);
+    public String getFieldString(String string) {
+        return VuforiaJNI.CameraDevice_getFieldString(this.swigCPtr, this, string);
     }
 
     public static final class CAMERA_DIRECTION {

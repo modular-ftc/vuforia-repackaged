@@ -1,19 +1,21 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class ViewList {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected ViewList(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected ViewList(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(ViewList obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(ViewList viewList) {
+        return viewList == null ? 0L : viewList.swigCPtr;
     }
 
     protected void finalize() {
@@ -30,24 +32,24 @@ public class ViewList {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof ViewList) {
-            equal = ((ViewList)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof ViewList) {
+            bl = ((ViewList)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public long getNumViews() {
         return VuforiaJNI.ViewList_getNumViews(this.swigCPtr, this);
     }
 
-    public int getView(int idx) {
-        return VuforiaJNI.ViewList_getView(this.swigCPtr, this, idx);
+    public int getView(int n) {
+        return VuforiaJNI.ViewList_getView(this.swigCPtr, this, n);
     }
 
-    public boolean contains(int view) {
-        return VuforiaJNI.ViewList_contains(this.swigCPtr, this, view);
+    public boolean contains(int n) {
+        return VuforiaJNI.ViewList_contains(this.swigCPtr, this, n);
     }
 }
 

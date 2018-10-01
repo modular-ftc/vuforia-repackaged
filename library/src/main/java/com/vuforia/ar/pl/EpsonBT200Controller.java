@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -14,7 +14,7 @@ import android.app.Activity;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
-
+import com.vuforia.ar.pl.SystemTools;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -29,41 +29,41 @@ public class EpsonBT200Controller {
 
                 @Override
                 public void run() {
-                    Window win = activity.getWindow();
-                    WindowManager.LayoutParams winParams = win.getAttributes();
-                    winParams.flags |= Integer.MIN_VALUE;
-                    win.setAttributes(winParams);
+                    Window window = activity.getWindow();
+                    WindowManager.LayoutParams layoutParams = window.getAttributes();
+                    layoutParams.flags |= Integer.MIN_VALUE;
+                    window.setAttributes(layoutParams);
                 }
             });
         }
     }
 
-    public boolean setStereo(boolean enable) {
-        int newDisplayMode = 0;
-        if (enable) {
-            newDisplayMode = 1;
+    public boolean setStereo(boolean bl) {
+        int n = 0;
+        if (bl) {
+            n = 1;
         }
         try {
             Activity activity = SystemTools.getActivityFromNative();
             if (activity == null) {
                 return false;
             }
-            WindowManager wm = (WindowManager)activity.getSystemService("window");
-            Display display = wm.getDefaultDisplay();
-            Method setDisplayModeMethod = Display.class.getDeclaredMethod("setDisplayMode", Integer.TYPE);
-            boolean result = (Boolean)setDisplayModeMethod.invoke((Object)display, newDisplayMode);
-            if (result) {
-                this.stereoEnabled = enable;
+            WindowManager windowManager = (WindowManager)activity.getSystemService("window");
+            Display display = windowManager.getDefaultDisplay();
+            Method method = Display.class.getDeclaredMethod("setDisplayMode", Integer.TYPE);
+            boolean bl2 = (Boolean)method.invoke((Object)display, n);
+            if (bl2) {
+                this.stereoEnabled = bl;
             }
-            return result;
+            return bl2;
         }
-        catch (NoSuchMethodException nsme) {
+        catch (NoSuchMethodException noSuchMethodException) {
             return false;
         }
-        catch (IllegalAccessException iae) {
+        catch (IllegalAccessException illegalAccessException) {
             return false;
         }
-        catch (InvocationTargetException ite) {
+        catch (InvocationTargetException invocationTargetException) {
             return false;
         }
     }

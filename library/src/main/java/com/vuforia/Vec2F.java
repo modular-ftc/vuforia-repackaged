@@ -1,51 +1,25 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class Vec2F {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Vec2F(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Vec2F(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public Vec2F() {
-        this(VuforiaJNI.new_Vec2F__SWIG_0(), true);
-    }
-
-    protected static long getCPtr(Vec2F obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public Vec2F(float[] v) {
-        this(VuforiaJNI.new_Vec2F__SWIG_1(v), true);
+    protected static long getCPtr(Vec2F vec2F) {
+        return vec2F == null ? 0L : vec2F.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public Vec2F(float v0, float v1) {
-        this(VuforiaJNI.new_Vec2F__SWIG_2(v0, v1), true);
-    }
-
-    public Vec2F(Vec2F other) {
-        this(VuforiaJNI.new_Vec2F__SWIG_3(Vec2F.getCPtr(other), other), true);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Vec2F) {
-            equal = ((Vec2F) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    public void setData(float[] value) {
-        VuforiaJNI.Vec2F_data_set(this.swigCPtr, this, value);
     }
 
     protected synchronized void delete() {
@@ -58,8 +32,36 @@ public class Vec2F {
         }
     }
 
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Vec2F) {
+            bl = ((Vec2F)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public Vec2F() {
+        this(VuforiaJNI.new_Vec2F__SWIG_0(), true);
+    }
+
+    public Vec2F(float[] arrf) {
+        this(VuforiaJNI.new_Vec2F__SWIG_1(arrf), true);
+    }
+
+    public Vec2F(float f, float f2) {
+        this(VuforiaJNI.new_Vec2F__SWIG_2(f, f2), true);
+    }
+
+    public void setData(float[] arrf) {
+        VuforiaJNI.Vec2F_data_set(this.swigCPtr, this, arrf);
+    }
+
     public float[] getData() {
         return VuforiaJNI.Vec2F_data_get(this.swigCPtr, this);
+    }
+
+    public Vec2F(Vec2F vec2F) {
+        this(VuforiaJNI.new_Vec2F__SWIG_3(Vec2F.getCPtr(vec2F), vec2F), true);
     }
 }
 

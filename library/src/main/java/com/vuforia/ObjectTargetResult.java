@@ -1,37 +1,30 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.ObjectTarget;
+import com.vuforia.Trackable;
+import com.vuforia.TrackableResult;
+import com.vuforia.Type;
+import com.vuforia.VuforiaJNI;
 
 public class ObjectTargetResult
 extends TrackableResult {
     private long swigCPtr;
 
-    protected ObjectTargetResult(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.ObjectTargetResult_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected ObjectTargetResult(long l, boolean bl) {
+        super(VuforiaJNI.ObjectTargetResult_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(ObjectTargetResult obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(ObjectTargetResult objectTargetResult) {
+        return objectTargetResult == null ? 0L : objectTargetResult.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.ObjectTargetResult_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof ObjectTargetResult) {
-            equal = ((ObjectTargetResult)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -44,6 +37,19 @@ extends TrackableResult {
             this.swigCPtr = 0L;
         }
         super.delete();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof ObjectTargetResult) {
+            bl = ((ObjectTargetResult)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.ObjectTargetResult_getClassType(), true);
     }
 
     @Override

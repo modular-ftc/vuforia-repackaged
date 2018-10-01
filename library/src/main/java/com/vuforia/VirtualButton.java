@@ -1,19 +1,24 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Area;
+import com.vuforia.Rectangle;
+import com.vuforia.RectangleInt;
+import com.vuforia.VuforiaJNI;
 
 public class VirtualButton {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected VirtualButton(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected VirtualButton(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(VirtualButton obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(VirtualButton virtualButton) {
+        return virtualButton == null ? 0L : virtualButton.swigCPtr;
     }
 
     protected synchronized void delete() {
@@ -26,12 +31,12 @@ public class VirtualButton {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof VirtualButton) {
-            equal = ((VirtualButton)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof VirtualButton) {
+            bl = ((VirtualButton)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public boolean setArea(Area area) {
@@ -39,28 +44,28 @@ public class VirtualButton {
     }
 
     public Area getArea() {
-        long cPtr = VuforiaJNI.VirtualButton_getArea(this.swigCPtr, this);
-        if (cPtr == 0L) {
+        long l = VuforiaJNI.VirtualButton_getArea(this.swigCPtr, this);
+        if (l == 0L) {
             return null;
         }
-        Area tmp = new Area(cPtr, false);
-        switch (tmp.getType()) {
+        Area area = new Area(l, false);
+        switch (area.getType()) {
             case 0: {
-                return new Rectangle(cPtr, false);
+                return new Rectangle(l, false);
             }
             case 1: {
-                return new RectangleInt(cPtr, false);
+                return new RectangleInt(l, false);
             }
         }
         return null;
     }
 
-    public boolean setSensitivity(int sensitivity) {
-        return VuforiaJNI.VirtualButton_setSensitivity(this.swigCPtr, this, sensitivity);
+    public boolean setSensitivity(int n) {
+        return VuforiaJNI.VirtualButton_setSensitivity(this.swigCPtr, this, n);
     }
 
-    public boolean setEnabled(boolean enabled) {
-        return VuforiaJNI.VirtualButton_setEnabled(this.swigCPtr, this, enabled);
+    public boolean setEnabled(boolean bl) {
+        return VuforiaJNI.VirtualButton_setEnabled(this.swigCPtr, this, bl);
     }
 
     public boolean isEnabled() {

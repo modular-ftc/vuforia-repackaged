@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.content.Context
@@ -14,15 +14,14 @@ import android.content.Context;
 import android.hardware.Camera;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import java.io.IOException;
 
 class CameraSurface
 extends SurfaceView
 implements SurfaceHolder.Callback {
     Camera camera = null;
-    private static final String MODULENAME = "CameraSurface";
     SurfaceHolder surfaceHolder = this.getHolder();
+    private static final String MODULENAME = "CameraSurface";
 
     public CameraSurface(Context context) {
         super(context);
@@ -30,25 +29,25 @@ implements SurfaceHolder.Callback {
         this.surfaceHolder.setType(3);
     }
 
-    public void setCamera(Camera cam) {
-        this.camera = cam;
+    public void setCamera(Camera camera) {
+        this.camera = camera;
     }
 
-    public void surfaceCreated(SurfaceHolder holder) {
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
         try {
             if (this.camera != null) {
-                this.camera.setPreviewDisplay(holder);
+                this.camera.setPreviewDisplay(surfaceHolder);
             }
         }
-        catch (IOException exception) {
+        catch (IOException iOException) {
             this.camera = null;
         }
     }
 
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int n, int n2, int n3) {
     }
 
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         this.camera = null;
     }
 }

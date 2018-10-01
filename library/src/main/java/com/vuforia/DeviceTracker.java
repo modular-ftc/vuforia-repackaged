@@ -1,37 +1,29 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Matrix34F;
+import com.vuforia.Tracker;
+import com.vuforia.Type;
+import com.vuforia.VuforiaJNI;
 
 public class DeviceTracker
 extends Tracker {
     private long swigCPtr;
 
-    protected DeviceTracker(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.DeviceTracker_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected DeviceTracker(long l, boolean bl) {
+        super(VuforiaJNI.DeviceTracker_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(DeviceTracker obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(DeviceTracker deviceTracker) {
+        return deviceTracker == null ? 0L : deviceTracker.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.DeviceTracker_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof DeviceTracker) {
-            equal = ((DeviceTracker)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -46,8 +38,21 @@ extends Tracker {
         super.delete();
     }
 
-    public boolean setWorldToDeviceBaseTransform(Matrix34F baseTransform) {
-        return VuforiaJNI.DeviceTracker_setWorldToDeviceBaseTransform(this.swigCPtr, this, Matrix34F.getCPtr(baseTransform), baseTransform);
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof DeviceTracker) {
+            bl = ((DeviceTracker)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.DeviceTracker_getClassType(), true);
+    }
+
+    public boolean setWorldToDeviceBaseTransform(Matrix34F matrix34F) {
+        return VuforiaJNI.DeviceTracker_setWorldToDeviceBaseTransform(this.swigCPtr, this, Matrix34F.getCPtr(matrix34F), matrix34F);
     }
 
     public Matrix34F getWorldToDeviceBaseTransform() {

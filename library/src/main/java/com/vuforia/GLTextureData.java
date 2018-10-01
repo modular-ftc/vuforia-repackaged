@@ -1,40 +1,26 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.TextureData;
+import com.vuforia.VuforiaJNI;
 
 public class GLTextureData
 extends TextureData {
     private long swigCPtr;
 
-    protected GLTextureData(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.GLTextureData_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected GLTextureData(long l, boolean bl) {
+        super(VuforiaJNI.GLTextureData_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    public GLTextureData(int videoBackgroundTextureID) {
-        this(VuforiaJNI.new_GLTextureData__SWIG_0(videoBackgroundTextureID), true);
-    }
-
-    protected static long getCPtr(GLTextureData obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public GLTextureData() {
-        this(VuforiaJNI.new_GLTextureData__SWIG_1(), true);
+    protected static long getCPtr(GLTextureData gLTextureData) {
+        return gLTextureData == null ? 0L : gLTextureData.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof GLTextureData) {
-            equal = ((GLTextureData) obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -49,8 +35,25 @@ extends TextureData {
         super.delete();
     }
 
-    public void setVideoBackgroundTextureID(int value) {
-        VuforiaJNI.GLTextureData_VideoBackgroundTextureID_set(this.swigCPtr, this, value);
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof GLTextureData) {
+            bl = ((GLTextureData)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public GLTextureData(int n) {
+        this(VuforiaJNI.new_GLTextureData__SWIG_0(n), true);
+    }
+
+    public GLTextureData() {
+        this(VuforiaJNI.new_GLTextureData__SWIG_1(), true);
+    }
+
+    public void setVideoBackgroundTextureID(int n) {
+        VuforiaJNI.GLTextureData_VideoBackgroundTextureID_set(this.swigCPtr, this, n);
     }
 
     public int getVideoBackgroundTextureID() {

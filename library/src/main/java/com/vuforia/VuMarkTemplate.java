@@ -1,37 +1,29 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.ObjectTarget;
+import com.vuforia.Type;
+import com.vuforia.Vec2F;
+import com.vuforia.VuforiaJNI;
 
 public class VuMarkTemplate
 extends ObjectTarget {
     private long swigCPtr;
 
-    protected VuMarkTemplate(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.VuMarkTemplate_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected VuMarkTemplate(long l, boolean bl) {
+        super(VuforiaJNI.VuMarkTemplate_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(VuMarkTemplate obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(VuMarkTemplate vuMarkTemplate) {
+        return vuMarkTemplate == null ? 0L : vuMarkTemplate.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.VuMarkTemplate_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof VuMarkTemplate) {
-            equal = ((VuMarkTemplate)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -46,12 +38,25 @@ extends ObjectTarget {
         super.delete();
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof VuMarkTemplate) {
+            bl = ((VuMarkTemplate)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.VuMarkTemplate_getClassType(), true);
+    }
+
     public String getVuMarkUserData() {
         return VuforiaJNI.VuMarkTemplate_getVuMarkUserData(this.swigCPtr, this);
     }
 
-    public void setTrackingFromRuntimeAppearance(boolean enable) {
-        VuforiaJNI.VuMarkTemplate_setTrackingFromRuntimeAppearance(this.swigCPtr, this, enable);
+    public void setTrackingFromRuntimeAppearance(boolean bl) {
+        VuforiaJNI.VuMarkTemplate_setTrackingFromRuntimeAppearance(this.swigCPtr, this, bl);
     }
 
     public boolean isTrackingFromRuntimeAppearanceEnabled() {

@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.util.Log
@@ -11,32 +11,32 @@ import android.util.Log;
 public class DebugLog {
     private static final String LOGTAG = "AR";
 
-    public static final void LOGE(String subtag, String nMessage) {
-        if (subtag.length() > 0) {
-            nMessage = subtag + ": " + nMessage;
+    public static final void LOGE(String string, String string2) {
+        if (string.length() > 0) {
+            string2 = string + ": " + string2;
         }
-        Log.e((String) LOGTAG, (String) nMessage);
+        Log.e((String)LOGTAG, (String)string2);
     }
 
-    public static final void LOGW(String subtag, String nMessage) {
-        if (subtag.length() > 0) {
-            nMessage = subtag + ": " + nMessage;
+    public static final void LOGW(String string, String string2) {
+        if (string.length() > 0) {
+            string2 = string + ": " + string2;
         }
-        Log.w((String) LOGTAG, (String) nMessage);
+        Log.w((String)LOGTAG, (String)string2);
     }
 
-    public static final void LOGD(String subtag, String nMessage) {
-        if (subtag.length() > 0) {
-            nMessage = subtag + ": " + nMessage;
+    public static final void LOGD(String string, String string2) {
+        if (string.length() > 0) {
+            string2 = string + ": " + string2;
         }
-        Log.d((String) LOGTAG, (String) nMessage);
+        Log.d((String)LOGTAG, (String)string2);
     }
 
-    public static final void LOGI(String subtag, String nMessage) {
-        if (subtag.length() > 0) {
-            nMessage = subtag + ": " + nMessage;
+    public static final void LOGI(String string, String string2) {
+        if (string.length() > 0) {
+            string2 = string + ": " + string2;
         }
-        Log.i((String) LOGTAG, (String) nMessage);
+        Log.i((String)LOGTAG, (String)string2);
     }
 }
 

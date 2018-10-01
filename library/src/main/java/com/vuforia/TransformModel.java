@@ -1,19 +1,21 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class TransformModel {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected TransformModel(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected TransformModel(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(TransformModel obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(TransformModel transformModel) {
+        return transformModel == null ? 0L : transformModel.swigCPtr;
     }
 
     protected void finalize() {
@@ -30,12 +32,12 @@ public class TransformModel {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof TransformModel) {
-            equal = ((TransformModel)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof TransformModel) {
+            bl = ((TransformModel)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
     public int getType() {

@@ -1,41 +1,34 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
 
-public class Renderer {
-    public static final int TARGET_FPS_CONTINUOUS = -1;
-    protected boolean swigCMemOwn;
-    private static final Object sStateMutex = new Object();
-    private static State sState = null;
-    private long swigCPtr;
+import com.vuforia.State;
+import com.vuforia.TextureData;
+import com.vuforia.TextureUnit;
+import com.vuforia.VideoBackgroundConfig;
+import com.vuforia.VideoBackgroundTextureInfo;
+import com.vuforia.Vuforia;
+import com.vuforia.VuforiaJNI;
 
-    protected Renderer(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+public class Renderer {
+    private long swigCPtr;
+    protected boolean swigCMemOwn;
+    private static State sState = null;
+    private static final Object sStateMutex = new Object();
+    public static final int TARGET_FPS_CONTINUOUS = -1;
+
+    protected Renderer(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(Renderer obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(Renderer renderer) {
+        return renderer == null ? 0L : renderer.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public static Renderer getInstance() {
-        if (!Vuforia.wasInitializedJava()) {
-            throw new RuntimeException("Use of the Java Vuforia APIs requires initalization via the com.vuforia.Vuforia class");
-        }
-        return new Renderer(VuforiaJNI.Renderer_getInstance(), false);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Renderer) {
-            equal = ((Renderer)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -46,6 +39,21 @@ public class Renderer {
             }
             this.swigCPtr = 0L;
         }
+    }
+
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Renderer) {
+            bl = ((Renderer)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Renderer getInstance() {
+        if (!Vuforia.wasInitializedJava()) {
+            throw new RuntimeException("Use of the Java Vuforia APIs requires initalization via the com.vuforia.Vuforia class");
+        }
+        return new Renderer(VuforiaJNI.Renderer_getInstance(), false);
     }
 
     /*
@@ -64,10 +72,6 @@ public class Renderer {
 
     public void begin(State state) {
         VuforiaJNI.Renderer_begin__SWIG_1(this.swigCPtr, this, State.getCPtr(state), state);
-    }
-
-    public boolean drawVideoBackground() {
-        return VuforiaJNI.Renderer_drawVideoBackground(this.swigCPtr, this);
     }
 
     /*
@@ -92,8 +96,8 @@ public class Renderer {
         return VuforiaJNI.Renderer_updateVideoBackgroundTexture__SWIG_1(this.swigCPtr, this);
     }
 
-    public void setVideoBackgroundConfig(VideoBackgroundConfig cfg) {
-        VuforiaJNI.Renderer_setVideoBackgroundConfig(this.swigCPtr, this, VideoBackgroundConfig.getCPtr(cfg), cfg);
+    public void setVideoBackgroundConfig(VideoBackgroundConfig videoBackgroundConfig) {
+        VuforiaJNI.Renderer_setVideoBackgroundConfig(this.swigCPtr, this, VideoBackgroundConfig.getCPtr(videoBackgroundConfig), videoBackgroundConfig);
     }
 
     public VideoBackgroundConfig getVideoBackgroundConfig() {
@@ -108,16 +112,12 @@ public class Renderer {
         return VuforiaJNI.Renderer_setVideoBackgroundTexture(this.swigCPtr, this, TextureData.getCPtr(textureData), textureData);
     }
 
-    public void setARProjection(float nearPlane, float farPlane) {
-        VuforiaJNI.Renderer_setARProjection(this.swigCPtr, this, nearPlane, farPlane);
+    public boolean setTargetFps(int n) {
+        return VuforiaJNI.Renderer_setTargetFps(this.swigCPtr, this, n);
     }
 
-    public boolean setTargetFps(int fps) {
-        return VuforiaJNI.Renderer_setTargetFps(this.swigCPtr, this, fps);
-    }
-
-    public int getRecommendedFps(int flags) {
-        return VuforiaJNI.Renderer_getRecommendedFps__SWIG_0(this.swigCPtr, this, flags);
+    public int getRecommendedFps(int n) {
+        return VuforiaJNI.Renderer_getRecommendedFps__SWIG_0(this.swigCPtr, this, n);
     }
 
     public int getRecommendedFps() {

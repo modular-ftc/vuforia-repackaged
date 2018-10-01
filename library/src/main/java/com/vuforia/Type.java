@@ -1,39 +1,25 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.VuforiaJNI;
 
 public class Type {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Type(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Type(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public Type() {
-        this(VuforiaJNI.new_Type__SWIG_0(), true);
+    protected static long getCPtr(Type type) {
+        return type == null ? 0L : type.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public Type(short data) {
-        this(VuforiaJNI.new_Type__SWIG_1(data), true);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Type) {
-            equal = ((Type)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
-    }
-
-    protected static long getCPtr(Type obj) {
-        return obj == null ? 0L : obj.swigCPtr;
     }
 
     protected synchronized void delete() {
@@ -44,6 +30,22 @@ public class Type {
             }
             this.swigCPtr = 0L;
         }
+    }
+
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Type) {
+            bl = ((Type)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public Type() {
+        this(VuforiaJNI.new_Type__SWIG_0(), true);
+    }
+
+    public Type(short s) {
+        this(VuforiaJNI.new_Type__SWIG_1(s), true);
     }
 
     public boolean isOfType(Type type) {

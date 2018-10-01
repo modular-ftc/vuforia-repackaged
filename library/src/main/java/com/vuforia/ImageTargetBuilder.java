@@ -1,19 +1,22 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.TrackableSource;
+import com.vuforia.VuforiaJNI;
 
 public class ImageTargetBuilder {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected ImageTargetBuilder(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected ImageTargetBuilder(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(ImageTargetBuilder obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(ImageTargetBuilder imageTargetBuilder) {
+        return imageTargetBuilder == null ? 0L : imageTargetBuilder.swigCPtr;
     }
 
     protected synchronized void delete() {
@@ -26,16 +29,16 @@ public class ImageTargetBuilder {
         }
     }
 
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof ImageTargetBuilder) {
-            equal = ((ImageTargetBuilder)obj).swigCPtr == this.swigCPtr;
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof ImageTargetBuilder) {
+            bl = ((ImageTargetBuilder)object).swigCPtr == this.swigCPtr;
         }
-        return equal;
+        return bl;
     }
 
-    public boolean build(String name, float sceneSizeWidth) {
-        return VuforiaJNI.ImageTargetBuilder_build(this.swigCPtr, this, name, sceneSizeWidth);
+    public boolean build(String string, float f) {
+        return VuforiaJNI.ImageTargetBuilder_build(this.swigCPtr, this, string, f);
     }
 
     public void startScan() {
@@ -51,8 +54,8 @@ public class ImageTargetBuilder {
     }
 
     public TrackableSource getTrackableSource() {
-        long cPtr = VuforiaJNI.ImageTargetBuilder_getTrackableSource(this.swigCPtr, this);
-        return cPtr == 0L ? null : new TrackableSource(cPtr, false);
+        long l = VuforiaJNI.ImageTargetBuilder_getTrackableSource(this.swigCPtr, this);
+        return l == 0L ? null : new TrackableSource(l, false);
     }
 
     public static final class FRAME_QUALITY {

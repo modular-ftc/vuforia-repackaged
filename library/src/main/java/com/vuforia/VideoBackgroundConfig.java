@@ -1,35 +1,26 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Vec2I;
+import com.vuforia.VuforiaJNI;
 
 public class VideoBackgroundConfig {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected VideoBackgroundConfig(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected VideoBackgroundConfig(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    public VideoBackgroundConfig() {
-        this(VuforiaJNI.new_VideoBackgroundConfig(), true);
+    protected static long getCPtr(VideoBackgroundConfig videoBackgroundConfig) {
+        return videoBackgroundConfig == null ? 0L : videoBackgroundConfig.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    protected static long getCPtr(VideoBackgroundConfig obj) {
-        return obj == null ? 0L : obj.swigCPtr;
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof VideoBackgroundConfig) {
-            equal = ((VideoBackgroundConfig)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -42,34 +33,46 @@ public class VideoBackgroundConfig {
         }
     }
 
-    public void setEnabled(boolean value) {
-        VuforiaJNI.VideoBackgroundConfig_Enabled_set(this.swigCPtr, this, value);
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof VideoBackgroundConfig) {
+            bl = ((VideoBackgroundConfig)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public VideoBackgroundConfig() {
+        this(VuforiaJNI.new_VideoBackgroundConfig(), true);
+    }
+
+    public void setEnabled(boolean bl) {
+        VuforiaJNI.VideoBackgroundConfig_Enabled_set(this.swigCPtr, this, bl);
     }
 
     public boolean getEnabled() {
         return VuforiaJNI.VideoBackgroundConfig_Enabled_get(this.swigCPtr, this);
     }
 
-    public void setPosition(Vec2I value) {
-        VuforiaJNI.VideoBackgroundConfig_Position_set(this.swigCPtr, this, Vec2I.getCPtr(value), value);
+    public void setPosition(Vec2I vec2I) {
+        VuforiaJNI.VideoBackgroundConfig_Position_set(this.swigCPtr, this, Vec2I.getCPtr(vec2I), vec2I);
     }
 
     public Vec2I getPosition() {
-        long cPtr = VuforiaJNI.VideoBackgroundConfig_Position_get(this.swigCPtr, this);
-        return cPtr == 0L ? null : new Vec2I(cPtr, false);
+        long l = VuforiaJNI.VideoBackgroundConfig_Position_get(this.swigCPtr, this);
+        return l == 0L ? null : new Vec2I(l, false);
+    }
+
+    public void setSize(Vec2I vec2I) {
+        VuforiaJNI.VideoBackgroundConfig_Size_set(this.swigCPtr, this, Vec2I.getCPtr(vec2I), vec2I);
     }
 
     public Vec2I getSize() {
-        long cPtr = VuforiaJNI.VideoBackgroundConfig_Size_get(this.swigCPtr, this);
-        return cPtr == 0L ? null : new Vec2I(cPtr, false);
+        long l = VuforiaJNI.VideoBackgroundConfig_Size_get(this.swigCPtr, this);
+        return l == 0L ? null : new Vec2I(l, false);
     }
 
-    public void setSize(Vec2I value) {
-        VuforiaJNI.VideoBackgroundConfig_Size_set(this.swigCPtr, this, Vec2I.getCPtr(value), value);
-    }
-
-    public void setReflection(int value) {
-        VuforiaJNI.VideoBackgroundConfig_Reflection_set(this.swigCPtr, this, value);
+    public void setReflection(int n) {
+        VuforiaJNI.VideoBackgroundConfig_Reflection_set(this.swigCPtr, this, n);
     }
 
     public int getReflection() {

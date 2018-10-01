@@ -1,37 +1,31 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.DeviceTracker;
+import com.vuforia.HandheldTransformModel;
+import com.vuforia.HeadTransformModel;
+import com.vuforia.TransformModel;
+import com.vuforia.Type;
+import com.vuforia.VuforiaJNI;
 
 public class RotationalDeviceTracker
 extends DeviceTracker {
     private long swigCPtr;
 
-    protected RotationalDeviceTracker(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.RotationalDeviceTracker_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected RotationalDeviceTracker(long l, boolean bl) {
+        super(VuforiaJNI.RotationalDeviceTracker_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(RotationalDeviceTracker obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(RotationalDeviceTracker rotationalDeviceTracker) {
+        return rotationalDeviceTracker == null ? 0L : rotationalDeviceTracker.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.RotationalDeviceTracker_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof RotationalDeviceTracker) {
-            equal = ((RotationalDeviceTracker)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -46,47 +40,60 @@ extends DeviceTracker {
         super.delete();
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof RotationalDeviceTracker) {
+            bl = ((RotationalDeviceTracker)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.RotationalDeviceTracker_getClassType(), true);
+    }
+
     public boolean recenter() {
         return VuforiaJNI.RotationalDeviceTracker_recenter(this.swigCPtr, this);
     }
 
-    public boolean setPosePrediction(boolean enable) {
-        return VuforiaJNI.RotationalDeviceTracker_setPosePrediction(this.swigCPtr, this, enable);
+    public boolean setPosePrediction(boolean bl) {
+        return VuforiaJNI.RotationalDeviceTracker_setPosePrediction(this.swigCPtr, this, bl);
     }
 
     public boolean getPosePrediction() {
         return VuforiaJNI.RotationalDeviceTracker_getPosePrediction(this.swigCPtr, this);
     }
 
-    public boolean setModelCorrection(TransformModel transformationmodel) {
-        return VuforiaJNI.RotationalDeviceTracker_setModelCorrection(this.swigCPtr, this, TransformModel.getCPtr(transformationmodel), transformationmodel);
+    public boolean setModelCorrection(TransformModel transformModel) {
+        return VuforiaJNI.RotationalDeviceTracker_setModelCorrection(this.swigCPtr, this, TransformModel.getCPtr(transformModel), transformModel);
     }
 
     public TransformModel getModelCorrection() {
-        long cPtr = VuforiaJNI.RotationalDeviceTracker_getModelCorrection(this.swigCPtr, this);
-        if (cPtr == 0L) {
+        long l = VuforiaJNI.RotationalDeviceTracker_getModelCorrection(this.swigCPtr, this);
+        if (l == 0L) {
             return null;
         }
-        TransformModel tmp = new TransformModel(cPtr, false);
-        switch (tmp.getType()) {
+        TransformModel transformModel = new TransformModel(l, false);
+        switch (transformModel.getType()) {
             case 0: {
-                return new HeadTransformModel(cPtr, false);
+                return new HeadTransformModel(l, false);
             }
             case 1: {
-                return new HandheldTransformModel(cPtr, false);
+                return new HandheldTransformModel(l, false);
             }
         }
         return null;
     }
 
     public HeadTransformModel getDefaultHeadModel() {
-        long cPtr = VuforiaJNI.RotationalDeviceTracker_getDefaultHeadModel(this.swigCPtr, this);
-        return cPtr == 0L ? null : new HeadTransformModel(cPtr, false);
+        long l = VuforiaJNI.RotationalDeviceTracker_getDefaultHeadModel(this.swigCPtr, this);
+        return l == 0L ? null : new HeadTransformModel(l, false);
     }
 
     public HandheldTransformModel getDefaultHandheldModel() {
-        long cPtr = VuforiaJNI.RotationalDeviceTracker_getDefaultHandheldModel(this.swigCPtr, this);
-        return cPtr == 0L ? null : new HandheldTransformModel(cPtr, false);
+        long l = VuforiaJNI.RotationalDeviceTracker_getDefaultHandheldModel(this.swigCPtr, this);
+        return l == 0L ? null : new HandheldTransformModel(l, false);
     }
 }
 

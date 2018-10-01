@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -25,9 +25,11 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.Window;
+import android.view.WindowManager;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
@@ -46,21 +48,21 @@ extends View {
         super(context);
     }
 
-    public DrawOverlayView(Context context, byte[] byteArray, int left, int top, float[] scale, int[] size) {
+    public DrawOverlayView(Context context, byte[] arrby, int n, int n2, float[] arrf, int[] arrn) {
         super(context);
-        this.mLeft = left;
-        this.mTop = top;
-        this.mScale = scale;
-        this.mSize = size;
-        byte[] byteArrayRGBA = new byte[byteArray.length * 4];
+        this.mLeft = n;
+        this.mTop = n2;
+        this.mScale = arrf;
+        this.mSize = arrn;
+        byte[] arrby2 = new byte[arrby.length * 4];
         for (int i = 0; i < this.mSize[0] * this.mSize[1]; ++i) {
-            byteArrayRGBA[i * 4] = byteArray[i];
-            byteArrayRGBA[i * 4 + 1] = byteArray[i];
-            byteArrayRGBA[i * 4 + 2] = byteArray[i];
-            byteArrayRGBA[i * 4 + 3] = -1;
+            arrby2[i * 4] = arrby[i];
+            arrby2[i * 4 + 1] = arrby[i];
+            arrby2[i * 4 + 2] = arrby[i];
+            arrby2[i * 4 + 3] = -1;
         }
         this.overlayBitmap = Bitmap.createBitmap((int)this.mSize[0], (int)this.mSize[1], (Bitmap.Config)Bitmap.Config.ARGB_8888);
-        this.overlayBitmap.copyPixelsFromBuffer((Buffer)ByteBuffer.wrap(byteArrayRGBA));
+        this.overlayBitmap.copyPixelsFromBuffer((Buffer)ByteBuffer.wrap(arrby2));
         this.drawable = new BitmapDrawable(this.overlayBitmap);
         this.metrics = new DisplayMetrics();
         Activity activity = (Activity)this.getContext();
@@ -72,13 +74,13 @@ extends View {
             super.dispatchDraw(canvas);
             return;
         }
-        double maxTop = (double)this.metrics.heightPixels - (double)((float)this.drawable.getIntrinsicHeight() * this.mScale[1]);
-        if (maxTop < this.mTop) {
-            this.mTop = maxTop;
+        double d = (double)this.metrics.heightPixels - (double)((float)this.drawable.getIntrinsicHeight() * this.mScale[1]);
+        if (d < this.mTop) {
+            this.mTop = d;
         }
-        int right = (int)(this.mLeft + (double)((float)this.drawable.getIntrinsicWidth() * this.metrics.density * this.mScale[0]));
-        int bottom = (int)(this.mTop + (double)((float)this.drawable.getIntrinsicHeight() * this.metrics.density * this.mScale[1]));
-        this.drawable.setBounds((int)this.mLeft, (int)this.mTop, right, bottom);
+        int n = (int)(this.mLeft + (double)((float)this.drawable.getIntrinsicWidth() * this.metrics.density * this.mScale[0]));
+        int n2 = (int)(this.mTop + (double)((float)this.drawable.getIntrinsicHeight() * this.metrics.density * this.mScale[1]));
+        this.drawable.setBounds((int)this.mLeft, (int)this.mTop, n, n2);
         this.drawable.setAlpha(100);
         this.drawable.draw(canvas);
         super.dispatchDraw(canvas);
@@ -89,9 +91,9 @@ extends View {
         this.setVisibility(0);
     }
 
-    public void removeOverlay(Activity activity, View childView) {
+    public void removeOverlay(Activity activity, View view) {
         try {
-            ((ViewGroup)activity.getWindow().getDecorView()).removeView(childView);
+            ((ViewGroup)activity.getWindow().getDecorView()).removeView(view);
         }
         catch (Exception exception) {
             // empty catch block

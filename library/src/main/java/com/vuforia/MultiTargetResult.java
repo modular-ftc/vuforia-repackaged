@@ -1,37 +1,37 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.AnchorResult;
+import com.vuforia.CylinderTargetResult;
+import com.vuforia.DeviceTrackableResult;
+import com.vuforia.ImageTargetResult;
+import com.vuforia.ModelTargetResult;
+import com.vuforia.MultiTarget;
+import com.vuforia.ObjectTargetResult;
+import com.vuforia.Trackable;
+import com.vuforia.TrackableResult;
+import com.vuforia.Type;
+import com.vuforia.VuMarkTargetResult;
+import com.vuforia.VuforiaJNI;
 
 public class MultiTargetResult
 extends ObjectTargetResult {
     private long swigCPtr;
 
-    protected MultiTargetResult(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.MultiTargetResult_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected MultiTargetResult(long l, boolean bl) {
+        super(VuforiaJNI.MultiTargetResult_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(MultiTargetResult obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(MultiTargetResult multiTargetResult) {
+        return multiTargetResult == null ? 0L : multiTargetResult.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.MultiTargetResult_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof MultiTargetResult) {
-            equal = ((MultiTargetResult)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -47,6 +47,19 @@ extends ObjectTargetResult {
     }
 
     @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof MultiTargetResult) {
+            bl = ((MultiTargetResult)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.MultiTargetResult_getClassType(), true);
+    }
+
+    @Override
     public Trackable getTrackable() {
         return new MultiTarget(VuforiaJNI.MultiTargetResult_getTrackable(this.swigCPtr, this), false);
     }
@@ -55,80 +68,68 @@ extends ObjectTargetResult {
         return VuforiaJNI.MultiTargetResult_getNumPartResults(this.swigCPtr, this);
     }
 
-    public TrackableResult getPartResult(int idx) {
-        long cPtr = VuforiaJNI.MultiTargetResult_getPartResult__SWIG_0(this.swigCPtr, this, idx);
-        if (cPtr == 0L) {
+    public TrackableResult getPartResult(int n) {
+        long l = VuforiaJNI.MultiTargetResult_getPartResult__SWIG_0(this.swigCPtr, this, n);
+        if (l == 0L) {
             return null;
         }
-        TrackableResult tmp = new TrackableResult(cPtr, false);
-        if (tmp.isOfType(ImageTargetResult.getClassType())) {
-            return new ImageTargetResult(cPtr, false);
+        TrackableResult trackableResult = new TrackableResult(l, false);
+        if (trackableResult.isOfType(ImageTargetResult.getClassType())) {
+            return new ImageTargetResult(l, false);
         }
-        if (tmp.isOfType(CylinderTargetResult.getClassType())) {
-            return new CylinderTargetResult(cPtr, false);
+        if (trackableResult.isOfType(CylinderTargetResult.getClassType())) {
+            return new CylinderTargetResult(l, false);
         }
-        if (tmp.isOfType(MultiTargetResult.getClassType())) {
-            return new MultiTargetResult(cPtr, false);
+        if (trackableResult.isOfType(MultiTargetResult.getClassType())) {
+            return new MultiTargetResult(l, false);
         }
-        if (tmp.isOfType(VuMarkTargetResult.getClassType())) {
-            return new VuMarkTargetResult(cPtr, false);
+        if (trackableResult.isOfType(VuMarkTargetResult.getClassType())) {
+            return new VuMarkTargetResult(l, false);
         }
-        if (tmp.isOfType(ObjectTargetResult.getClassType())) {
-            return new ObjectTargetResult(cPtr, false);
+        if (trackableResult.isOfType(ModelTargetResult.getClassType())) {
+            return new ModelTargetResult(l, false);
         }
-        if (tmp.isOfType(WordResult.getClassType())) {
-            return new WordResult(cPtr, false);
+        if (trackableResult.isOfType(ObjectTargetResult.getClassType())) {
+            return new ObjectTargetResult(l, false);
         }
-        if (tmp.isOfType(MarkerResult.getClassType())) {
-            return new MarkerResult(cPtr, false);
+        if (trackableResult.isOfType(AnchorResult.getClassType())) {
+            return new AnchorResult(l, false);
         }
-        if (tmp.isOfType(SurfaceResult.getClassType())) {
-            return new SurfaceResult(cPtr, false);
-        }
-        if (tmp.isOfType(PropResult.getClassType())) {
-            return new PropResult(cPtr, false);
-        }
-        if (tmp.isOfType(DeviceTrackableResult.getClassType())) {
-            return new DeviceTrackableResult(cPtr, false);
+        if (trackableResult.isOfType(DeviceTrackableResult.getClassType())) {
+            return new DeviceTrackableResult(l, false);
         }
         return null;
     }
 
-    public TrackableResult getPartResult(String name) {
-        long cPtr = VuforiaJNI.MultiTargetResult_getPartResult__SWIG_1(this.swigCPtr, this, name);
-        if (cPtr == 0L) {
+    public TrackableResult getPartResult(String string) {
+        long l = VuforiaJNI.MultiTargetResult_getPartResult__SWIG_1(this.swigCPtr, this, string);
+        if (l == 0L) {
             return null;
         }
-        TrackableResult tmp = new TrackableResult(cPtr, false);
-        if (tmp.isOfType(ImageTargetResult.getClassType())) {
-            return new ImageTargetResult(cPtr, false);
+        TrackableResult trackableResult = new TrackableResult(l, false);
+        if (trackableResult.isOfType(ImageTargetResult.getClassType())) {
+            return new ImageTargetResult(l, false);
         }
-        if (tmp.isOfType(CylinderTargetResult.getClassType())) {
-            return new CylinderTargetResult(cPtr, false);
+        if (trackableResult.isOfType(CylinderTargetResult.getClassType())) {
+            return new CylinderTargetResult(l, false);
         }
-        if (tmp.isOfType(MultiTargetResult.getClassType())) {
-            return new MultiTargetResult(cPtr, false);
+        if (trackableResult.isOfType(MultiTargetResult.getClassType())) {
+            return new MultiTargetResult(l, false);
         }
-        if (tmp.isOfType(VuMarkTargetResult.getClassType())) {
-            return new VuMarkTargetResult(cPtr, false);
+        if (trackableResult.isOfType(VuMarkTargetResult.getClassType())) {
+            return new VuMarkTargetResult(l, false);
         }
-        if (tmp.isOfType(ObjectTargetResult.getClassType())) {
-            return new ObjectTargetResult(cPtr, false);
+        if (trackableResult.isOfType(ModelTargetResult.getClassType())) {
+            return new ModelTargetResult(l, false);
         }
-        if (tmp.isOfType(WordResult.getClassType())) {
-            return new WordResult(cPtr, false);
+        if (trackableResult.isOfType(ObjectTargetResult.getClassType())) {
+            return new ObjectTargetResult(l, false);
         }
-        if (tmp.isOfType(MarkerResult.getClassType())) {
-            return new MarkerResult(cPtr, false);
+        if (trackableResult.isOfType(AnchorResult.getClassType())) {
+            return new AnchorResult(l, false);
         }
-        if (tmp.isOfType(SurfaceResult.getClassType())) {
-            return new SurfaceResult(cPtr, false);
-        }
-        if (tmp.isOfType(PropResult.getClassType())) {
-            return new PropResult(cPtr, false);
-        }
-        if (tmp.isOfType(DeviceTrackableResult.getClassType())) {
-            return new DeviceTrackableResult(cPtr, false);
+        if (trackableResult.isOfType(DeviceTrackableResult.getClassType())) {
+            return new DeviceTrackableResult(l, false);
         }
         return null;
     }

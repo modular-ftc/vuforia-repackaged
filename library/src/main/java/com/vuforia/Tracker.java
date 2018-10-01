@@ -1,35 +1,26 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Type;
+import com.vuforia.VuforiaJNI;
 
 public class Tracker {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected Tracker(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected Tracker(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(Tracker obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(Tracker tracker) {
+        return tracker == null ? 0L : tracker.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.Tracker_getClassType(), true);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof Tracker) {
-            equal = ((Tracker)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -40,6 +31,18 @@ public class Tracker {
             }
             this.swigCPtr = 0L;
         }
+    }
+
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof Tracker) {
+            bl = ((Tracker)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.Tracker_getClassType(), true);
     }
 
     public Type getType() {

@@ -1,37 +1,30 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.ObjectTargetResult;
+import com.vuforia.Trackable;
+import com.vuforia.Type;
+import com.vuforia.VuMarkTarget;
+import com.vuforia.VuforiaJNI;
 
 public class VuMarkTargetResult
 extends ObjectTargetResult {
     private long swigCPtr;
 
-    protected VuMarkTargetResult(long cPtr, boolean cMemoryOwn) {
-        super(VuforiaJNI.VuMarkTargetResult_SWIGUpcast(cPtr), cMemoryOwn);
-        this.swigCPtr = cPtr;
+    protected VuMarkTargetResult(long l, boolean bl) {
+        super(VuforiaJNI.VuMarkTargetResult_SWIGUpcast(l), bl);
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(VuMarkTargetResult obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(VuMarkTargetResult vuMarkTargetResult) {
+        return vuMarkTargetResult == null ? 0L : vuMarkTargetResult.swigCPtr;
     }
 
     @Override
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.VuMarkTargetResult_getClassType(), true);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof VuMarkTargetResult) {
-            equal = ((VuMarkTargetResult)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     @Override
@@ -44,6 +37,19 @@ extends ObjectTargetResult {
             this.swigCPtr = 0L;
         }
         super.delete();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof VuMarkTargetResult) {
+            bl = ((VuMarkTargetResult)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.VuMarkTargetResult_getClassType(), true);
     }
 
     @Override

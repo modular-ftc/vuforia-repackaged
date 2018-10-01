@@ -1,5 +1,5 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  * 
  * Could not load the following classes:
  *  android.app.Activity
@@ -11,7 +11,10 @@ package com.vuforia.ar.pl;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
-
+import com.vuforia.ar.pl.DebugLog;
+import com.vuforia.ar.pl.DrawOverlayView;
+import com.vuforia.ar.pl.SurfaceManager;
+import com.vuforia.ar.pl.SystemTools;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -31,13 +34,13 @@ public class RenderManager {
     ScheduledFuture<?> renderRequestWatcherTask;
     AtomicBoolean renderRequestServiced;
     AtomicBoolean renderRequested;
-    private static final String MODULENAME = "RenderManager";
     long delayMS = 0L;
     long minMS = 0L;
     long maxMS = 0L;
+    private static final String MODULENAME = "RenderManager";
 
-    public RenderManager(SurfaceManager sm) {
-        this.surfaceManager = sm;
+    public RenderManager(SurfaceManager surfaceManager) {
+        this.surfaceManager = surfaceManager;
         this.renderMode = 2;
         this.timer = new ScheduledThreadPoolExecutor(1);
         this.synchronousMode = false;
@@ -57,8 +60,8 @@ public class RenderManager {
         }
         this.fixedFrameRateRunnerTask = null;
         this.renderRequestWatcherTask = null;
-        long timerDelay = this.delayMS < 4L ? 1L : this.delayMS / 4L;
-        this.renderRequestWatcherTask = this.timer.scheduleWithFixedDelay(new RenderRequestWatcher(), 0L, timerDelay, TimeUnit.MILLISECONDS);
+        long l = this.delayMS < 4L ? 1L : this.delayMS / 4L;
+        this.renderRequestWatcherTask = this.timer.scheduleWithFixedDelay(new RenderRequestWatcher(), 0L, l, TimeUnit.MILLISECONDS);
     }
 
     void shutdownTimer() {
@@ -68,44 +71,44 @@ public class RenderManager {
     }
 
     public boolean canSetRenderMode() {
-        boolean result = this.surfaceManager.retrieveGLSurfaceView();
-        if (!result) {
+        boolean bl = this.surfaceManager.retrieveGLSurfaceView();
+        if (!bl) {
             DebugLog.LOGD(MODULENAME, "Could not retrieve a valid GLSurfaceView in view hierarchy, therefore cannot set any render mode");
         }
-        return result;
+        return bl;
     }
 
     public int getRenderMode() {
         return this.renderMode;
     }
 
-    public boolean setRenderMode(int mode) {
-        boolean result = false;
+    public boolean setRenderMode(int n) {
+        boolean bl = false;
         if (this.surfaceManager == null) {
             SystemTools.setSystemErrorCode(6);
             return false;
         }
         this.surfaceManager.retrieveGLSurfaceView();
-        switch (mode) {
+        switch (n) {
             case 2: {
-                result = this.surfaceManager.setEnableRenderWhenDirty(false);
-                if (!result) break;
+                bl = this.surfaceManager.setEnableRenderWhenDirty(false);
+                if (!bl) break;
                 this.shutdownTimer();
                 break;
             }
             case 1: 
             case 3: {
-                long delayMSTemp;
-                result = this.surfaceManager.setEnableRenderWhenDirty(true);
-                if (!result) break;
-                if (mode == 1) {
+                long l;
+                bl = this.surfaceManager.setEnableRenderWhenDirty(true);
+                if (!bl) break;
+                if (n == 1) {
                     this.shutdownTimer();
                     break;
                 }
-                if (mode == this.renderMode && !this.timer.isShutdown()) break;
-                long l = delayMSTemp = this.synchronousMode ? this.minMS : this.maxMS;
-                if (delayMSTemp == 0L) break;
-                this.delayMS = delayMSTemp;
+                if (n == this.renderMode && !this.timer.isShutdown()) break;
+                long l2 = l = this.synchronousMode ? this.minMS : this.maxMS;
+                if (l == 0L) break;
+                this.delayMS = l;
                 this.startTimer();
                 break;
             }
@@ -114,27 +117,27 @@ public class RenderManager {
                 return false;
             }
         }
-        if (!result) {
+        if (!bl) {
             SystemTools.setSystemErrorCode(6);
         } else {
-            this.renderMode = mode;
+            this.renderMode = n;
         }
-        return result;
+        return bl;
     }
 
-    public boolean setRenderFpsLimits(boolean synchronous, int minFps, int maxFps) {
-        this.synchronousMode = synchronous;
-        if (minFps == 0 || maxFps == 0) {
+    public boolean setRenderFpsLimits(boolean bl, int n, int n2) {
+        this.synchronousMode = bl;
+        if (n == 0 || n2 == 0) {
             SystemTools.setSystemErrorCode(2);
             return false;
         }
-        this.minMS = minFps > 1000 ? 1L : 1000L / (long) minFps;
-        long l = this.maxMS = maxFps > 1000 ? 1L : 1000L / (long) maxFps;
+        this.minMS = n > 1000 ? 1L : 1000L / (long)n;
+        long l = this.maxMS = n2 > 1000 ? 1L : 1000L / (long)n2;
         if (this.renderMode == 3) {
-            long delayMSTemp;
-            long l2 = delayMSTemp = this.synchronousMode ? this.minMS : this.maxMS;
-            if (delayMSTemp != this.delayMS) {
-                this.delayMS = delayMSTemp;
+            long l2;
+            long l3 = l2 = this.synchronousMode ? this.minMS : this.maxMS;
+            if (l2 != this.delayMS) {
+                this.delayMS = l2;
                 this.startTimer();
             }
         }
@@ -146,21 +149,21 @@ public class RenderManager {
         return true;
     }
 
-    public View addOverlay(byte[] byteArray, int left, int top, float[] scale, int[] size) {
+    public View addOverlay(byte[] arrby, int n, int n2, float[] arrf, int[] arrn) {
         final Activity activity = SystemTools.getActivityFromNative();
         if (activity == null) {
             DebugLog.LOGE(MODULENAME, "drawOverlay could not get access to an activity");
             return null;
         }
-        final DrawOverlayView wm = new DrawOverlayView((Context)activity, byteArray, left, top, scale, size);
+        final DrawOverlayView drawOverlayView = new DrawOverlayView((Context)activity, arrby, n, n2, arrf, arrn);
         activity.runOnUiThread(new Runnable(){
 
             @Override
             public void run() {
-                wm.addOverlay(activity);
+                drawOverlayView.addOverlay(activity);
             }
         });
-        return wm;
+        return drawOverlayView;
     }
 
     public boolean removeOverlay(final View view) {
@@ -175,8 +178,8 @@ public class RenderManager {
 
             @Override
             public void run() {
-                DrawOverlayView wm = new DrawOverlayView((Context)activity);
-                wm.removeOverlay(activity, view);
+                DrawOverlayView drawOverlayView = new DrawOverlayView((Context)activity);
+                drawOverlayView.removeOverlay(activity, view);
             }
         });
         return true;

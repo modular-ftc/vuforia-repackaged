@@ -1,8 +1,10 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
 
+import com.vuforia.ViewerParameters;
+import com.vuforia.VuforiaJNI;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -11,26 +13,17 @@ implements Iterable<ViewerParameters> {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected ViewerParametersList(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected ViewerParametersList(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(ViewerParametersList obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(ViewerParametersList viewerParametersList) {
+        return viewerParametersList == null ? 0L : viewerParametersList.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public static ViewerParametersList getListForAuthoringTools() {
-        return new ViewerParametersList(VuforiaJNI.ViewerParametersList_getListForAuthoringTools(), false);
-    }
-
-    @Override
-    public Iterator<ViewerParameters> iterator() {
-        return new VPIterator();
     }
 
     protected synchronized void delete() {
@@ -43,37 +36,46 @@ implements Iterable<ViewerParameters> {
         }
     }
 
-    public void setSDKFilter(String filter) {
-        VuforiaJNI.ViewerParametersList_setSDKFilter(this.swigCPtr, this, filter);
+    @Override
+    public Iterator<ViewerParameters> iterator() {
+        return new VPIterator();
+    }
+
+    public static ViewerParametersList getListForAuthoringTools() {
+        return new ViewerParametersList(VuforiaJNI.ViewerParametersList_getListForAuthoringTools(), false);
+    }
+
+    public void setSDKFilter(String string) {
+        VuforiaJNI.ViewerParametersList_setSDKFilter(this.swigCPtr, this, string);
     }
 
     public long size() {
         return VuforiaJNI.ViewerParametersList_size(this.swigCPtr, this);
     }
 
-    public ViewerParameters get(long idx) {
-        long cPtr = VuforiaJNI.ViewerParametersList_get__SWIG_0(this.swigCPtr, this, idx);
-        return cPtr == 0L ? null : new ViewerParameters(cPtr, false);
+    public ViewerParameters get(long l) {
+        long l2 = VuforiaJNI.ViewerParametersList_get__SWIG_0(this.swigCPtr, this, l);
+        return l2 == 0L ? null : new ViewerParameters(l2, false);
     }
 
-    public ViewerParameters get(String name, String manufacturer) {
-        long cPtr = VuforiaJNI.ViewerParametersList_get__SWIG_1(this.swigCPtr, this, name, manufacturer);
-        return cPtr == 0L ? null : new ViewerParameters(cPtr, false);
+    public ViewerParameters get(String string, String string2) {
+        long l = VuforiaJNI.ViewerParametersList_get__SWIG_1(this.swigCPtr, this, string, string2);
+        return l == 0L ? null : new ViewerParameters(l, false);
     }
 
     private ViewerParameters begin() {
-        long cPtr = VuforiaJNI.ViewerParametersList_begin(this.swigCPtr, this);
-        return cPtr == 0L ? null : new ViewerParameters(cPtr, false);
+        long l = VuforiaJNI.ViewerParametersList_begin(this.swigCPtr, this);
+        return l == 0L ? null : new ViewerParameters(l, false);
     }
 
     private ViewerParameters end() {
-        long cPtr = VuforiaJNI.ViewerParametersList_end(this.swigCPtr, this);
-        return cPtr == 0L ? null : new ViewerParameters(cPtr, false);
+        long l = VuforiaJNI.ViewerParametersList_end(this.swigCPtr, this);
+        return l == 0L ? null : new ViewerParameters(l, false);
     }
 
-    private ViewerParameters next(ViewerParameters last) {
-        long cPtr = VuforiaJNI.ViewerParametersList_next(this.swigCPtr, this, ViewerParameters.getCPtr(last), last);
-        return cPtr == 0L ? null : new ViewerParameters(cPtr, false);
+    private ViewerParameters next(ViewerParameters viewerParameters) {
+        long l = VuforiaJNI.ViewerParametersList_next(this.swigCPtr, this, ViewerParameters.getCPtr(viewerParameters), viewerParameters);
+        return l == 0L ? null : new ViewerParameters(l, false);
     }
 
     private class VPIterator
@@ -94,9 +96,9 @@ implements Iterable<ViewerParameters> {
         @Override
         public ViewerParameters next() throws NoSuchElementException {
             if (this.next != null) {
-                ViewerParameters toReturn = this.next;
-                this.next = ViewerParametersList.this.next(toReturn);
-                return toReturn;
+                ViewerParameters viewerParameters = this.next;
+                this.next = ViewerParametersList.this.next(viewerParameters);
+                return viewerParameters;
             }
             throw new NoSuchElementException();
         }

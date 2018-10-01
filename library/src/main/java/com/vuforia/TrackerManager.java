@@ -1,38 +1,33 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.ObjectTracker;
+import com.vuforia.PositionalDeviceTracker;
+import com.vuforia.RotationalDeviceTracker;
+import com.vuforia.SmartTerrain;
+import com.vuforia.StateUpdater;
+import com.vuforia.Tracker;
+import com.vuforia.Type;
+import com.vuforia.Vuforia;
+import com.vuforia.VuforiaJNI;
 
 public class TrackerManager {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected TrackerManager(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected TrackerManager(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(TrackerManager obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(TrackerManager trackerManager) {
+        return trackerManager == null ? 0L : trackerManager.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public static TrackerManager getInstance() {
-        if (!Vuforia.wasInitializedJava()) {
-            throw new RuntimeException("Use of the Java Vuforia APIs requires initalization via the com.vuforia.Vuforia class");
-        }
-        return new TrackerManager(VuforiaJNI.TrackerManager_getInstance(), false);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof TrackerManager) {
-            equal = ((TrackerManager)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -45,50 +40,59 @@ public class TrackerManager {
         }
     }
 
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof TrackerManager) {
+            bl = ((TrackerManager)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static TrackerManager getInstance() {
+        if (!Vuforia.wasInitializedJava()) {
+            throw new RuntimeException("Use of the Java Vuforia APIs requires initalization via the com.vuforia.Vuforia class");
+        }
+        return new TrackerManager(VuforiaJNI.TrackerManager_getInstance(), false);
+    }
+
     public Tracker initTracker(Type type) {
-        long cPtr = VuforiaJNI.TrackerManager_initTracker(this.swigCPtr, this, Type.getCPtr(type), type);
-        if (cPtr == 0L) {
+        long l = VuforiaJNI.TrackerManager_initTracker(this.swigCPtr, this, Type.getCPtr(type), type);
+        if (l == 0L) {
             return null;
         }
-        Tracker tmp = new Tracker(cPtr, false);
-        if (tmp.isOfType(ObjectTracker.getClassType())) {
-            return new ObjectTracker(cPtr, false);
+        Tracker tracker = new Tracker(l, false);
+        if (tracker.isOfType(ObjectTracker.getClassType())) {
+            return new ObjectTracker(l, false);
         }
-        if (tmp.isOfType(TextTracker.getClassType())) {
-            return new TextTracker(cPtr, false);
+        if (tracker.isOfType(SmartTerrain.getClassType())) {
+            return new SmartTerrain(l, false);
         }
-        if (tmp.isOfType(MarkerTracker.getClassType())) {
-            return new MarkerTracker(cPtr, false);
+        if (tracker.isOfType(RotationalDeviceTracker.getClassType())) {
+            return new RotationalDeviceTracker(l, false);
         }
-        if (tmp.isOfType(SmartTerrainTracker.getClassType())) {
-            return new SmartTerrainTracker(cPtr, false);
-        }
-        if (tmp.isOfType(RotationalDeviceTracker.getClassType())) {
-            return new RotationalDeviceTracker(cPtr, false);
+        if (tracker.isOfType(PositionalDeviceTracker.getClassType())) {
+            return new PositionalDeviceTracker(l, false);
         }
         return null;
     }
 
     public Tracker getTracker(Type type) {
-        long cPtr = VuforiaJNI.TrackerManager_getTracker(this.swigCPtr, this, Type.getCPtr(type), type);
-        if (cPtr == 0L) {
+        long l = VuforiaJNI.TrackerManager_getTracker(this.swigCPtr, this, Type.getCPtr(type), type);
+        if (l == 0L) {
             return null;
         }
-        Tracker tmp = new Tracker(cPtr, false);
-        if (tmp.isOfType(ObjectTracker.getClassType())) {
-            return new ObjectTracker(cPtr, false);
+        Tracker tracker = new Tracker(l, false);
+        if (tracker.isOfType(ObjectTracker.getClassType())) {
+            return new ObjectTracker(l, false);
         }
-        if (tmp.isOfType(TextTracker.getClassType())) {
-            return new TextTracker(cPtr, false);
+        if (tracker.isOfType(SmartTerrain.getClassType())) {
+            return new SmartTerrain(l, false);
         }
-        if (tmp.isOfType(MarkerTracker.getClassType())) {
-            return new MarkerTracker(cPtr, false);
+        if (tracker.isOfType(RotationalDeviceTracker.getClassType())) {
+            return new RotationalDeviceTracker(l, false);
         }
-        if (tmp.isOfType(SmartTerrainTracker.getClassType())) {
-            return new SmartTerrainTracker(cPtr, false);
-        }
-        if (tmp.isOfType(RotationalDeviceTracker.getClassType())) {
-            return new RotationalDeviceTracker(cPtr, false);
+        if (tracker.isOfType(PositionalDeviceTracker.getClassType())) {
+            return new PositionalDeviceTracker(l, false);
         }
         return null;
     }

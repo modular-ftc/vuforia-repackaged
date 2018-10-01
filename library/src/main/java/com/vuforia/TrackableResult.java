@@ -1,35 +1,37 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
+
+import com.vuforia.Anchor;
+import com.vuforia.CylinderTarget;
+import com.vuforia.DeviceTrackable;
+import com.vuforia.ImageTarget;
+import com.vuforia.Matrix34F;
+import com.vuforia.ModelTarget;
+import com.vuforia.MultiTarget;
+import com.vuforia.ObjectTarget;
+import com.vuforia.Trackable;
+import com.vuforia.Type;
+import com.vuforia.VuMarkTarget;
+import com.vuforia.VuMarkTemplate;
+import com.vuforia.VuforiaJNI;
 
 public class TrackableResult {
     private long swigCPtr;
     protected boolean swigCMemOwn;
 
-    protected TrackableResult(long cPtr, boolean cMemoryOwn) {
-        this.swigCMemOwn = cMemoryOwn;
-        this.swigCPtr = cPtr;
+    protected TrackableResult(long l, boolean bl) {
+        this.swigCMemOwn = bl;
+        this.swigCPtr = l;
     }
 
-    protected static long getCPtr(TrackableResult obj) {
-        return obj == null ? 0L : obj.swigCPtr;
+    protected static long getCPtr(TrackableResult trackableResult) {
+        return trackableResult == null ? 0L : trackableResult.swigCPtr;
     }
 
     protected void finalize() {
         this.delete();
-    }
-
-    public static Type getClassType() {
-        return new Type(VuforiaJNI.TrackableResult_getClassType(), true);
-    }
-
-    public boolean equals(Object obj) {
-        boolean equal = false;
-        if (obj instanceof TrackableResult) {
-            equal = ((TrackableResult)obj).swigCPtr == this.swigCPtr;
-        }
-        return equal;
     }
 
     protected synchronized void delete() {
@@ -40,6 +42,18 @@ public class TrackableResult {
             }
             this.swigCPtr = 0L;
         }
+    }
+
+    public boolean equals(Object object) {
+        boolean bl = false;
+        if (object instanceof TrackableResult) {
+            bl = ((TrackableResult)object).swigCPtr == this.swigCPtr;
+        }
+        return bl;
+    }
+
+    public static Type getClassType() {
+        return new Type(VuforiaJNI.TrackableResult_getClassType(), true);
     }
 
     public Type getType() {
@@ -58,44 +72,42 @@ public class TrackableResult {
         return VuforiaJNI.TrackableResult_getStatus(this.swigCPtr, this);
     }
 
+    public int getStatusInfo() {
+        return VuforiaJNI.TrackableResult_getStatusInfo(this.swigCPtr, this);
+    }
+
     public Trackable getTrackable() {
-        long cPtr = VuforiaJNI.TrackableResult_getTrackable(this.swigCPtr, this);
-        if (cPtr == 0L) {
+        long l = VuforiaJNI.TrackableResult_getTrackable(this.swigCPtr, this);
+        if (l == 0L) {
             return null;
         }
-        Trackable tmp = new Trackable(cPtr, false);
-        if (tmp.isOfType(ImageTarget.getClassType())) {
-            return new ImageTarget(cPtr, false);
+        Trackable trackable = new Trackable(l, false);
+        if (trackable.isOfType(ImageTarget.getClassType())) {
+            return new ImageTarget(l, false);
         }
-        if (tmp.isOfType(CylinderTarget.getClassType())) {
-            return new CylinderTarget(cPtr, false);
+        if (trackable.isOfType(CylinderTarget.getClassType())) {
+            return new CylinderTarget(l, false);
         }
-        if (tmp.isOfType(MultiTarget.getClassType())) {
-            return new MultiTarget(cPtr, false);
+        if (trackable.isOfType(MultiTarget.getClassType())) {
+            return new MultiTarget(l, false);
         }
-        if (tmp.isOfType(VuMarkTarget.getClassType())) {
-            return new VuMarkTarget(cPtr, false);
+        if (trackable.isOfType(VuMarkTarget.getClassType())) {
+            return new VuMarkTarget(l, false);
         }
-        if (tmp.isOfType(VuMarkTemplate.getClassType())) {
-            return new VuMarkTemplate(cPtr, false);
+        if (trackable.isOfType(VuMarkTemplate.getClassType())) {
+            return new VuMarkTemplate(l, false);
         }
-        if (tmp.isOfType(ObjectTarget.getClassType())) {
-            return new ObjectTarget(cPtr, false);
+        if (trackable.isOfType(ModelTarget.getClassType())) {
+            return new ModelTarget(l, false);
         }
-        if (tmp.isOfType(Word.getClassType())) {
-            return new Word(cPtr, false);
+        if (trackable.isOfType(ObjectTarget.getClassType())) {
+            return new ObjectTarget(l, false);
         }
-        if (tmp.isOfType(Marker.getClassType())) {
-            return new Marker(cPtr, false);
+        if (trackable.isOfType(Anchor.getClassType())) {
+            return new Anchor(l, false);
         }
-        if (tmp.isOfType(Surface.getClassType())) {
-            return new Surface(cPtr, false);
-        }
-        if (tmp.isOfType(Prop.getClassType())) {
-            return new Prop(cPtr, false);
-        }
-        if (tmp.isOfType(DeviceTrackable.getClassType())) {
-            return new DeviceTrackable(cPtr, false);
+        if (trackable.isOfType(DeviceTrackable.getClassType())) {
+            return new DeviceTrackable(l, false);
         }
         return null;
     }
@@ -108,9 +120,17 @@ public class TrackableResult {
         return VuforiaJNI.TrackableResult_getCoordinateSystem(this.swigCPtr, this);
     }
 
+    public static final class STATUS_INFO {
+        public static final int NORMAL = 0;
+        public static final int UNKNOWN = 1;
+        public static final int INITIALIZING = 2;
+        public static final int EXCESSIVE_MOTION = 3;
+        public static final int INSUFFICIENT_FEATURES = 4;
+    }
+
     public static final class STATUS {
-        public static final int UNKNOWN = 0;
-        public static final int UNDEFINED = 1;
+        public static final int NO_POSE = 0;
+        public static final int LIMITED = 1;
         public static final int DETECTED = 2;
         public static final int TRACKED = 3;
         public static final int EXTENDED_TRACKED = 4;

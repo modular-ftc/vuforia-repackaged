@@ -1,14 +1,101 @@
 /*
- * Decompiled with CFR 0_132.
+ * Decompiled with CFR 0_133.
  */
 package com.vuforia;
 
+import com.vuforia.Anchor;
+import com.vuforia.AnchorResult;
+import com.vuforia.Area;
+import com.vuforia.Box3D;
+import com.vuforia.CameraCalibration;
+import com.vuforia.CameraDevice;
+import com.vuforia.CameraField;
+import com.vuforia.CustomViewerParameters;
+import com.vuforia.CylinderTarget;
+import com.vuforia.CylinderTargetResult;
+import com.vuforia.DataSet;
+import com.vuforia.Device;
+import com.vuforia.DeviceTrackableResult;
+import com.vuforia.DeviceTracker;
+import com.vuforia.EyewearCalibrationProfileManager;
+import com.vuforia.EyewearCalibrationReading;
+import com.vuforia.EyewearDevice;
+import com.vuforia.EyewearUserCalibrator;
+import com.vuforia.Frame;
+import com.vuforia.GLTextureData;
+import com.vuforia.GLTextureUnit;
+import com.vuforia.GuideView;
+import com.vuforia.HandheldTransformModel;
+import com.vuforia.HeadTransformModel;
+import com.vuforia.HitTestResult;
+import com.vuforia.Illumination;
+import com.vuforia.Image;
+import com.vuforia.ImageTarget;
+import com.vuforia.ImageTargetBuilder;
+import com.vuforia.ImageTargetResult;
+import com.vuforia.InstanceId;
+import com.vuforia.Matrix34F;
+import com.vuforia.Matrix44F;
+import com.vuforia.Mesh;
+import com.vuforia.ModelTarget;
+import com.vuforia.ModelTargetResult;
+import com.vuforia.MultiTarget;
+import com.vuforia.MultiTargetResult;
+import com.vuforia.Obb2D;
+import com.vuforia.Obb3D;
+import com.vuforia.ObjectTarget;
+import com.vuforia.ObjectTargetResult;
+import com.vuforia.ObjectTracker;
+import com.vuforia.PositionalDeviceTracker;
+import com.vuforia.Rectangle;
+import com.vuforia.RectangleInt;
+import com.vuforia.Renderer;
+import com.vuforia.RenderingPrimitives;
+import com.vuforia.RotationalDeviceTracker;
+import com.vuforia.SmartTerrain;
+import com.vuforia.State;
+import com.vuforia.StateUpdater;
+import com.vuforia.TargetFinder;
+import com.vuforia.TargetSearchResult;
+import com.vuforia.TextureData;
+import com.vuforia.TextureUnit;
+import com.vuforia.Trackable;
+import com.vuforia.TrackableResult;
+import com.vuforia.TrackableSource;
+import com.vuforia.Tracker;
+import com.vuforia.TrackerManager;
+import com.vuforia.TransformModel;
+import com.vuforia.Type;
+import com.vuforia.UpdateCallback;
+import com.vuforia.Vec2F;
+import com.vuforia.Vec2I;
+import com.vuforia.Vec3F;
+import com.vuforia.Vec3I;
+import com.vuforia.Vec4F;
+import com.vuforia.Vec4I;
+import com.vuforia.VideoBackgroundConfig;
+import com.vuforia.VideoBackgroundTextureInfo;
+import com.vuforia.VideoMode;
+import com.vuforia.ViewList;
+import com.vuforia.ViewerParameters;
+import com.vuforia.ViewerParametersList;
+import com.vuforia.VirtualButton;
+import com.vuforia.VirtualButtonResult;
+import com.vuforia.VuMarkTarget;
+import com.vuforia.VuMarkTargetResult;
+import com.vuforia.VuMarkTemplate;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 class VuforiaJNI {
     VuforiaJNI() {
     }
+
+    public static final native int init();
+
+    public static final native boolean isInitialized();
+
+    public static final native void deinit();
 
     public static final native boolean setHint(long var0, int var2);
 
@@ -176,6 +263,8 @@ class VuforiaJNI {
 
     public static final native int TrackableResult_getStatus(long var0, TrackableResult var2);
 
+    public static final native int TrackableResult_getStatusInfo(long var0, TrackableResult var2);
+
     public static final native long TrackableResult_getTrackable(long var0, TrackableResult var2);
 
     public static final native long TrackableResult_getPose(long var0, TrackableResult var2);
@@ -215,40 +304,6 @@ class VuforiaJNI {
     public static final native ByteBuffer Mesh_getTriangles(long var0, Mesh var2);
 
     public static final native void delete_Mesh(long var0);
-
-    public static final native long SmartTerrainTrackable_getClassType();
-
-    public static final native long SmartTerrainTrackable_getMesh(long var0, SmartTerrainTrackable var2);
-
-    public static final native int SmartTerrainTrackable_getRevision(long var0, SmartTerrainTrackable var2);
-
-    public static final native long SmartTerrainTrackable_getLocalPose(long var0, SmartTerrainTrackable var2);
-
-    public static final native long SmartTerrainTrackable_getParent(long var0, SmartTerrainTrackable var2);
-
-    public static final native long SmartTerrainTrackable_getChildrenCount(long var0, SmartTerrainTrackable var2);
-
-    public static final native long SmartTerrainTrackable_getChild(long var0, SmartTerrainTrackable var2, long var3);
-
-    public static final native void delete_SmartTerrainTrackable(long var0);
-
-    public static final native long Reconstruction_getClassType();
-
-    public static final native long Reconstruction_getType(long var0, Reconstruction var2);
-
-    public static final native boolean Reconstruction_setMaximumArea(long var0, Reconstruction var2, long var3, Rectangle var5);
-
-    public static final native boolean Reconstruction_getMaximumArea(long var0, Reconstruction var2, long var3, Rectangle var5);
-
-    public static final native void Reconstruction_setNavMeshPadding(long var0, Reconstruction var2, float var3);
-
-    public static final native boolean Reconstruction_start(long var0, Reconstruction var2);
-
-    public static final native boolean Reconstruction_stop(long var0, Reconstruction var2);
-
-    public static final native boolean Reconstruction_reset(long var0, Reconstruction var2);
-
-    public static final native boolean Reconstruction_isReconstructing(long var0, Reconstruction var2);
 
     public static final native long new_Obb2D__SWIG_0();
 
@@ -304,6 +359,18 @@ class VuforiaJNI {
 
     public static final native long CameraCalibration_getFieldOfViewRads(long var0, CameraCalibration var2);
 
+    public static final native void delete_CameraCalibration(long var0);
+
+    public static final native float Illumination_AMBIENT_INTENSITY_UNAVAILABLE_get();
+
+    public static final native float Illumination_AMBIENT_COLOR_TEMPERATURE_UNAVAILABLE_get();
+
+    public static final native float Illumination_getAmbientIntensity(long var0, Illumination var2);
+
+    public static final native float Illumination_getAmbientColorTemperature(long var0, Illumination var2);
+
+    public static final native void delete_Illumination(long var0);
+
     public static final native long new_CameraField();
 
     public static final native int CameraField_Type_get(long var0, CameraField var2);
@@ -352,8 +419,6 @@ class VuforiaJNI {
 
     public static final native boolean CameraDevice_getCameraField(long var0, CameraDevice var2, int var3, long var4, CameraField var6);
 
-    public static final native boolean CameraDevice_getFieldString(long var0, CameraDevice var2, String var3, String var4, long var5);
-
     public static final native boolean CameraDevice_getFieldInt64(long var0, CameraDevice var2, String var3, long[] var4);
 
     public static final native boolean CameraDevice_getFieldFloat(long var0, CameraDevice var2, String var3, float[] var4);
@@ -361,6 +426,8 @@ class VuforiaJNI {
     public static final native boolean CameraDevice_getFieldBool(long var0, CameraDevice var2, String var3, boolean[] var4);
 
     public static final native boolean CameraDevice_getFieldInt64Range(long var0, CameraDevice var2, String var3, long[] var4);
+
+    public static final native String CameraDevice_getFieldString(long var0, CameraDevice var2, String var3);
 
     public static final native void delete_CameraDevice(long var0);
 
@@ -463,6 +530,10 @@ class VuforiaJNI {
     public static final native void EyewearCalibrationReading_CenterY_set(long var0, EyewearCalibrationReading var2, float var3);
 
     public static final native float EyewearCalibrationReading_CenterY_get(long var0, EyewearCalibrationReading var2);
+
+    public static final native void EyewearCalibrationReading_Type_set(long var0, EyewearCalibrationReading var2, int var3);
+
+    public static final native int EyewearCalibrationReading_Type_get(long var0, EyewearCalibrationReading var2);
 
     public static final native long new_EyewearCalibrationReading();
 
@@ -572,9 +643,9 @@ class VuforiaJNI {
 
     public static final native long RenderingPrimitives_getNormalizedViewport(long var0, RenderingPrimitives var2, int var3);
 
-    public static final native long RenderingPrimitives_getProjectionMatrix__SWIG_0(long var0, RenderingPrimitives var2, int var3, int var4, boolean var5);
+    public static final native long RenderingPrimitives_getProjectionMatrix__SWIG_0(long var0, RenderingPrimitives var2, int var3, int var4, long var5, CameraCalibration var7, boolean var8);
 
-    public static final native long RenderingPrimitives_getProjectionMatrix__SWIG_1(long var0, RenderingPrimitives var2, int var3, int var4);
+    public static final native long RenderingPrimitives_getProjectionMatrix__SWIG_1(long var0, RenderingPrimitives var2, int var3, int var4, long var5, CameraCalibration var7);
 
     public static final native long RenderingPrimitives_getEffectiveFov(long var0, RenderingPrimitives var2, int var3);
 
@@ -724,9 +795,7 @@ class VuforiaJNI {
 
     public static final native boolean ObjectTracker_deactivateDataSet(long var0, ObjectTracker var2, long var3, DataSet var5);
 
-    public static final native long ObjectTracker_getActiveDataSet__SWIG_0(long var0, ObjectTracker var2, int var3);
-
-    public static final native long ObjectTracker_getActiveDataSet__SWIG_1(long var0, ObjectTracker var2);
+    public static final native long ObjectTracker_getActiveDataSet(long var0, ObjectTracker var2, int var3);
 
     public static final native int ObjectTracker_getActiveDataSetCount(long var0, ObjectTracker var2);
 
@@ -739,36 +808,6 @@ class VuforiaJNI {
     public static final native boolean ObjectTracker_resetExtendedTracking(long var0, ObjectTracker var2);
 
     public static final native void delete_ObjectTracker(long var0);
-
-    public static final native long Marker_getClassType();
-
-    public static final native long Marker_getSize(long var0, Marker var2);
-
-    public static final native boolean Marker_setSize(long var0, Marker var2, long var3, Vec2F var5);
-
-    public static final native int Marker_getMarkerId(long var0, Marker var2);
-
-    public static final native int Marker_getMarkerType(long var0, Marker var2);
-
-    public static final native void delete_Marker(long var0);
-
-    public static final native long MarkerResult_getClassType();
-
-    public static final native long MarkerResult_getTrackable(long var0, MarkerResult var2);
-
-    public static final native void delete_MarkerResult(long var0);
-
-    public static final native long MarkerTracker_getClassType();
-
-    public static final native long MarkerTracker_createFrameMarker(long var0, MarkerTracker var2, int var3, String var4, long var5, Vec2F var7);
-
-    public static final native boolean MarkerTracker_destroyMarker(long var0, MarkerTracker var2, long var3, Marker var5);
-
-    public static final native int MarkerTracker_getNumMarkers(long var0, MarkerTracker var2);
-
-    public static final native long MarkerTracker_getMarker(long var0, MarkerTracker var2, int var3);
-
-    public static final native void delete_MarkerTracker(long var0);
 
     public static final native long MultiTarget_getClassType();
 
@@ -799,6 +838,28 @@ class VuforiaJNI {
     public static final native long MultiTargetResult_getPartResult__SWIG_1(long var0, MultiTargetResult var2, String var3);
 
     public static final native void delete_MultiTargetResult(long var0);
+
+    public static final native long ModelTarget_getClassType();
+
+    public static final native String ModelTarget_getUniqueTargetId(long var0, ModelTarget var2);
+
+    public static final native long ModelTarget_getSize(long var0, ModelTarget var2);
+
+    public static final native boolean ModelTarget_setSize(long var0, ModelTarget var2, long var3, Vec3F var5);
+
+    public static final native long ModelTarget_getBoundingBox(long var0, ModelTarget var2);
+
+    public static final native int ModelTarget_getNumGuideViews(long var0, ModelTarget var2);
+
+    public static final native long ModelTarget_getGuideView(long var0, ModelTarget var2, int var3);
+
+    public static final native void delete_ModelTarget(long var0);
+
+    public static final native long ModelTargetResult_getClassType();
+
+    public static final native long ModelTargetResult_getTrackable(long var0, ModelTargetResult var2);
+
+    public static final native void delete_ModelTargetResult(long var0);
 
     public static final native long new_Rectangle__SWIG_0();
 
@@ -854,8 +915,6 @@ class VuforiaJNI {
 
     public static final native void Renderer_begin__SWIG_1(long var0, Renderer var2, long var3, State var5);
 
-    public static final native boolean Renderer_drawVideoBackground(long var0, Renderer var2);
-
     public static final native void Renderer_end(long var0, Renderer var2);
 
     public static final native boolean Renderer_updateVideoBackgroundTexture__SWIG_0(long var0, Renderer var2, long var3, TextureUnit var5);
@@ -869,8 +928,6 @@ class VuforiaJNI {
     public static final native long Renderer_getVideoBackgroundTextureInfo(long var0, Renderer var2);
 
     public static final native boolean Renderer_setVideoBackgroundTexture(long var0, Renderer var2, long var3, TextureData var5);
-
-    public static final native void Renderer_setARProjection(long var0, Renderer var2, float var3, float var4);
 
     public static final native boolean Renderer_setTargetFps(long var0, Renderer var2, int var3);
 
@@ -912,6 +969,10 @@ class VuforiaJNI {
 
     public static final native long State_getFrame(long var0, State var2);
 
+    public static final native long State_getCameraCalibration(long var0, State var2);
+
+    public static final native long State_getIllumination(long var0, State var2);
+
     public static final native int State_getNumTrackables(long var0, State var2);
 
     public static final native long State_getTrackable(long var0, State var2, int var3);
@@ -920,6 +981,8 @@ class VuforiaJNI {
 
     public static final native long State_getTrackableResult(long var0, State var2, int var3);
 
+    public static final native long State_getDeviceTrackableResult(long var0, State var2);
+
     public static final native long StateUpdater_updateState(long var0, StateUpdater var2);
 
     public static final native long StateUpdater_getLatestState(long var0, StateUpdater var2);
@@ -927,46 +990,6 @@ class VuforiaJNI {
     public static final native double StateUpdater_getCurrentTimeStamp(long var0, StateUpdater var2);
 
     public static final native void delete_StateUpdater(long var0);
-
-    public static final native long Surface_getClassType();
-
-    public static final native long Surface_getNavMesh(long var0, Surface var2);
-
-    public static final native long Surface_getBoundingBox(long var0, Surface var2);
-
-    public static final native int Surface_getNumMeshBoundaries(long var0, Surface var2);
-
-    public static final native ByteBuffer Surface_getMeshBoundaries(long var0, Surface var2);
-
-    public static final native void delete_Surface(long var0);
-
-    public static final native long ReconstructionFromTarget_getClassType();
-
-    public static final native boolean ReconstructionFromTarget_setInitializationTarget__SWIG_0(long var0, ReconstructionFromTarget var2, long var3, Trackable var5, long var6, Box3D var8);
-
-    public static final native boolean ReconstructionFromTarget_setInitializationTarget__SWIG_1(long var0, ReconstructionFromTarget var2, long var3, Trackable var5, long var6, Box3D var8, long var9, Matrix34F var11);
-
-    public static final native long ReconstructionFromTarget_getInitializationTarget(long var0, ReconstructionFromTarget var2);
-
-    public static final native long Prop_getClassType();
-
-    public static final native long Prop_getBoundingBox(long var0, Prop var2);
-
-    public static final native long Prop_getLocalPosition(long var0, Prop var2);
-
-    public static final native void delete_Prop(long var0);
-
-    public static final native long PropResult_getClassType();
-
-    public static final native long PropResult_getTrackable(long var0, PropResult var2);
-
-    public static final native void delete_PropResult(long var0);
-
-    public static final native long SurfaceResult_getClassType();
-
-    public static final native long SurfaceResult_getTrackable(long var0, SurfaceResult var2);
-
-    public static final native void delete_SurfaceResult(long var0);
 
     public static final native int TransformModel_getType(long var0, TransformModel var2);
 
@@ -999,6 +1022,16 @@ class VuforiaJNI {
     public static final native long HeadTransformModel_getPivotPoint(long var0, HeadTransformModel var2);
 
     public static final native void delete_HeadTransformModel(long var0);
+
+    public static final native long Anchor_getClassType();
+
+    public static final native void delete_Anchor(long var0);
+
+    public static final native long AnchorResult_getClassType();
+
+    public static final native long AnchorResult_getTrackable(long var0, AnchorResult var2);
+
+    public static final native void delete_AnchorResult(long var0);
 
     public static final native long DeviceTrackable_getClassType();
 
@@ -1036,39 +1069,33 @@ class VuforiaJNI {
 
     public static final native void delete_RotationalDeviceTracker(long var0);
 
-    public static final native long SmartTerrainBuilder_getClassType();
+    public static final native long PositionalDeviceTracker_getClassType();
 
-    public static final native long SmartTerrainBuilder_getType(long var0, SmartTerrainBuilder var2);
+    public static final native long PositionalDeviceTracker_createAnchor__SWIG_0(long var0, PositionalDeviceTracker var2, String var3, long var4, Matrix34F var6);
 
-    public static final native boolean SmartTerrainBuilder_isOfType(long var0, SmartTerrainBuilder var2, long var3, Type var5);
+    public static final native long PositionalDeviceTracker_createAnchor__SWIG_1(long var0, PositionalDeviceTracker var2, String var3, long var4, HitTestResult var6);
 
-    public static final native long SmartTerrainBuilder_createReconstruction(long var0, SmartTerrainBuilder var2, long var3, Type var5);
+    public static final native boolean PositionalDeviceTracker_destroyAnchor(long var0, PositionalDeviceTracker var2, long var3, Anchor var5);
 
-    public static final native boolean SmartTerrainBuilder_destroyReconstruction(long var0, SmartTerrainBuilder var2, long var3, Reconstruction var5);
+    public static final native int PositionalDeviceTracker_getNumAnchors(long var0, PositionalDeviceTracker var2);
 
-    public static final native long SmartTerrainBuilder_getNumReconstructions(long var0, SmartTerrainBuilder var2);
+    public static final native long PositionalDeviceTracker_getAnchor(long var0, PositionalDeviceTracker var2, int var3);
 
-    public static final native boolean SmartTerrainBuilder_addReconstruction(long var0, SmartTerrainBuilder var2, long var3, Reconstruction var5);
+    public static final native void delete_PositionalDeviceTracker(long var0);
 
-    public static final native boolean SmartTerrainBuilder_removeReconstruction(long var0, SmartTerrainBuilder var2, long var3);
+    public static final native long SmartTerrain_getClassType();
 
-    public static final native long SmartTerrainBuilder_getReconstruction(long var0, SmartTerrainBuilder var2, long var3);
+    public static final native void SmartTerrain_hitTest(long var0, SmartTerrain var2, long var3, State var5, long var6, Vec2F var8, float var9, int var10);
 
-    public static final native boolean SmartTerrainBuilder_init(long var0, SmartTerrainBuilder var2);
+    public static final native int SmartTerrain_getHitTestResultCount(long var0, SmartTerrain var2);
 
-    public static final native boolean SmartTerrainBuilder_deinit(long var0, SmartTerrainBuilder var2);
+    public static final native long SmartTerrain_getHitTestResult(long var0, SmartTerrain var2, int var3);
 
-    public static final native void delete_SmartTerrainBuilder(long var0);
+    public static final native void delete_SmartTerrain(long var0);
 
-    public static final native long SmartTerrainTracker_getClassType();
+    public static final native long HitTestResult_getPose(long var0, HitTestResult var2);
 
-    public static final native boolean SmartTerrainTracker_setScaleToMillimeter(long var0, SmartTerrainTracker var2, float var3);
-
-    public static final native float SmartTerrainTracker_getScaleToMillimeter(long var0, SmartTerrainTracker var2);
-
-    public static final native long SmartTerrainTracker_getSmartTerrainBuilder(long var0, SmartTerrainTracker var2);
-
-    public static final native void delete_SmartTerrainTracker(long var0);
+    public static final native void delete_HitTestResult(long var0);
 
     public static final native String TargetSearchResult_getTargetName(long var0, TargetSearchResult var2);
 
@@ -1113,46 +1140,6 @@ class VuforiaJNI {
     public static final native long TargetFinder_getImageTarget(long var0, TargetFinder var2, int var3);
 
     public static final native void delete_TargetFinder(long var0);
-
-    public static final native boolean WordList_loadWordList(long var0, WordList var2, String var3, int var4);
-
-    public static final native int WordList_addWordsFromFile(long var0, WordList var2, String var3, int var4);
-
-    public static final native boolean WordList_addWordU(long var0, WordList var2, short[] var3);
-
-    public static final native boolean WordList_removeWordU(long var0, WordList var2, short[] var3);
-
-    public static final native boolean WordList_containsWordU(long var0, WordList var2, short[] var3);
-
-    public static final native boolean WordList_unloadAllLists(long var0, WordList var2);
-
-    public static final native boolean WordList_setFilterMode(long var0, WordList var2, int var3);
-
-    public static final native int WordList_getFilterMode(long var0, WordList var2);
-
-    public static final native boolean WordList_addWordToFilterListU(long var0, WordList var2, short[] var3);
-
-    public static final native boolean WordList_removeWordFromFilterListU(long var0, WordList var2, short[] var3);
-
-    public static final native boolean WordList_clearFilterList(long var0, WordList var2);
-
-    public static final native boolean WordList_loadFilterList(long var0, WordList var2, String var3, int var4);
-
-    public static final native int WordList_getFilterListWordCount(long var0, WordList var2);
-
-    public static final native short[] WordList_getFilterListWordU(long var0, WordList var2, int var3);
-
-    public static final native void delete_WordList(long var0);
-
-    public static final native long TextTracker_getClassType();
-
-    public static final native boolean TextTracker_setRegionOfInterest(long var0, TextTracker var2, long var3, RectangleInt var5, long var6, RectangleInt var8, int var9);
-
-    public static final native void TextTracker_getRegionOfInterest(long var0, TextTracker var2, long var3, RectangleInt var5, long var6, RectangleInt var8, int[] var9);
-
-    public static final native long TextTracker_getWordList(long var0, TextTracker var2);
-
-    public static final native void delete_TextTracker(long var0);
 
     public static final native long new_TrackableSource();
 
@@ -1228,30 +1215,6 @@ class VuforiaJNI {
 
     public static final native boolean VirtualButtonResult_isPressed(long var0, VirtualButtonResult var2);
 
-    public static final native long Word_getClassType();
-
-    public static final native short[] Word_getStringU(long var0, Word var2);
-
-    public static final native int Word_getLength(long var0, Word var2);
-
-    public static final native int Word_getNumCodeUnits(long var0, Word var2);
-
-    public static final native long Word_getSize(long var0, Word var2);
-
-    public static final native long Word_getMask(long var0, Word var2);
-
-    public static final native long Word_getLetterBoundingBox(long var0, Word var2, int var3);
-
-    public static final native void delete_Word(long var0);
-
-    public static final native long WordResult_getClassType();
-
-    public static final native long WordResult_getTrackable(long var0, WordResult var2);
-
-    public static final native long WordResult_getObb(long var0, WordResult var2);
-
-    public static final native void delete_WordResult(long var0);
-
     public static final native long VuMarkTemplate_getClassType();
 
     public static final native String VuMarkTemplate_getVuMarkUserData(long var0, VuMarkTemplate var2);
@@ -1292,6 +1255,22 @@ class VuforiaJNI {
 
     public static final native void delete_VuMarkTargetResult(long var0);
 
+    public static final native long GuideView_getIntrinsics(long var0, GuideView var2);
+
+    public static final native long GuideView_getPose(long var0, GuideView var2);
+
+    public static final native void GuideView_setPose(long var0, GuideView var2, long var3, Matrix34F var5);
+
+    public static final native long GuideView_getImage(long var0, GuideView var2);
+
+    public static final native void delete_GuideView(long var0);
+
+    public static final native boolean RendererHelper_drawVideoBackground();
+
+    public static final native long new_RendererHelper();
+
+    public static final native void delete_RendererHelper(long var0);
+
     public static final native long Tool_convertPose2GLMatrix(long var0, Matrix34F var2);
 
     public static final native long Tool_convert2GLMatrix(long var0, Matrix34F var2);
@@ -1318,8 +1297,6 @@ class VuforiaJNI {
 
     public static final native void delete_Tool(long var0);
 
-    public static final native long SmartTerrainTrackable_SWIGUpcast(long var0);
-
     public static final native long ObjectTarget_SWIGUpcast(long var0);
 
     public static final native long ObjectTargetResult_SWIGUpcast(long var0);
@@ -1338,15 +1315,13 @@ class VuforiaJNI {
 
     public static final native long ObjectTracker_SWIGUpcast(long var0);
 
-    public static final native long Marker_SWIGUpcast(long var0);
-
-    public static final native long MarkerResult_SWIGUpcast(long var0);
-
-    public static final native long MarkerTracker_SWIGUpcast(long var0);
-
     public static final native long MultiTarget_SWIGUpcast(long var0);
 
     public static final native long MultiTargetResult_SWIGUpcast(long var0);
+
+    public static final native long ModelTarget_SWIGUpcast(long var0);
+
+    public static final native long ModelTargetResult_SWIGUpcast(long var0);
 
     public static final native long Rectangle_SWIGUpcast(long var0);
 
@@ -1356,19 +1331,13 @@ class VuforiaJNI {
 
     public static final native long GLTextureUnit_SWIGUpcast(long var0);
 
-    public static final native long Surface_SWIGUpcast(long var0);
-
-    public static final native long ReconstructionFromTarget_SWIGUpcast(long var0);
-
-    public static final native long Prop_SWIGUpcast(long var0);
-
-    public static final native long PropResult_SWIGUpcast(long var0);
-
-    public static final native long SurfaceResult_SWIGUpcast(long var0);
-
     public static final native long HandheldTransformModel_SWIGUpcast(long var0);
 
     public static final native long HeadTransformModel_SWIGUpcast(long var0);
+
+    public static final native long Anchor_SWIGUpcast(long var0);
+
+    public static final native long AnchorResult_SWIGUpcast(long var0);
 
     public static final native long DeviceTrackable_SWIGUpcast(long var0);
 
@@ -1378,15 +1347,9 @@ class VuforiaJNI {
 
     public static final native long RotationalDeviceTracker_SWIGUpcast(long var0);
 
-    public static final native long SmartTerrainTracker_SWIGUpcast(long var0);
+    public static final native long PositionalDeviceTracker_SWIGUpcast(long var0);
 
-    public static final native long WordList_SWIGUpcast(long var0);
-
-    public static final native long TextTracker_SWIGUpcast(long var0);
-
-    public static final native long Word_SWIGUpcast(long var0);
-
-    public static final native long WordResult_SWIGUpcast(long var0);
+    public static final native long SmartTerrain_SWIGUpcast(long var0);
 
     public static final native long VuMarkTemplate_SWIGUpcast(long var0);
 
@@ -1394,8 +1357,8 @@ class VuforiaJNI {
 
     public static final native long VuMarkTargetResult_SWIGUpcast(long var0);
 
-    public static void SwigDirector_UpdateCallback_Vuforia_onUpdate(UpdateCallback self, long state) {
-        self.Vuforia_onUpdate(new State(state, false));
+    public static void SwigDirector_UpdateCallback_Vuforia_onUpdate(UpdateCallback updateCallback, long l) {
+        updateCallback.Vuforia_onUpdate(new State(l, false));
     }
 
     private static final native void swig_module_init();
