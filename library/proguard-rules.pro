@@ -24,3 +24,5 @@
 -keep,includedescriptorclasses class com.vuforia.** {
     *;
 }
+
+-dontwarn com.osterhoutgroup.**
